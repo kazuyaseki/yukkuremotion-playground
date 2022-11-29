@@ -7,6 +7,7 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {Logo} from './HelloWorld/Logo';
+import {SubtitleBackground} from './Subtitle/SubtitleBackground';
 import {ReimuSequence} from './yukkuri/Reimu/ReimuSequence';
 
 export const HelloWorld: React.FC<{
@@ -50,15 +51,9 @@ export const HelloWorld: React.FC<{
 				<AbsoluteFill style={{transform: `translateY(${logoTranslation}px)`}}>
 					<Logo />
 				</AbsoluteFill>
+
 				<Sequence>
-					<div style={jimakuBackground} />
-				</Sequence>
-				<Sequence>
-					<p style={terop}>
-						今日は Figma プラグイン
-						<br />
-						開発について解説していくよ
-					</p>
+					<SubtitleBackground subtitle="今日はFigmaプラグイン開発について解説していくよ" />
 				</Sequence>
 
 				<Sequence>
@@ -115,14 +110,6 @@ export const HelloWorld: React.FC<{
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);
-};
-
-const jimakuBackground: React.CSSProperties = {
-	position: 'absolute',
-	width: '100%',
-	height: '240px',
-	bottom: 0,
-	backgroundColor: '#999',
 };
 
 const terop: React.CSSProperties = {

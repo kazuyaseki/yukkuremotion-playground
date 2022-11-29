@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@remotion/cli": "3.3.4",
+    "@remotion/google-fonts": "^3.3.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "remotion": "3.3.4"
