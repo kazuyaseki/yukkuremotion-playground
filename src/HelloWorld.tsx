@@ -7,7 +7,7 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {Logo} from './HelloWorld/Logo';
-import {SubtitleBackground} from './Subtitle/SubtitleBackground';
+import {SubtitleWithBackground} from './Subtitle/SubtitleBackground';
 import {ReimuSequence} from './yukkuri/Reimu/ReimuSequence';
 
 export const HelloWorld: React.FC<{
@@ -52,8 +52,8 @@ export const HelloWorld: React.FC<{
 					<Logo />
 				</AbsoluteFill>
 
-				<Sequence>
-					<SubtitleBackground
+				<Sequence durationInFrames={140}>
+					<SubtitleWithBackground
 						subtitle={
 							<>
 								今日はFigmaプラグイン開発
@@ -64,57 +64,21 @@ export const HelloWorld: React.FC<{
 					/>
 				</Sequence>
 
+				<Sequence from={140}>
+					<SubtitleWithBackground
+						subtitle={<>生産性をアゲアゲにしていこうネ</>}
+					/>
+				</Sequence>
+
 				<Sequence>
 					<Audio src={staticFile('audio/saisho.mp3')} />
 				</Sequence>
 
-				<ReimuSequence
-					settings={[
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-						{durationInFrames: 3, eyeOpen: false},
-						{durationInFrames: 3, eyeOpen: true},
-					]}
-				/>
+				<Sequence from={140}>
+					<Audio src={staticFile('audio/2.mp3')} />
+				</Sequence>
+
+				<ReimuSequence settings={[{durationInFrames: 300, eyeOpen: true}]} />
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);
