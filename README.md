@@ -1,15 +1,14 @@
-# Remotion video
+Remotion で作るゆっくり実況
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.gif">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+## TODO
 
-Welcome to your Remotion project!
+[] パチパチの間隔調整
+[] 音声との連動
+[] 表情のバリエーション追加
+[] 可読性の高い字幕
+[] 音声を手軽に出力できるコンポーネント
+[] 魔理沙追加
+[] アイキャッチの作成
 
 ## Commands
 

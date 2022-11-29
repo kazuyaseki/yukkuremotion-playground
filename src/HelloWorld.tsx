@@ -7,10 +7,7 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {Logo} from './HelloWorld/Logo';
-import {Reimu} from './HelloWorld/Reimu';
-import {ReimuSequence} from './HelloWorld/ReimuSequence';
-import {Subtitle} from './HelloWorld/Subtitle';
-import {Title} from './HelloWorld/Title';
+import {ReimuSequence} from './yukkuri/Reimu/ReimuSequence';
 
 export const HelloWorld: React.FC<{
 	titleText: string;
