@@ -1,4 +1,4 @@
-import {Composition} from 'remotion';
+import {Composition, Sequence} from 'remotion';
 import {HelloWorld} from './HelloWorld';
 import {Logo} from './HelloWorld/Logo';
 
@@ -12,7 +12,7 @@ export const RemotionRoot: React.FC = () => {
 				// npx remotion render src/index.ts <id> out/video.mp4
 				id="HelloWorld"
 				component={HelloWorld}
-				durationInFrames={150}
+				durationInFrames={1500}
 				fps={30}
 				width={1920}
 				height={1080}
@@ -22,6 +22,18 @@ export const RemotionRoot: React.FC = () => {
 					titleText: 'Welcome to Remotion',
 					titleColor: 'black',
 				}}
+			/>
+			<Composition
+				id="MyComp"
+				component={() => (
+					<Sequence>
+						<h1>hogehgoehgoeo</h1>
+					</Sequence>
+				)}
+				durationInFrames={150}
+				height={720}
+				width={1280}
+				fps={24}
 			/>
 			{/* Mount any React component to make it show up in the sidebar and work on it individually! */}
 			<Composition

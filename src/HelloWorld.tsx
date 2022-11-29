@@ -1,4 +1,4 @@
-import {spring} from 'remotion';
+import {Audio, Img, spring, staticFile, Video} from 'remotion';
 import {
 	AbsoluteFill,
 	interpolate,
@@ -7,6 +7,8 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {Logo} from './HelloWorld/Logo';
+import {Reimu} from './HelloWorld/Reimu';
+import {ReimuSequence} from './HelloWorld/ReimuSequence';
 import {Subtitle} from './HelloWorld/Subtitle';
 import {Title} from './HelloWorld/Title';
 
@@ -51,15 +53,89 @@ export const HelloWorld: React.FC<{
 				<AbsoluteFill style={{transform: `translateY(${logoTranslation}px)`}}>
 					<Logo />
 				</AbsoluteFill>
-				{/* Sequences can shift the time for its children! */}
-				<Sequence from={35}>
-					<Title titleText={titleText} titleColor={titleColor} />
+				<Sequence>
+					<div style={jimakuBackground} />
 				</Sequence>
-				{/* The subtitle will only enter on the 75th frame. */}
-				<Sequence from={75}>
-					<Subtitle />
+				<Sequence>
+					<p style={terop}>
+						今日は Figma プラグイン
+						<br />
+						開発について解説していくよ
+					</p>
 				</Sequence>
+
+				<Sequence>
+					<Audio src={staticFile('audio/saisho.mp3')} />
+				</Sequence>
+
+				<ReimuSequence
+					settings={[
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+						{durationInFrames: 3, eyeOpen: false},
+						{durationInFrames: 3, eyeOpen: true},
+					]}
+				/>
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);
+};
+
+const jimakuBackground: React.CSSProperties = {
+	position: 'absolute',
+	width: '100%',
+	height: '240px',
+	bottom: 0,
+	backgroundColor: '#999',
+};
+
+const terop: React.CSSProperties = {
+	fontWeight: 'bold',
+	fontSize: 54,
+	textAlign: 'center',
+	WebkitTextStroke: '4px #222',
+	color: '#fff',
+	position: 'absolute',
+	left: 0,
+	bottom: 0,
+	width: '100%',
 };
