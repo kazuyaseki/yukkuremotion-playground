@@ -53,7 +53,15 @@ export const HelloWorld: React.FC<{
 				</AbsoluteFill>
 
 				<Sequence>
-					<SubtitleBackground subtitle="今日はFigmaプラグイン開発について解説していくよ" />
+					<SubtitleBackground
+						subtitle={
+							<>
+								今日はFigmaプラグイン開発
+								<br />
+								について解説していくよ
+							</>
+						}
+					/>
 				</Sequence>
 
 				<Sequence>
@@ -110,16 +118,4 @@ export const HelloWorld: React.FC<{
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);
-};
-
-const terop: React.CSSProperties = {
-	fontWeight: 'bold',
-	fontSize: 54,
-	textAlign: 'center',
-	WebkitTextStroke: '4px #222',
-	color: '#fff',
-	position: 'absolute',
-	left: 0,
-	bottom: 0,
-	width: '100%',
 };

@@ -6,7 +6,11 @@ const {fontFamily} = loadFont();
 
 const subtitle: React.CSSProperties = {
 	fontFamily,
-	fontSize: 54,
+	fontSize: 64,
+	fontWeight: '900',
+	color: '#fff',
+	WebkitTextStroke: '3px #C90003',
+	textAlign: 'center',
 };
 
 type Props = {
