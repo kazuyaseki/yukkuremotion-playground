@@ -9,6 +9,8 @@ import {
 import {Logo} from './HelloWorld/Logo';
 import {SubtitleWithBackground} from './Subtitle/SubtitleBackground';
 import {ReimuSequence} from './yukkuri/Reimu/ReimuSequence';
+import {Talk} from './yukkuri/Talk';
+import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
 
 export const HelloWorld: React.FC<{
 	titleText: string;
@@ -52,33 +54,55 @@ export const HelloWorld: React.FC<{
 					<Logo />
 				</AbsoluteFill>
 
-				<Sequence durationInFrames={140}>
-					<SubtitleWithBackground
-						subtitle={
-							<>
-								今日はFigmaプラグイン開発
-								<br />
-								について解説していくよ
-							</>
-						}
-					/>
-				</Sequence>
+				<TalkSequence
+					talks={[
+						{
+							subtitle: (
+								<>
+									今日はFigmaプラグイン開発
+									<br />
+									について解説していくよ
+								</>
+							),
+							audioFilePath: 'audio/saisho.mp3',
+						},
+						{
+							subtitle: '生産性をアゲアゲにしていこうネ',
+							audioFilePath: 'audio/2.mp3',
+						},
+					]}
+				/>
 
-				<Sequence from={140}>
-					<SubtitleWithBackground
-						subtitle={<>生産性をアゲアゲにしていこうネ</>}
-					/>
-				</Sequence>
-
-				<Sequence>
-					<Audio src={staticFile('audio/saisho.mp3')} />
-				</Sequence>
-
-				<Sequence from={140}>
-					<Audio src={staticFile('audio/2.mp3')} />
-				</Sequence>
-
-				<ReimuSequence settings={[{durationInFrames: 300, eyeOpen: true}]} />
+				<ReimuSequence
+					settings={[
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
+						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+					]}
+				/>
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);

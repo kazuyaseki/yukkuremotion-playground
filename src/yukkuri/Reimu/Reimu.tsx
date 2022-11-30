@@ -9,12 +9,13 @@ import {faceImagePaths, FACE_TYPE} from './ReimuImagePaths/faceImagePaths';
 type Props = {
 	face?: FACE_TYPE;
 	eyeOpen: boolean;
+	mouthOpen: boolean;
 	sizePx?: number;
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
 
-export const Reimu: React.FC<Props> = ({face, eyeOpen, sizePx}) => {
+export const Reimu: React.FC<Props> = ({face, eyeOpen, mouthOpen, sizePx}) => {
 	return (
 		<>
 			<FuyoFuyoAnimationStyle />
@@ -41,7 +42,7 @@ export const Reimu: React.FC<Props> = ({face, eyeOpen, sizePx}) => {
 					/>
 				)}
 
-				{eyeOpen ? (
+				{mouthOpen ? (
 					<Img
 						style={{
 							...faceStyle,

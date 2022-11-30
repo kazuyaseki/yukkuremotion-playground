@@ -3,7 +3,12 @@ import {Reimu} from './Reimu';
 import {FACE_TYPE} from './ReimuImagePaths/faceImagePaths';
 
 type Props = {
-	settings: {face?: FACE_TYPE; eyeOpen: boolean; durationInFrames: number}[];
+	settings: {
+		face?: FACE_TYPE;
+		eyeOpen: boolean;
+		mouthOpen: boolean;
+		durationInFrames: number;
+	}[];
 };
 
 export const ReimuSequence: React.FC<Props> = ({settings}) => {
@@ -17,7 +22,11 @@ export const ReimuSequence: React.FC<Props> = ({settings}) => {
 					}, 0)}
 				>
 					<div style={containerStyle}>
-						<Reimu face={setting.face} eyeOpen={setting.eyeOpen} />
+						<Reimu
+							face={setting.face}
+							eyeOpen={setting.eyeOpen}
+							mouthOpen={setting.mouthOpen}
+						/>
 					</div>
 				</Sequence>
 			))}
