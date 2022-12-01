@@ -1,13 +1,14 @@
-import {getAudioData, useAudioData} from '@remotion/media-utils';
+import {getAudioData} from '@remotion/media-utils';
 import {useEffect, useState} from 'react';
-import {Audio, Sequence, staticFile} from 'remotion';
+import {staticFile} from 'remotion';
 import {Talk, TalkProps} from '.';
 import {FPS} from '../../constants';
-import {SubtitleWithBackground} from '../../Subtitle/SubtitleBackground';
 
 export type Props = {
 	talks: TalkProps[];
 };
+
+const TALK_GAP_FRAMES = 30;
 
 export const TalkSequence: React.FC<Props> = ({talks}) => {
 	const [fromFrameMap, setfromFrameMap] = useState<{[key in number]: number}>(
@@ -27,7 +28,7 @@ export const TalkSequence: React.FC<Props> = ({talks}) => {
 		let frames = 0;
 		for (let i = 0; i < index; i++) {
 			if (fromFrameMap[i]) {
-				frames += fromFrameMap[i];
+				frames += fromFrameMap[i] + TALK_GAP_FRAMES;
 			}
 		}
 		return frames;

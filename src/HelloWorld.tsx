@@ -75,32 +75,7 @@ export const HelloWorld: React.FC<{
 
 				<ReimuSequence
 					settings={[
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: true},
-						{durationInFrames: 9, eyeOpen: true, mouthOpen: false},
+						{durationInFrames: 200, isEyeOpen: true, isKuchipaku: true},
 					]}
 				/>
 			</AbsoluteFill>

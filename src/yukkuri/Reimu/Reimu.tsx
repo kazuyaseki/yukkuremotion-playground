@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import {Img, staticFile} from 'remotion';
 import {
 	fuyofuyoAnimationCss,
@@ -6,16 +7,35 @@ import {
 import {eyeImagePaths} from './ReimuImagePaths/eyeImagePaths';
 import {faceImagePaths, FACE_TYPE} from './ReimuImagePaths/faceImagePaths';
 
-type Props = {
+export type ReimuProps = {
 	face?: FACE_TYPE;
-	eyeOpen: boolean;
-	mouthOpen: boolean;
+	isEyeOpen?: boolean;
+	isMouthOpen?: boolean;
 	sizePx?: number;
+	isKuchipaku?: boolean;
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
 
-export const Reimu: React.FC<Props> = ({face, eyeOpen, mouthOpen, sizePx}) => {
+const KUCHIPAKU_INTERVAL_MSEC = 150;
+
+export const Reimu: React.FC<ReimuProps> = ({
+	face,
+	isEyeOpen: eyeOpen,
+	isMouthOpen: mouthOpen,
+	isKuchipaku,
+	sizePx,
+}) => {
+	const [isMouthOpen, setIsMouthOpen] = useState(false);
+
+	useEffect(() => {
+		if (isKuchipaku) {
+			setInterval(() => {
+				setIsMouthOpen((current) => !current);
+			}, KUCHIPAKU_INTERVAL_MSEC);
+		}
+	}, [isKuchipaku]);
+
 	return (
 		<>
 			<FuyoFuyoAnimationStyle />
@@ -42,7 +62,7 @@ export const Reimu: React.FC<Props> = ({face, eyeOpen, mouthOpen, sizePx}) => {
 					/>
 				)}
 
-				{mouthOpen ? (
+				{isMouthOpen ? (
 					<Img
 						style={{
 							...faceStyle,
