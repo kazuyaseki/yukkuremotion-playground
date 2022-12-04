@@ -29,11 +29,11 @@ export const Reimu: React.FC<ReimuProps> = ({
 	const [isMouthOpen, setIsMouthOpen] = useState(false);
 
 	useEffect(() => {
-		if (isKuchipaku) {
-			setInterval(() => {
-				setIsMouthOpen((current) => !current);
-			}, KUCHIPAKU_INTERVAL_MSEC);
-		}
+		// If (isKuchipaku) {
+		// 	SetInterval(() => {
+		// 		setIsMouthOpen((current) => !current);
+		// 	}, KUCHIPAKU_INTERVAL_MSEC);
+		// }
 	}, [isKuchipaku]);
 
 	return (
