@@ -1,0 +1,37 @@
+const EYE_PATH = '/eye/';
+
+export const eyeImagePaths = {
+	close: `${EYE_PATH}00.png`,
+	nibu: `${EYE_PATH}01.png`,
+	sanbu: `${EYE_PATH}02.png`,
+	hanbiraki: `${EYE_PATH}03.png`,
+	rokuwari: `${EYE_PATH}04.png`,
+	open: `${EYE_PATH}05.png`,
+	nikkori: `${EYE_PATH}06.png`,
+	7: `${EYE_PATH}07.png`,
+	8: `${EYE_PATH}08.png`,
+	9: `${EYE_PATH}09.png`,
+	kyomu: `${EYE_PATH}10.png`,
+	shonbori: `${EYE_PATH}11.png`,
+	gakkari: `${EYE_PATH}12.png`,
+	kirari: `${EYE_PATH}13.png`,
+	angry: `${EYE_PATH}14.png`,
+	kuyasi: `${EYE_PATH}15.png`,
+	mumu: `${EYE_PATH}16.png`,
+	futt: `${EYE_PATH}17.png`,
+	atyaa: `${EYE_PATH}18.png`,
+	tehepero: `${EYE_PATH}19.png`,
+	a: `${EYE_PATH}20.png`,
+	egao: `${EYE_PATH}21.png`,
+	sorena: `${EYE_PATH}22.png`,
+	human: `${EYE_PATH}23.png`,
+	tsundere: `${EYE_PATH}24.png`,
+	nanndato: `${EYE_PATH}25.png`,
+	yodare: `${EYE_PATH}26.png`,
+	buu: `${EYE_PATH}27.png`,
+	gookyuu: `${EYE_PATH}28.png`,
+	ehhen: `${EYE_PATH}29.png`,
+	ee: `${EYE_PATH}30.png`,
+} as const;
+
+export type EYE_TYPE = keyof typeof eyeImagePaths;

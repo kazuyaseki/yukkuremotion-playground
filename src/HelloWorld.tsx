@@ -2,18 +2,13 @@ import {Audio, Img, spring, staticFile, Video} from 'remotion';
 import {
 	AbsoluteFill,
 	interpolate,
-	Sequence,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
 import {Logo} from './HelloWorld/Logo';
-import {SubtitleWithBackground} from './Subtitle/SubtitleBackground';
-import {ReimuSequence} from './yukkuri/Reimu/ReimuSequence';
+import {ReimuSequence} from './yukkuri/Face/ReimuSequence';
 import {Talk} from './yukkuri/Talk';
 import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
-import AquesTalk10 from './yukkuri/Auestalk10';
-import {useEffect, useState} from 'react';
-import * as path from 'path';
 import {yukkuriVoice} from '../yukkuriVoices';
 
 export const HelloWorld: React.FC<{

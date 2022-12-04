@@ -1,5 +1,5 @@
 import {Sequence} from 'remotion';
-import {Reimu, ReimuProps} from './Reimu';
+import {YukkuriFace, ReimuProps} from './YukkuriFace';
 
 type Props = {
 	settings: (ReimuProps & {
@@ -18,7 +18,7 @@ export const ReimuSequence: React.FC<Props> = ({settings}) => {
 					}, 0)}
 				>
 					<div style={containerStyle}>
-						<Reimu {...setting} />
+						<YukkuriFace {...setting} />
 					</div>
 				</Sequence>
 			))}

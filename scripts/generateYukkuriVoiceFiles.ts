@@ -19,5 +19,5 @@ Object.keys(yukkuriVoice).forEach((key) => {
 	const text = aqkanji2koe.AqKanji2KoeConvertUtf8(yukkuriVoice[key].text);
 	const result = aquestalk.AquesTalkSyntheUtf16(voice, text);
 	const filename = `${key}.wav`;
-	fs.writeFileSync(`./public/audio/${filename}`, result);
+	fs.writeFileSync(`./public/audio/yukkuri/${filename}`, result);
 });

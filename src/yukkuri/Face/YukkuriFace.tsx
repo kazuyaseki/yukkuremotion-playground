@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {Img, staticFile} from 'remotion';
 import {
 	fuyofuyoAnimationCss,
 	FuyoFuyoAnimationStyle,
 } from '../fuyofuyoAnimation';
-import {eyeImagePaths} from './ReimuImagePaths/eyeImagePaths';
-import {faceImagePaths, FACE_TYPE} from './ReimuImagePaths/faceImagePaths';
+import {eyeImagePaths} from './ImagePaths/eyeImagePaths';
+import {faceImagePaths, FACE_TYPE} from './ImagePaths/faceImagePaths';
 
 export type ReimuProps = {
 	face?: FACE_TYPE;
@@ -13,18 +13,20 @@ export type ReimuProps = {
 	isMouthOpen?: boolean;
 	sizePx?: number;
 	isKuchipaku?: boolean;
+	isReimu?: boolean;
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
 
 const KUCHIPAKU_INTERVAL_MSEC = 150;
 
-export const Reimu: React.FC<ReimuProps> = ({
+export const YukkuriFace: React.FC<ReimuProps> = ({
 	face,
 	isEyeOpen: eyeOpen,
 	isMouthOpen: mouthOpen,
 	isKuchipaku,
 	sizePx,
+	isReimu,
 }) => {
 	const [isMouthOpen, setIsMouthOpen] = useState(false);
 
@@ -36,13 +38,18 @@ export const Reimu: React.FC<ReimuProps> = ({
 		// }
 	}, [isKuchipaku]);
 
+	const imageDirectory = useMemo(
+		() => (isReimu ? 'reimu' : 'marisa'),
+		[isReimu]
+	);
+
 	return (
 		<>
 			<FuyoFuyoAnimationStyle />
 			<div style={containerStyle}>
 				<Img
 					style={{width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`}}
-					src={staticFile('reimu/body/00.png')}
+					src={staticFile(`${imageDirectory}/body/00.png`)}
 				/>
 				{eyeOpen ? (
 					<Img
@@ -50,7 +57,7 @@ export const Reimu: React.FC<ReimuProps> = ({
 							...faceStyle,
 							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
 						}}
-						src={staticFile(eyeImagePaths.open)}
+						src={staticFile(`${imageDirectory}${eyeImagePaths.open}`)}
 					/>
 				) : (
 					<Img
@@ -58,7 +65,7 @@ export const Reimu: React.FC<ReimuProps> = ({
 							...faceStyle,
 							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
 						}}
-						src={staticFile(eyeImagePaths.close)}
+						src={staticFile(`${imageDirectory}${eyeImagePaths.close}`)}
 					/>
 				)}
 
@@ -68,7 +75,7 @@ export const Reimu: React.FC<ReimuProps> = ({
 							...faceStyle,
 							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
 						}}
-						src={staticFile('reimu/mouth/00.png')}
+						src={staticFile(`${imageDirectory}/mouth/00.png`)}
 					/>
 				) : (
 					<Img
@@ -76,7 +83,7 @@ export const Reimu: React.FC<ReimuProps> = ({
 							...faceStyle,
 							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
 						}}
-						src={staticFile('reimu/mouth/05.png')}
+						src={staticFile(`${imageDirectory}/mouth/05.png`)}
 					/>
 				)}
 
@@ -86,7 +93,7 @@ export const Reimu: React.FC<ReimuProps> = ({
 							...faceStyle,
 							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
 						}}
-						src={staticFile(faceImagePaths[face])}
+						src={staticFile(`${imageDirectory}${faceImagePaths[face]}`)}
 					/>
 				)}
 			</div>
