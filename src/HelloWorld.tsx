@@ -11,6 +11,10 @@ import {SubtitleWithBackground} from './Subtitle/SubtitleBackground';
 import {ReimuSequence} from './yukkuri/Reimu/ReimuSequence';
 import {Talk} from './yukkuri/Talk';
 import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
+import AquesTalk10 from './yukkuri/Auestalk10';
+import {useEffect, useState} from 'react';
+import * as path from 'path';
+import {yukkuriVoice} from '../yukkuriVoices';
 
 export const HelloWorld: React.FC<{
 	titleText: string;
@@ -57,18 +61,10 @@ export const HelloWorld: React.FC<{
 				<TalkSequence
 					talks={[
 						{
-							subtitle: (
-								<>
-									今日はFigmaプラグイン開発
-									<br />
-									について解説していくよ
-								</>
-							),
-							audioFilePath: 'audio/saisho.mp3',
+							voiceConfig: yukkuriVoice.neneemarisa,
 						},
 						{
-							subtitle: '生産性をアゲアゲにしていこうネ',
-							audioFilePath: 'audio/2.mp3',
+							voiceConfig: yukkuriVoice.nandareimu,
 						},
 					]}
 				/>

@@ -1,6 +1,6 @@
 import {getAudioData} from '@remotion/media-utils';
 import {useEffect, useState} from 'react';
-import {staticFile} from 'remotion';
+import {Series, staticFile} from 'remotion';
 import {Talk, TalkProps} from '.';
 import {FPS} from '../../constants';
 
@@ -17,10 +17,12 @@ export const TalkSequence: React.FC<Props> = ({talks}) => {
 
 	useEffect(() => {
 		for (let i = 0; i < talks.length; i++) {
-			getAudioData(staticFile(talks[i].audioFilePath)).then((audioData) => {
-				const frames = Math.floor((audioData?.durationInSeconds || 1) * FPS);
-				setfromFrameMap((current) => ({...current, [i]: frames}));
-			});
+			getAudioData(staticFile(`audio/${talks[i].voiceConfig.key}.wav`)).then(
+				(audioData) => {
+					const frames = Math.floor((audioData?.durationInSeconds || 1) * FPS);
+					setfromFrameMap((current) => ({...current, [i]: frames}));
+				}
+			);
 		}
 	}, [talks]);
 
