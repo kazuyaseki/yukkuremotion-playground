@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import {Sequence, Series} from 'remotion';
+import {useEffect, useRef, useState} from 'react';
+import {Sequence, Series, useCurrentFrame} from 'remotion';
 import {VoiceConfig} from '../../yukkuriVoices';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
 import {YukkuriFace} from './Face/YukkuriFace';
@@ -10,24 +10,40 @@ export type Props = {
 };
 
 export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
-	// Const [reimuFace, setReimuFace] = useState<FACE_TYPE>('atyaa');
+	const [reimuFace, setReimuFace] = useState<FACE_TYPE>('atyaa');
+	const talkIndex = useRef(0);
+
+	const frame = useCurrentFrame();
+
+	useEffect(() => {
+		const fromFrame = fromFramesMap[talkIndex.current + 1];
+
+		if (fromFrame === frame) {
+			setReimuFace((current) => (current === 'atyaa' ? 'angry' : 'atyaa'));
+			talkIndex.current++;
+		}
+	}, [frame, fromFramesMap]);
 
 	return (
-		<Series>
-			{talks.map((talk, index) => {
-				// FIXME: 最後の値とる
-				const durationInFrames =
-					index === talks.length - 1
-						? 2000
-						: fromFramesMap[index + 1] - fromFramesMap[index];
-
-				return (
-					<Series.Sequence durationInFrames={durationInFrames}>
-						<YukkuriFace isReimu face="angry" />
-						<YukkuriFace isReimu={false} face="angry" />
-					</Series.Sequence>
-				);
-			})}
-		</Series>
+		<Sequence>
+			<div style={reimuStyle}>
+				<YukkuriFace isReimu face={reimuFace} />
+			</div>
+			<div style={marisaStyle}>
+				<YukkuriFace isReimu={false} face={reimuFace} />
+			</div>
+		</Sequence>
 	);
+};
+
+const reimuStyle: React.CSSProperties = {
+	position: 'absolute',
+	right: '30px',
+	bottom: '120px',
+};
+
+const marisaStyle: React.CSSProperties = {
+	position: 'absolute',
+	left: '30px',
+	bottom: '120px',
 };

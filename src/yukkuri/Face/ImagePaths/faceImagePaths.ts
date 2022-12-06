@@ -1,4 +1,4 @@
-const REIMU_FACE_PATH = 'reimu/face/';
+const REIMU_FACE_PATH = '/face/';
 
 export const faceImagePaths = {
 	kyomu: `${REIMU_FACE_PATH}10.png`,

@@ -66,12 +66,6 @@ export const HelloWorld: React.FC<{
 						</React.Fragment>
 					);
 				})}
-
-				<ReimuSequence
-					settings={[
-						{durationInFrames: 200, isEyeOpen: true, isKuchipaku: true},
-					]}
-				/>
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);
