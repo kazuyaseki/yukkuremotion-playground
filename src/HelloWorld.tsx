@@ -1,4 +1,4 @@
-import {spring} from 'remotion';
+import {spring, staticFile} from 'remotion';
 import {
 	AbsoluteFill,
 	interpolate,
@@ -9,6 +9,8 @@ import {Logo} from './HelloWorld/Logo';
 import {ReimuSequence} from './yukkuri/Face/ReimuSequence';
 import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
+import {getAudioData} from '@remotion/media-utils';
+import {FPS, TALK_GAP_FRAMES} from './constants';
 
 export const HelloWorld: React.FC<{
 	titleText: string;
@@ -52,7 +54,17 @@ export const HelloWorld: React.FC<{
 					<Logo />
 				</AbsoluteFill>
 
-				<TalkSequence talks={FirstVideoConfig.sections[0].talks} />
+				{FirstVideoConfig.sections.map((section, index) => {
+					const {talks, fromFramesMap} = section;
+
+					return (
+						<TalkSequence
+							key={index}
+							talks={talks}
+							fromFramesMap={fromFramesMap}
+						/>
+					);
+				})}
 
 				<ReimuSequence
 					settings={[
