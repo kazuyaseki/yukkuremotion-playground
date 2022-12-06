@@ -11,7 +11,7 @@ export type TalkProps = {
 };
 
 export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
-	const music = staticFile(`audio/yukkuri/${voiceConfig.key}.wav`);
+	const music = staticFile(`audio/yukkuri/${voiceConfig.id}.wav`);
 	const audioData = useAudioData(music);
 
 	const frames = Math.floor((audioData?.durationInSeconds || 1) * FPS);

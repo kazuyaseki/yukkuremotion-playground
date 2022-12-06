@@ -1,5 +1,5 @@
 export type VoiceConfig = {
-	key: string;
+	id?: string;
 	text: string;
 	isReimu: boolean;
 };

@@ -1,14 +1,15 @@
 import {getAudioData} from '@remotion/media-utils';
 import {useEffect, useState} from 'react';
-import {Series, staticFile} from 'remotion';
-import {Talk, TalkProps} from '.';
+import {staticFile} from 'remotion';
+import {Talk} from '.';
+import {VoiceConfig} from '../../../yukkuriVoices';
 import {FPS} from '../../constants';
 
 export type Props = {
-	talks: TalkProps[];
+	talks: VoiceConfig[];
 };
 
-const TALK_GAP_FRAMES = 30;
+const TALK_GAP_FRAMES = 10;
 
 export const TalkSequence: React.FC<Props> = ({talks}) => {
 	const [fromFrameMap, setfromFrameMap] = useState<{[key in number]: number}>(
@@ -17,12 +18,12 @@ export const TalkSequence: React.FC<Props> = ({talks}) => {
 
 	useEffect(() => {
 		for (let i = 0; i < talks.length; i++) {
-			getAudioData(
-				staticFile(`audio/yukkuri/${talks[i].voiceConfig.key}.wav`)
-			).then((audioData) => {
-				const frames = Math.floor((audioData?.durationInSeconds || 1) * FPS);
-				setfromFrameMap((current) => ({...current, [i]: frames}));
-			});
+			getAudioData(staticFile(`audio/yukkuri/${talks[i].id}.wav`)).then(
+				(audioData) => {
+					const frames = Math.floor((audioData?.durationInSeconds || 1) * FPS);
+					setfromFrameMap((current) => ({...current, [i]: frames}));
+				}
+			);
 		}
 	}, [talks]);
 
@@ -39,7 +40,7 @@ export const TalkSequence: React.FC<Props> = ({talks}) => {
 	return (
 		<>
 			{talks.map((talk, index) => (
-				<Talk {...talk} from={calculateFromFrames(index)} />
+				<Talk voiceConfig={talk} from={calculateFromFrames(index)} />
 			))}
 		</>
 	);
