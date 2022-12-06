@@ -11,6 +11,8 @@ import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {getAudioData} from '@remotion/media-utils';
 import {FPS, TALK_GAP_FRAMES} from './constants';
+import {YukkuriSequence} from './yukkuri/YukkuriSequence';
+import React from 'react';
 
 export const HelloWorld: React.FC<{
 	titleText: string;
@@ -58,11 +60,10 @@ export const HelloWorld: React.FC<{
 					const {talks, fromFramesMap} = section;
 
 					return (
-						<TalkSequence
-							key={index}
-							talks={talks}
-							fromFramesMap={fromFramesMap}
-						/>
+						<React.Fragment key={index}>
+							<TalkSequence talks={talks} fromFramesMap={fromFramesMap} />
+							<YukkuriSequence talks={talks} fromFramesMap={fromFramesMap} />
+						</React.Fragment>
 					);
 				})}
 
