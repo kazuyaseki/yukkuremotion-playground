@@ -37,4 +37,6 @@ export const faceImagePaths = {
 	hiyaase: `${REIMU_FACE_PATH}43.png`,
 } as const;
 
-export type FACE_TYPE = keyof typeof faceImagePaths;
+export type COMPOSITE_FACE_TYPE = 'default';
+
+export type FACE_TYPE = keyof typeof faceImagePaths | COMPOSITE_FACE_TYPE;

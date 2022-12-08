@@ -1,8 +1,10 @@
+import {FACE_TYPE} from '../src/yukkuri/Face/ImagePaths/faceImagePaths';
+
 type VideoConfig = {
 	sections: {
 		title: string;
 		fromFramesMap: {[key in number]: number};
-		talks: {text: string; isReimu: boolean; id?: string}[];
+		talks: {text: string; isReimu: boolean; id?: string; face?: FACE_TYPE}[];
 	}[];
 };
 
@@ -51,6 +53,7 @@ export const FirstVideoConfig: VideoConfig = {
 					text: 'いや私たちってこうやって表情変えたり',
 					isReimu: true,
 					id: '1ba97572d3c44d22a5bc8926697fc25a',
+					face: 'angry',
 				},
 				{
 					text: '口パクや瞬きさせたり',
@@ -61,6 +64,7 @@ export const FirstVideoConfig: VideoConfig = {
 					text: '音声も一文一文音声ファイルを作ったりしているわけじゃない',
 					isReimu: true,
 					id: 'f0a9db84a1ac4607aee22f4d049471fd',
+					face: 'donbiki',
 				},
 				{
 					text: '作っている人もよくやるなと感心するわ',

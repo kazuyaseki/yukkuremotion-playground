@@ -19,10 +19,10 @@ export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 		const fromFrame = fromFramesMap[talkIndex.current + 1];
 
 		if (fromFrame === frame) {
-			setReimuFace((current) => (current === 'atyaa' ? 'angry' : 'atyaa'));
+			setReimuFace(talks[talkIndex.current].face || 'default');
 			talkIndex.current++;
 		}
-	}, [frame, fromFramesMap]);
+	}, [frame, fromFramesMap, talks]);
 
 	return (
 		<Sequence>

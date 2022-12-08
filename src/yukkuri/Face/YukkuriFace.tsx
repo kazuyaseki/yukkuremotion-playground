@@ -51,53 +51,71 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 					style={{width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`}}
 					src={staticFile(`${imageDirectory}/body/00.png`)}
 				/>
-				{eyeOpen ? (
-					<Img
-						style={{
-							...faceStyle,
-							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-						}}
-						src={staticFile(`${imageDirectory}${eyeImagePaths.open}`)}
-					/>
-				) : (
-					<Img
-						style={{
-							...faceStyle,
-							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-						}}
-						src={staticFile(`${imageDirectory}${eyeImagePaths.close}`)}
-					/>
-				)}
 
-				{isMouthOpen ? (
-					<Img
-						style={{
-							...faceStyle,
-							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-						}}
-						src={staticFile(`${imageDirectory}/mouth/00.png`)}
-					/>
-				) : (
-					<Img
-						style={{
-							...faceStyle,
-							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-						}}
-						src={staticFile(`${imageDirectory}/mouth/05.png`)}
-					/>
-				)}
+				<Face face={face} sizePx={sizePx} imageDirectory={imageDirectory} />
 
-				{face && (
-					<Img
-						style={{
-							...faceStyle,
-							width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-						}}
-						src={staticFile(`${imageDirectory}${faceImagePaths[face]}`)}
-					/>
-				)}
+				{/* <Img
+					style={{
+						...faceStyle,
+						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+					}}
+					src={staticFile(
+						`${imageDirectory}${
+							eyeOpen ? eyeImagePaths.open : eyeImagePaths.close
+						}`
+					)}
+				/>
+
+				<Img
+					style={{
+						...faceStyle,
+						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+					}}
+					src={staticFile(
+						`${imageDirectory}/mouth/${isMouthOpen ? '00' : '05'}.png`
+					)}
+				/> */}
 			</div>
 		</>
+	);
+};
+
+const Face = (props: {
+	face?: FACE_TYPE;
+	sizePx?: number;
+	imageDirectory: string;
+}) => {
+	const {face, sizePx, imageDirectory} = props;
+
+	if (!face || face === 'default') {
+		return (
+			<>
+				<Img
+					style={{
+						...faceStyle,
+						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+					}}
+					src={staticFile(`${imageDirectory}${eyeImagePaths.open}`)}
+				/>
+				<Img
+					style={{
+						...faceStyle,
+						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+					}}
+					src={staticFile(`${imageDirectory}/mouth/00.png`)}
+				/>
+			</>
+		);
+	}
+
+	return (
+		<Img
+			style={{
+				...faceStyle,
+				width: `${props.sizePx ? props.sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+			}}
+			src={staticFile(`${props.imageDirectory}${faceImagePaths[face]}`)}
+		/>
 	);
 };
 

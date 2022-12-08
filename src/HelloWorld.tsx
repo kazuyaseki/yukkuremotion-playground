@@ -57,12 +57,10 @@ export const HelloWorld: React.FC<{
 				</AbsoluteFill>
 
 				{FirstVideoConfig.sections.map((section, index) => {
-					const {talks, fromFramesMap} = section;
-
 					return (
 						<React.Fragment key={index}>
-							<TalkSequence talks={talks} fromFramesMap={fromFramesMap} />
-							<YukkuriSequence talks={talks} fromFramesMap={fromFramesMap} />
+							<TalkSequence {...section} />
+							<YukkuriSequence {...section} />
 						</React.Fragment>
 					);
 				})}
