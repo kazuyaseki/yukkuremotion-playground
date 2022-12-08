@@ -20,7 +20,6 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 		<Sequence durationInFrames={frames} from={from}>
 			<SubtitleWithBackground subtitle={voiceConfig.text} />
 			<Audio src={music} />
-			<YukkuriFace isReimu={voiceConfig.isReimu} />
 		</Sequence>
 	);
 };

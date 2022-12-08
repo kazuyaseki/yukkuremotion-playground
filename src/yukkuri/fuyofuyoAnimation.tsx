@@ -1,4 +1,4 @@
-const fuyofuyoFrequencyPx = 4;
+const fuyofuyoFrequencyPx = 3;
 const fuyofuyoAnimationName = 'fuyofuyoAnimation';
 
 export const fuyofuyoAnimationCss: React.CSSProperties = {

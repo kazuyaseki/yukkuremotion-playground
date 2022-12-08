@@ -4,18 +4,20 @@ import {v4 as uuidv4} from 'uuid';
 import AquesTalk10, {gVoice_F1} from 'node-aquestalk10';
 import AqKanji2Koe from 'node-aqkanji2koe';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
-import {staticFile} from 'remotion';
 import {FPS, TALK_GAP_FRAMES} from '../src/constants';
 import {getAudioDurationInSeconds} from 'get-audio-duration';
+import {AqKanji2KoeSetDevKey, Aquestalk10DevKey} from './aquest-keys';
 
 const aquestalk = new AquesTalk10(
 	'./vendor/AquesTalk.framework/Versions/A/AquesTalk'
 );
+aquestalk.AquesTalkSetDevKey(Aquestalk10DevKey);
 const aqkanji2koe = new AqKanji2Koe(
 	'./vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe',
 	'./vendor/AqUsrDic.framework/Versions/A/AqUsrDic',
 	'./vendor/aq_dic_large'
 );
+aqkanji2koe.AqKanji2KoeSetDevKey(AqKanji2KoeSetDevKey);
 
 const ReimuVoice = {...gVoice_F1, lmd: 113, pitch: 84};
 const MarisaVoice = {...gVoice_F1, lmd: 130, pitch: 84};
@@ -71,4 +73,4 @@ export const FirstVideoConfig: VideoConfig = ${JSON.stringify(
 			FirstVideoConfig
 		)}`
 	);
-}, 4000);
+}, 3000);
