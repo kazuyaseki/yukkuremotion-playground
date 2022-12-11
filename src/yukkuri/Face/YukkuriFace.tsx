@@ -61,41 +61,22 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	return (
 		<>
 			<FuyoFuyoAnimationStyle />
-			<div style={containerStyle}>
-				<Img
-					style={{width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`}}
-					src={staticFile(`${imageDirectory}/body/00.png`)}
-				/>
+			<Face face={face} sizePx={sizePx} imageDirectory={imageDirectory} />
 
-				<Face face={face} sizePx={sizePx} imageDirectory={imageDirectory} />
-
-				{/* <Img
-					style={{
-						...faceStyle,
-						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-					}}
-					src={staticFile(
-						`${imageDirectory}${
-							eyeOpen ? eyeImagePaths.open : eyeImagePaths.close
-						}`
-					)}
-				/> */}
-
-				<Img
-					style={{
-						...faceStyle,
-						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-					}}
-					src={staticFile(
-						`${imageDirectory}/mouth/${isMouthOpen ? '00' : '05'}.png`
-					)}
-				/>
-			</div>
+			<Img
+				style={{
+					...faceStyle,
+					width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+				}}
+				src={staticFile(
+					`${imageDirectory}/mouth/${isMouthOpen ? '00' : '05'}.png`
+				)}
+			/>
 		</>
 	);
 };
 
-const Face = (props: {
+export const Face = (props: {
 	face?: FACE_TYPE;
 	sizePx?: number;
 	imageDirectory: string;
@@ -104,7 +85,11 @@ const Face = (props: {
 
 	if (!face || face === 'default') {
 		return (
-			<>
+			<div style={containerStyle}>
+				<Img
+					style={{width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`}}
+					src={staticFile(`${imageDirectory}/body/00.png`)}
+				/>
 				<Img
 					style={{
 						...faceStyle,
@@ -119,7 +104,32 @@ const Face = (props: {
 					}}
 					src={staticFile(`${imageDirectory}/mouth/00.png`)}
 				/>
-			</>
+			</div>
+		);
+	}
+
+	if (face === 'nikkori') {
+		return (
+			<div style={containerStyle}>
+				<Img
+					style={{width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`}}
+					src={staticFile(`${imageDirectory}/body/00.png`)}
+				/>
+				<Img
+					style={{
+						...faceStyle,
+						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+					}}
+					src={staticFile(`${imageDirectory}/eye/06.png`)}
+				/>
+				<Img
+					style={{
+						...faceStyle,
+						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+					}}
+					src={staticFile(`${imageDirectory}/mouth/00.png`)}
+				/>
+			</div>
 		);
 	}
 
