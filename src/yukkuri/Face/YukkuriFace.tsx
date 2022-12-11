@@ -8,8 +8,9 @@ import {
 import {eyeImagePaths} from './ImagePaths/eyeImagePaths';
 import {faceImagePaths, FACE_TYPE} from './ImagePaths/faceImagePaths';
 
+// FIXME: face を string literal type にする
 export type ReimuProps = {
-	face?: FACE_TYPE;
+	face?: string;
 	isEyeOpen?: boolean;
 	isMouthOpen?: boolean;
 	sizePx?: number;
@@ -76,14 +77,71 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	);
 };
 
+const eyeImage: {[key in string]: string} = {
+	default: '05',
+	nikkori: '06',
+	wink: '07',
+	ryomeWink: '08',
+	kyomu: '09',
+	mangaNikkori: '10',
+	shonbori: '11',
+	kirakira: '12',
+	angry: '13',
+	pokan: '14',
+	ryomeNikkori: '15',
+	komari: '16',
+	komariKatame: '17',
+	hokkori: '18',
+	karukuhiiteru: '19',
+	zitome: '20',
+	ryomeTojiIkari: '21',
+	uruuru: '22',
+	namida: '23',
+	shorime: '24',
+	massao: '26',
+	huteki: '27',
+	donbiki: '28',
+	saranidonbiki: '29',
+	daradaraAse: '30',
+} as const;
+
+const defaultMouth: {[key in keyof typeof eyeImage]: string} = {
+	default: '05',
+	nikkori: '06',
+	wink: '07',
+	ryomeWink: '08',
+	kyomu: '09',
+	mangaNikkori: '10',
+	shonbori: '11',
+	kirakira: '12',
+	angry: '13',
+	pokan: '14',
+	ryomeNikkori: '15',
+	komari: '16',
+	komariKatame: '17',
+	hokkori: '18',
+	karukuhiiteru: '19',
+	zitome: '20',
+	ryomeTojiIkari: '21',
+	uruuru: '22',
+	namida: '23',
+	shorime: '24',
+	massao: '26',
+	huteki: '27',
+	donbiki: '28',
+	saranidonbiki: '29',
+	daradaraAse: '30',
+};
+
 export const Face = (props: {
-	face?: FACE_TYPE;
+	face?: string;
+	mouth?: string;
 	sizePx?: number;
 	imageDirectory: string;
 }) => {
-	const {face, sizePx, imageDirectory} = props;
+	const {face, mouth, sizePx, imageDirectory} = props;
 
-	if (!face || face === 'default') {
+	if (face && eyeImage[face]) {
 		return (
 			<div style={containerStyle}>
 				<Img
@@ -95,39 +153,16 @@ export const Face = (props: {
 						...faceStyle,
 						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
 					}}
-					src={staticFile(`${imageDirectory}${eyeImagePaths.open}`)}
+					src={staticFile(`${imageDirectory}/eye/${eyeImage[face]}.png`)}
 				/>
 				<Img
 					style={{
 						...faceStyle,
 						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
 					}}
-					src={staticFile(`${imageDirectory}/mouth/00.png`)}
-				/>
-			</div>
-		);
-	}
-
-	if (face === 'nikkori') {
-		return (
-			<div style={containerStyle}>
-				<Img
-					style={{width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`}}
-					src={staticFile(`${imageDirectory}/body/00.png`)}
-				/>
-				<Img
-					style={{
-						...faceStyle,
-						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-					}}
-					src={staticFile(`${imageDirectory}/eye/06.png`)}
-				/>
-				<Img
-					style={{
-						...faceStyle,
-						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-					}}
-					src={staticFile(`${imageDirectory}/mouth/00.png`)}
+					src={staticFile(
+						`${imageDirectory}/mouth/${mouth || defaultMouth[face] || '05'}.png`
+					)}
 				/>
 			</div>
 		);
