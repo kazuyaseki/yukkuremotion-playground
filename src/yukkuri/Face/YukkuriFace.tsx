@@ -1,5 +1,6 @@
-import {useEffect, useMemo, useState} from 'react';
-import {Img, staticFile} from 'remotion';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {Img, staticFile, useCurrentFrame} from 'remotion';
+import {FPS} from '../../constants';
 import {
 	fuyofuyoAnimationCss,
 	FuyoFuyoAnimationStyle,
@@ -14,29 +15,43 @@ export type ReimuProps = {
 	sizePx?: number;
 	isKuchipaku?: boolean;
 	isReimu?: boolean;
+	isTalking: boolean;
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
 
 const KUCHIPAKU_INTERVAL_MSEC = 150;
 
+const MATABATAKI_INTERVAL_FRAMES = FPS * 5;
+
 export const YukkuriFace: React.FC<ReimuProps> = ({
 	face,
-	isEyeOpen: eyeOpen,
-	isMouthOpen: mouthOpen,
-	isKuchipaku,
 	sizePx,
 	isReimu,
+	isTalking,
 }) => {
 	const [isMouthOpen, setIsMouthOpen] = useState(false);
+	const [isMabataking, setIsMabataking] = useState(false);
+	const kuchipakuFunc = useRef<NodeJS.Timer | null>(null);
+
+	const frame = useCurrentFrame();
 
 	useEffect(() => {
-		// If (isKuchipaku) {
-		// 	SetInterval(() => {
-		// 		setIsMouthOpen((current) => !current);
-		// 	}, KUCHIPAKU_INTERVAL_MSEC);
-		// }
-	}, [isKuchipaku]);
+		if (frame % MATABATAKI_INTERVAL_FRAMES === 0) {
+			setIsMabataking(true);
+		}
+	}, [isMabataking, frame]);
+
+	useEffect(() => {
+		if (isTalking) {
+			kuchipakuFunc.current = setInterval(() => {
+				setIsMouthOpen((current) => !current);
+			}, KUCHIPAKU_INTERVAL_MSEC);
+		} else if (kuchipakuFunc.current) {
+			clearInterval(kuchipakuFunc.current);
+			kuchipakuFunc.current = null;
+		}
+	}, [isTalking]);
 
 	const imageDirectory = useMemo(
 		() => (isReimu ? 'reimu' : 'marisa'),
@@ -64,7 +79,7 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 							eyeOpen ? eyeImagePaths.open : eyeImagePaths.close
 						}`
 					)}
-				/>
+				/> */}
 
 				<Img
 					style={{
@@ -74,7 +89,7 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 					src={staticFile(
 						`${imageDirectory}/mouth/${isMouthOpen ? '00' : '05'}.png`
 					)}
-				/> */}
+				/>
 			</div>
 		</>
 	);
