@@ -1,4 +1,4 @@
-import {spring, staticFile} from 'remotion';
+import {Audio, spring, staticFile} from 'remotion';
 import {
 	AbsoluteFill,
 	interpolate,
@@ -13,6 +13,7 @@ import {getAudioData} from '@remotion/media-utils';
 import {FPS, TALK_GAP_FRAMES} from './constants';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
 import React from 'react';
+import {SubtitleWithBackground} from './Subtitle/SubtitleBackground';
 
 export const HelloWorld: React.FC<{
 	titleText: string;
@@ -56,6 +57,9 @@ export const HelloWorld: React.FC<{
 					<Logo />
 				</AbsoluteFill>
 
+				<Audio src={staticFile(`audio/bgm/honobono-wartz.wav`)} volume={0.08} />
+				<div style={jimakuBackground} />
+
 				{FirstVideoConfig.sections.map((section, index) => {
 					return (
 						<React.Fragment key={index}>
@@ -67,4 +71,15 @@ export const HelloWorld: React.FC<{
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);
+};
+
+const jimakuBackground: React.CSSProperties = {
+	position: 'absolute',
+	width: '100%',
+	height: '240px',
+	bottom: 0,
+	backgroundColor: 'rgba(0, 0, 0, 0.5)',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
 };

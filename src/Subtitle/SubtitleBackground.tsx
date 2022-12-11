@@ -12,7 +12,6 @@ const jimakuBackground: React.CSSProperties = {
 	width: '100%',
 	height: '240px',
 	bottom: 0,
-	backgroundColor: 'rgba(0, 0, 0, 0.5)',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
