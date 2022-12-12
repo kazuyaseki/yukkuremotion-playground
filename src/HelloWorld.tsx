@@ -5,6 +5,8 @@ import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
 import React from 'react';
 
+const INITIAL_DELAY_FRAMES = 30;
+
 export const HelloWorld: React.FC<{
 	titleText: string;
 	titleColor: string;
@@ -17,10 +19,15 @@ export const HelloWorld: React.FC<{
 			<div style={jimakuBackground} />
 
 			{FirstVideoConfig.sections.map((section, index) => {
+				const fromFrameMap = {...section.fromFramesMap};
+				Object.keys(fromFrameMap).forEach((key) => {
+					fromFrameMap[Number(key)] += INITIAL_DELAY_FRAMES;
+				});
+
 				return (
 					<React.Fragment key={index}>
-						<TalkSequence {...section} />
-						<YukkuriSequence {...section} />
+						<TalkSequence {...section} fromFramesMap={fromFrameMap} />
+						<YukkuriSequence {...section} fromFramesMap={fromFrameMap} />
 					</React.Fragment>
 				);
 			})}
