@@ -1,4 +1,4 @@
-import {Audio, staticFile, Video} from 'remotion';
+import {Audio, Img, staticFile, Video} from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
@@ -15,6 +15,9 @@ export const HelloWorld: React.FC<{
 		<AbsoluteFill style={{backgroundColor: 'white'}}>
 			<Audio src={staticFile(`audio/bgm/honobono-wartz.wav`)} volume={0.08} />
 			<Video loop src={staticFile(`video/codebg.mp4`)} />
+			<div style={logoStyle}>
+				<Img src={staticFile('image/yukkurilogo.png')} />
+			</div>
 
 			<div style={jimakuBackground} />
 
@@ -40,8 +43,13 @@ const jimakuBackground: React.CSSProperties = {
 	width: '100%',
 	height: '240px',
 	bottom: 0,
-	backgroundColor: 'rgba(255, 255, 255, 0.9)',
+	backgroundColor: 'rgba(255, 255, 255, 0.85)',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+};
+const logoStyle: React.CSSProperties = {
+	position: 'absolute',
+	top: '40px',
+	left: '40px',
 };
