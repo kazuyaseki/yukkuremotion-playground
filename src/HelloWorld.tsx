@@ -52,4 +52,5 @@ const logoStyle: React.CSSProperties = {
 	position: 'absolute',
 	top: '40px',
 	left: '40px',
+	opacity: 0.8,
 };
