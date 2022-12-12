@@ -62,7 +62,12 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	return (
 		<>
 			<FuyoFuyoAnimationStyle />
-			<Face face={face} sizePx={sizePx} imageDirectory={imageDirectory} />
+			<Face
+				face={face}
+				sizePx={sizePx}
+				imageDirectory={imageDirectory}
+				isReimu={isReimu}
+			/>
 
 			<Img
 				style={{
@@ -137,28 +142,33 @@ export const Face = (props: {
 	face?: string;
 	mouth?: string;
 	sizePx?: number;
+	isReimu?: boolean;
 	imageDirectory: string;
 }) => {
-	const {face, mouth, sizePx, imageDirectory} = props;
+	const {face, mouth, sizePx, isReimu, imageDirectory} = props;
+
+	// Multiply by 1.2 because Marisa is bit smaller compared to Reimu
+	const faceSizePx =
+		(sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX) * (isReimu ? 1.0 : 1.2);
 
 	if (face && eyeImage[face]) {
 		return (
 			<div style={containerStyle}>
 				<Img
-					style={{width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`}}
+					style={{width: `${faceSizePx}px`}}
 					src={staticFile(`${imageDirectory}/body/00.png`)}
 				/>
 				<Img
 					style={{
 						...faceStyle,
-						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+						width: `${faceSizePx}px`,
 					}}
 					src={staticFile(`${imageDirectory}/eye/${eyeImage[face]}.png`)}
 				/>
 				<Img
 					style={{
 						...faceStyle,
-						width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+						width: `${faceSizePx}px`,
 					}}
 					src={staticFile(
 						`${imageDirectory}/mouth/${mouth || defaultMouth[face] || '05'}.png`
