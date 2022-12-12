@@ -1,7 +1,7 @@
 import React from 'react';
 import {Subtitle} from './Subtitle';
 
-export const SubtitleWithBackground = (props: {subtitle: React.ReactNode}) => (
+export const SubtitleWithBackground = (props: {subtitle: string}) => (
 	<div style={jimakuBackground}>
 		<Subtitle>{props.subtitle}</Subtitle>
 	</div>
@@ -15,4 +15,7 @@ const jimakuBackground: React.CSSProperties = {
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	textAlign: 'center',
+	whiteSpace: 'pre-wrap',
+	zIndex: 10,
 };

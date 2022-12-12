@@ -3,6 +3,7 @@ import {FACE_TYPE} from './src/yukkuri/Face/ImagePaths/faceImagePaths';
 export type VoiceConfig = {
 	id?: string;
 	text: string;
+	textForDisplay?: string;
 	isReimu: boolean;
 	face?: FACE_TYPE;
 };

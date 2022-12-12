@@ -19,13 +19,21 @@ const aqkanji2koe = new AqKanji2Koe(
 );
 aqkanji2koe.AqKanji2KoeSetDevKey(AqKanji2KoeSetDevKey);
 
-const ReimuVoice = {...gVoice_F1, lmd: 113, pitch: 84};
-const MarisaVoice = {...gVoice_F1, lmd: 130, pitch: 84};
+const ReimuVoice = {
+	base: 0,
+	speed: 65,
+	volume: 100,
+	pitch: 40,
+	accent: 50,
+	lmd: 54,
+	fsc: 170,
+};
+const MarisaVoice = {...gVoice_F1, base: 0, speed: 105, lmd: 130, pitch: 84};
 
 // Write Yukkuri Voice Files if exists
 FirstVideoConfig.sections.forEach((section) => {
 	section.talks.forEach((talk) => {
-		if (!talk.id) {
+		if (talk.id) {
 			const id = uuidv4().replaceAll('-', '');
 			const text = aqkanji2koe.AqKanji2KoeConvertUtf8(talk.text);
 			const result = aquestalk.AquesTalkSyntheUtf16(
