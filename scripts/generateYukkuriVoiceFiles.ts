@@ -30,10 +30,12 @@ const ReimuVoice = {
 };
 const MarisaVoice = {...gVoice_F1, base: 0, speed: 105, lmd: 130, pitch: 84};
 
+const forceGenerate = process.argv[2] === 'force';
+
 // Write Yukkuri Voice Files if exists
 FirstVideoConfig.sections.forEach((section) => {
 	section.talks.forEach((talk) => {
-		if (talk.id) {
+		if (forceGenerate || !talk.id) {
 			const id = uuidv4().replaceAll('-', '');
 			const text = aqkanji2koe.AqKanji2KoeConvertUtf8(talk.text);
 			const result = aquestalk.AquesTalkSyntheUtf16(

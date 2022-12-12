@@ -9,6 +9,7 @@
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc",
 		"yukkuri": "ts-node test-yukkuri.ts",
 		"server": "ts-node server.ts",
+		"generate:yukkuri-voice:force": "ts-node scripts/generateYukkuriVoiceFiles.ts force",
 		"generate:yukkuri-voice:watch": "nodemon --watch yukkuriVoices.ts scripts/generateYukkuriVoiceFiles.ts",
 		"generate:yukkuri-voice-for-tuning": "ts-node scripts/generateYukkuriForTuning.ts",
 		"generate:yukkuri-voice-for-tuning:watch": "nodemon --watch scripts/generateYukkuriForTuning.ts scripts/generateYukkuriForTuning.ts",
