@@ -1,8 +1,10 @@
-const fuyofuyoFrequencyPx = 3;
+const fuyofuyoFrequencyPx = 2;
 const fuyofuyoAnimationName = 'fuyofuyoAnimation';
 
+export const fuyofuyoAnimationDurationSec = 3;
+
 export const fuyofuyoAnimationCss: React.CSSProperties = {
-	animation: `${fuyofuyoAnimationName} 2s infinite ease-in-out`,
+	animation: `${fuyofuyoAnimationName} ${fuyofuyoAnimationDurationSec}s infinite ease-in-out`,
 	transform: `translateY(${fuyofuyoFrequencyPx}%)`,
 };
 

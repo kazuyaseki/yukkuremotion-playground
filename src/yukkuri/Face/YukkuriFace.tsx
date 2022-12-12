@@ -3,6 +3,7 @@ import {Img, staticFile, useCurrentFrame} from 'remotion';
 import {FPS} from '../../constants';
 import {
 	fuyofuyoAnimationCss,
+	fuyofuyoAnimationDurationSec,
 	FuyoFuyoAnimationStyle,
 } from '../fuyofuyoAnimation';
 import {eyeImagePaths} from './ImagePaths/eyeImagePaths';
@@ -153,7 +154,12 @@ export const Face = (props: {
 
 	if (face && eyeImage[face]) {
 		return (
-			<div style={containerStyle}>
+			<div
+				style={{
+					...containerStyle,
+					animationDelay: `${isReimu ? 0 : fuyofuyoAnimationDurationSec / 2}s`,
+				}}
+			>
 				<Img
 					style={{width: `${faceSizePx}px`}}
 					src={staticFile(`${imageDirectory}/body/00.png`)}
