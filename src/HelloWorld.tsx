@@ -13,7 +13,7 @@ export const HelloWorld: React.FC<{
 }> = ({titleText, titleColor}) => {
 	return (
 		<AbsoluteFill style={{backgroundColor: 'white'}}>
-			<Audio src={staticFile(`audio/bgm/honobono-wartz.wav`)} volume={0.08} />
+			<Audio src={staticFile(`audio/bgm/honobono-wartz.wav`)} volume={0.2} />
 			<Video loop src={staticFile(`video/codebg.mp4`)} />
 			<div style={logoStyle}>
 				<Img src={staticFile('image/yukkurilogo.png')} />
@@ -22,9 +22,15 @@ export const HelloWorld: React.FC<{
 			<div style={jimakuBackground} />
 
 			{FirstVideoConfig.sections.map((section, index) => {
+				let cumulateFrames = 0;
+				for (let i = 0; i < index; i++) {
+					cumulateFrames += FirstVideoConfig.sections[index - 1].totalFrames;
+				}
+				console.log(cumulateFrames);
+
 				const fromFrameMap = {...section.fromFramesMap};
 				Object.keys(fromFrameMap).forEach((key) => {
-					fromFrameMap[Number(key)] += INITIAL_DELAY_FRAMES;
+					fromFrameMap[Number(key)] += INITIAL_DELAY_FRAMES + cumulateFrames;
 				});
 
 				return (

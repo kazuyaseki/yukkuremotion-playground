@@ -21,12 +21,12 @@ aqkanji2koe.AqKanji2KoeSetDevKey(AqKanji2KoeSetDevKey);
 
 const ReimuVoice = {
 	base: 0,
-	speed: 65,
 	volume: 100,
-	pitch: 40,
-	accent: 50,
-	lmd: 54,
-	fsc: 170,
+	accent: 80,
+	fsc: 103,
+	speed: 85,
+	lmd: 110,
+	pitch: 84,
 };
 const MarisaVoice = {...gVoice_F1, base: 0, speed: 105, lmd: 130, pitch: 84};
 
@@ -51,19 +51,29 @@ FirstVideoConfig.sections.forEach((section) => {
 
 FirstVideoConfig.sections.forEach((section) => {
 	const {talks} = section;
+
 	section.fromFramesMap = {};
 	let cumulate = 0;
 
 	section.fromFramesMap[0] = cumulate;
 
+	// FIXME: ここ不安定
 	for (let i = 1; i < section.talks.length; i++) {
 		getAudioDurationInSeconds(
 			`./public/audio/yukkuri/${talks[i - 1].id}.wav`
 		).then((durationSec) => {
 			const frames = Math.floor((durationSec || 1) * FPS);
-
 			cumulate += frames + TALK_GAP_FRAMES;
 			section.fromFramesMap[i] = cumulate;
+			section.totalFrames = cumulate;
+
+			if (i === section.talks.length - 1) {
+				getAudioDurationInSeconds(
+					`./public/audio/yukkuri/${talks[i].id}.wav`
+				).then((durationSec) => {
+					section.totalFrames += Math.floor(durationSec) + TALK_GAP_FRAMES;
+				});
+			}
 		});
 	}
 });
@@ -75,6 +85,7 @@ setTimeout(() => {
 	sections: {
 		title: string;
     fromFramesMap: {[key in number]: number};
+    totalFrames: number;
 		talks: {text: string; isReimu: boolean; id?: string}[];
 	}[];
 };

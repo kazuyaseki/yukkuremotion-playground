@@ -27,7 +27,7 @@ const ReimuVoice = {
 	lmd: 54,
 	fsc: 170,
 };
-const MarisaVoice = {...gVoice_F1, base: 0, speed: 105, lmd: 130, pitch: 84};
+const MarisaVoice = {...gVoice_F1, base: 1, speed: 105, lmd: 10, pitch: 84};
 
 // Write Yukkuri Voice Files if exists
 const koeText = aqkanji2koe.AqKanji2KoeConvertUtf8(text);
