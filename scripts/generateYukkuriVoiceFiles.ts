@@ -60,11 +60,15 @@ FirstVideoConfig.sections.forEach((section) => {
 
 	// FIXME: ここ不安定
 	for (let i = 1; i < section.talks.length; i++) {
+		// ここでは今の Talk 以前の音声ファイルの秒数を取得するため index - 1 を参照している
+		const previoudTalk = talks[i - 1];
 		getAudioDurationInSeconds(
-			`./public/audio/yukkuri/${talks[i - 1].id}.wav`
+			`./public/audio/yukkuri/${previoudTalk.id}.wav`
 		).then((durationSec) => {
-			const frames = Math.floor((durationSec || 1) * FPS);
-			cumulate += frames + TALK_GAP_FRAMES;
+			const audioDurationframes = Math.floor((durationSec || 1) * FPS);
+			const totalFrames =
+				previoudTalk.customDuration || audioDurationframes + TALK_GAP_FRAMES;
+			cumulate += totalFrames;
 			section.fromFramesMap[i] = cumulate;
 			section.totalFrames = cumulate;
 

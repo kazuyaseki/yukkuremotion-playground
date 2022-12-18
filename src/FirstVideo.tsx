@@ -29,22 +29,25 @@ export const FirstVideo: React.FC<{
 	}, []);
 
 	return (
-		<AbsoluteFill style={{backgroundColor: 'white'}}>
+		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			{initialized &&
 				FirstVideoConfig.sections.map((section, index) => {
 					const isFirst = index === 0;
 
 					let cumulateFrames = 0;
 					for (let i = 0; i < index; i++) {
-						cumulateFrames += FirstVideoConfig.sections[index - 1].totalFrames;
+						console.log(index, cumulateFrames);
+						cumulateFrames += FirstVideoConfig.sections[i].totalFrames;
 					}
+
+					console.log(cumulateFrames);
+
+					cumulateFrames +=
+						INITIAL_DELAY_FRAMES + transtionVideoDurationFrames * index;
 
 					const fromFrameMap = {...section.fromFramesMap};
 					Object.keys(fromFrameMap).forEach((key) => {
-						fromFrameMap[Number(key)] +=
-							INITIAL_DELAY_FRAMES +
-							cumulateFrames +
-							transtionVideoDurationFrames * index;
+						fromFrameMap[Number(key)] += cumulateFrames;
 					});
 
 					return (
@@ -60,14 +63,19 @@ export const FirstVideo: React.FC<{
 									<Video loop src={staticFile(section.backgroundVideo)} />
 								)}
 							</Sequence>
+
 							<TalkSequence {...section} fromFramesMap={fromFrameMap} />
 							<YukkuriSequence {...section} fromFramesMap={fromFrameMap} />
+
 							{!isFirst && (
 								<Sequence
-									from={cumulateFrames}
+									from={cumulateFrames - transtionVideoDurationFrames}
 									durationInFrames={transtionVideoDurationFrames}
 								>
-									<Video src={staticFile(`video/transition.mp4`)} />
+									<Video
+										style={{zIndex: 100}}
+										src={staticFile(`video/transition.mp4`)}
+									/>
 								</Sequence>
 							)}
 						</React.Fragment>

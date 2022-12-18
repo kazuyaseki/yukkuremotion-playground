@@ -28,6 +28,7 @@ export type VoiceConfig = {
 	face?: FACE_TYPE;
 	image?: Image;
 	backgroundVideo?: BackgroundVideo;
+	customDuration?: number;
 };
 
 export type VideoConfig = {
