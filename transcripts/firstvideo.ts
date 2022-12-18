@@ -27,10 +27,6 @@ export const FirstVideoConfig: VideoConfig = {
 					text: 'ねえねえ魔理沙',
 					speaker: 'reimu',
 					id: '221f35ab25b34e178a21af8bfd8751c8',
-					image: {
-						src: staticFile('image/remotion-logo.png'),
-						backgroundColor: '#fff',
-					},
 				},
 				{
 					text: 'なんだ霊夢',
@@ -150,16 +146,28 @@ export const FirstVideoConfig: VideoConfig = {
 					text: '今回は Remotion っていう技術を使って作っていくぜ',
 					speaker: 'marisa',
 					id: '1c9e2d8c926d4f81aa1702c41dd631f1',
+					image: {
+						src: staticFile('image/remotion-logo.png'),
+						backgroundColor: '#fff',
+					},
 				},
 				{
 					text: 'Remotion?',
 					speaker: 'reimu',
 					id: '7705a41fb00a426b835e82efa6be053b',
+					image: {
+						src: staticFile('image/remotion-logo.png'),
+						backgroundColor: '#fff',
+					},
 				},
 				{
 					text: 'Remotion は React っていう技術を使って動画を作れるツールなんだ',
 					speaker: 'marisa',
 					id: 'a8ad74a0d90940ab986ba69c334e2c79',
+					image: {
+						src: staticFile('image/remotion-logo.png'),
+						backgroundColor: '#fff',
+					},
 				},
 				{
 					text: 'React?',

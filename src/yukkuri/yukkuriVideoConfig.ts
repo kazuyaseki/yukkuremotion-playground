@@ -14,6 +14,12 @@ type Image = {
 	backgroundColor?: string;
 };
 
+type BackgroundVideo = {
+	src: string;
+	from?: number;
+	backgroundColor?: string;
+};
+
 export type VoiceConfig = {
 	id?: string;
 	text: string;
@@ -21,6 +27,7 @@ export type VoiceConfig = {
 	speaker: SPEAKER_TYPE;
 	face?: FACE_TYPE;
 	image?: Image;
+	backgroundVideo?: BackgroundVideo;
 };
 
 export type VideoConfig = {

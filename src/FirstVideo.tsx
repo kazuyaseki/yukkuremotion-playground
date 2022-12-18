@@ -1,17 +1,33 @@
-import {Audio, Img, staticFile, Video} from 'remotion';
+import {Audio, Img, Sequence, staticFile, Video} from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
-import React from 'react';
-import {SUBTITLE_HEIGHT_PX} from './constants';
+import React, {useEffect, useRef, useState} from 'react';
+import {FPS, SUBTITLE_HEIGHT_PX} from './constants';
+import {getVideoMetadata} from '@remotion/media-utils';
 
 const INITIAL_DELAY_FRAMES = 30;
 
 export const FirstVideo: React.FC<{
 	titleText: string;
 	titleColor: string;
-}> = ({titleText, titleColor}) => {
+}> = () => {
+	const [transtionVideoDurationFrames, setTranstionVideoDurationFrames] =
+		useState(0);
+
+	const [initialized, setInitialized] = useState(false);
+
+	useEffect(() => {
+		getVideoMetadata(staticFile(`video/transition.mp4`)).then((result) => {
+			console.log(result);
+			setTranstionVideoDurationFrames(
+				Math.ceil(result.durationInSeconds * FPS)
+			);
+			setInitialized(true);
+		});
+	}, []);
+
 	return (
 		<AbsoluteFill style={{backgroundColor: 'white'}}>
 			<Audio src={staticFile(`audio/bgm/honobono-wartz.wav`)} volume={0.2} />
@@ -22,25 +38,38 @@ export const FirstVideo: React.FC<{
 
 			<div style={jimakuBackground} />
 
-			{FirstVideoConfig.sections.map((section, index) => {
-				let cumulateFrames = 0;
-				for (let i = 0; i < index; i++) {
-					cumulateFrames += FirstVideoConfig.sections[index - 1].totalFrames;
-				}
-				console.log(cumulateFrames);
+			{initialized &&
+				FirstVideoConfig.sections.map((section, index) => {
+					const isFirst = index === 0;
 
-				const fromFrameMap = {...section.fromFramesMap};
-				Object.keys(fromFrameMap).forEach((key) => {
-					fromFrameMap[Number(key)] += INITIAL_DELAY_FRAMES + cumulateFrames;
-				});
+					let cumulateFrames = 0;
+					for (let i = 0; i < index; i++) {
+						cumulateFrames += FirstVideoConfig.sections[index - 1].totalFrames;
+					}
 
-				return (
-					<React.Fragment key={index}>
-						<TalkSequence {...section} fromFramesMap={fromFrameMap} />
-						<YukkuriSequence {...section} fromFramesMap={fromFrameMap} />
-					</React.Fragment>
-				);
-			})}
+					const fromFrameMap = {...section.fromFramesMap};
+					Object.keys(fromFrameMap).forEach((key) => {
+						fromFrameMap[Number(key)] +=
+							INITIAL_DELAY_FRAMES +
+							cumulateFrames +
+							transtionVideoDurationFrames * index;
+					});
+
+					return (
+						<React.Fragment key={index}>
+							<TalkSequence {...section} fromFramesMap={fromFrameMap} />
+							<YukkuriSequence {...section} fromFramesMap={fromFrameMap} />
+							{!isFirst && (
+								<Sequence
+									from={cumulateFrames}
+									durationInFrames={transtionVideoDurationFrames}
+								>
+									<Video src={staticFile(`video/transition.mp4`)} />
+								</Sequence>
+							)}
+						</React.Fragment>
+					);
+				})}
 		</AbsoluteFill>
 	);
 };
