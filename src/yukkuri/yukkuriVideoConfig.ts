@@ -36,5 +36,7 @@ export type VideoConfig = {
 		fromFramesMap: {[key in number]: number};
 		totalFrames: number;
 		talks: VoiceConfig[];
+		bgmSrc?: string;
+		backgroundVideo?: string;
 	}[];
 };

@@ -30,14 +30,6 @@ export const FirstVideo: React.FC<{
 
 	return (
 		<AbsoluteFill style={{backgroundColor: 'white'}}>
-			<Audio src={staticFile(`audio/bgm/honobono-wartz.wav`)} volume={0.2} />
-			<Video loop src={staticFile(`video/codebg.mp4`)} />
-			<div style={logoStyle}>
-				<Img src={staticFile('image/yukkurilogo.png')} />
-			</div>
-
-			<div style={jimakuBackground} />
-
 			{initialized &&
 				FirstVideoConfig.sections.map((section, index) => {
 					const isFirst = index === 0;
@@ -57,6 +49,15 @@ export const FirstVideo: React.FC<{
 
 					return (
 						<React.Fragment key={index}>
+							<Sequence
+								from={cumulateFrames}
+								durationInFrames={section.totalFrames}
+							>
+								{section.bgmSrc && <Audio src={section.bgmSrc} volume={0.2} />}
+								{section.backgroundVideo && (
+									<Video loop src={section.backgroundVideo} />
+								)}
+							</Sequence>
 							<TalkSequence {...section} fromFramesMap={fromFrameMap} />
 							<YukkuriSequence {...section} fromFramesMap={fromFrameMap} />
 							{!isFirst && (
@@ -70,6 +71,12 @@ export const FirstVideo: React.FC<{
 						</React.Fragment>
 					);
 				})}
+
+			<div style={logoStyle}>
+				<Img src={staticFile('image/yukkurilogo.png')} />
+			</div>
+
+			<div style={jimakuBackground} />
 		</AbsoluteFill>
 	);
 };
@@ -83,6 +90,7 @@ const jimakuBackground: React.CSSProperties = {
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	zIndex: 1,
 };
 const logoStyle: React.CSSProperties = {
 	position: 'absolute',

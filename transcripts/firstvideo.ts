@@ -5,6 +5,8 @@ export const FirstVideoConfig: VideoConfig = {
 	sections: [
 		{
 			title: 'イントロダクション',
+			bgmSrc: staticFile(`audio/bgm/honobono-wartz.wav`),
+			backgroundVideo: staticFile(`video/codebg.mp4`),
 			fromFramesMap: {
 				'0': 0,
 				'1': 59,
@@ -107,6 +109,8 @@ export const FirstVideoConfig: VideoConfig = {
 		},
 		{
 			title: 'Remotion の説明',
+			bgmSrc: staticFile(`audio/bgm/honobono-wartz.wav`),
+			backgroundVideo: staticFile(`video/codebg.mp4`),
 			fromFramesMap: {
 				'0': 0,
 				'1': 126,

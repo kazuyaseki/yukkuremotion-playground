@@ -197,6 +197,7 @@ export const Face = (props: {
 
 const containerStyle: React.CSSProperties = {
 	position: 'relative',
+	zIndex: 10,
 	...fuyofuyoAnimationCss,
 };
 
