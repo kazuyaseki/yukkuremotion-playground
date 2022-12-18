@@ -162,6 +162,8 @@ export const FirstVideoConfig: VideoConfig = {
 				},
 				{
 					text: 'Remotion は React っていう技術を使って動画を作れるツールなんだ',
+					textForDisplay:
+						'Remotion は React っていう技術を\n使って動画を作れるツールなんだ',
 					speaker: 'marisa',
 					id: 'a8ad74a0d90940ab986ba69c334e2c79',
 					image: {

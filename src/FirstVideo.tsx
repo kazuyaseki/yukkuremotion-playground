@@ -1,6 +1,6 @@
 import {Audio, Img, Sequence, staticFile, Video} from 'remotion';
 import {AbsoluteFill} from 'remotion';
-import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
+import {TalkSequence} from './yukkuri/Talk/TalkSequence';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
 import React, {useEffect, useRef, useState} from 'react';
