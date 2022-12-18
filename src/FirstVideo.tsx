@@ -53,9 +53,11 @@ export const FirstVideo: React.FC<{
 								from={cumulateFrames}
 								durationInFrames={section.totalFrames}
 							>
-								{section.bgmSrc && <Audio src={section.bgmSrc} volume={0.2} />}
+								{section.bgmSrc && (
+									<Audio src={staticFile(section.bgmSrc)} volume={0.2} />
+								)}
 								{section.backgroundVideo && (
-									<Video loop src={section.backgroundVideo} />
+									<Video loop src={staticFile(section.backgroundVideo)} />
 								)}
 							</Sequence>
 							<TalkSequence {...section} fromFramesMap={fromFrameMap} />

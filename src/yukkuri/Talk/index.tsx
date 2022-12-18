@@ -36,7 +36,7 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 							backgroundColor: voiceConfig.image.backgroundColor,
 						}}
 					>
-						<Img src={voiceConfig.image.src} style={imageStyle} />
+						<Img src={staticFile(voiceConfig.image.src)} style={imageStyle} />
 					</div>
 				</Sequence>
 			)}
