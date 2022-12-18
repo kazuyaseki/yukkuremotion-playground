@@ -7,6 +7,7 @@ import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {FPS, TALK_GAP_FRAMES} from '../src/constants';
 import {getAudioDurationInSeconds} from 'get-audio-duration';
 import {AqKanji2KoeSetDevKey, Aquestalk10DevKey} from './aquest-keys';
+import {SPEAKER} from '../src/yukkuri/yukkuriVideoConfig';
 
 const aquestalk = new AquesTalk10(
 	'./vendor/AquesTalk.framework/Versions/A/AquesTalk'
@@ -39,7 +40,7 @@ FirstVideoConfig.sections.forEach((section) => {
 			const id = uuidv4().replaceAll('-', '');
 			const text = aqkanji2koe.AqKanji2KoeConvertUtf8(talk.text);
 			const result = aquestalk.AquesTalkSyntheUtf16(
-				talk.isReimu ? ReimuVoice : MarisaVoice,
+				talk.speaker === SPEAKER.reimu ? ReimuVoice : MarisaVoice,
 				text
 			);
 			const filename = `${id}.wav`;
@@ -81,14 +82,7 @@ FirstVideoConfig.sections.forEach((section) => {
 setTimeout(() => {
 	fs.writeFileSync(
 		`./transcripts/firstvideo.ts`,
-		`type VideoConfig = {
-	sections: {
-		title: string;
-    fromFramesMap: {[key in number]: number};
-    totalFrames: number;
-		talks: {text: string; isReimu: boolean; id?: string}[];
-	}[];
-};
+		`import {VideoConfig} from '../src/yukkuri/yukkuriVideoConfig';
 
 export const FirstVideoConfig: VideoConfig = ${JSON.stringify(
 			FirstVideoConfig

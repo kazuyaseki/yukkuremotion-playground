@@ -1,8 +1,8 @@
 import {useAudioData} from '@remotion/media-utils';
 import {Audio, Sequence, staticFile} from 'remotion';
-import {VoiceConfig} from '../../../yukkuriVoices';
 import {FPS, TALK_GAP_FRAMES} from '../../constants';
 import {SubtitleWithBackground} from '../../Subtitle/SubtitleBackground';
+import {VoiceConfig} from '../yukkuriVideoConfig';
 
 export type TalkProps = {
 	voiceConfig: VoiceConfig;

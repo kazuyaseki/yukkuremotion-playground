@@ -1,5 +1,5 @@
 import {Talk} from '.';
-import {VoiceConfig} from '../../../yukkuriVoices';
+import {VoiceConfig} from '../yukkuriVideoConfig';
 
 export type Props = {
 	talks: VoiceConfig[];

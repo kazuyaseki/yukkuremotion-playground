@@ -1,9 +1,9 @@
 import {useEffect, useRef, useState} from 'react';
 import {Sequence, useCurrentFrame} from 'remotion';
-import {VoiceConfig} from '../../yukkuriVoices';
 import {FPS, TALK_GAP_FRAMES} from '../constants';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
 import {YukkuriFace} from './Face/YukkuriFace';
+import {SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
 
 export type Props = {
 	talks: VoiceConfig[];
@@ -32,13 +32,13 @@ export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 
 		if (fromFrame === frame) {
 			const talk = talks[talkIndex.current];
-			if (talk.isReimu) {
+			if (talk.speaker === SPEAKER.reimu) {
 				setReimuFace(talk.face || 'default');
 			} else {
 				setMarisaFace(talk.face || 'default');
 			}
 
-			if (talk.isReimu) {
+			if (talk.speaker === SPEAKER.reimu) {
 				setIsReimuTalking(true);
 			} else {
 				setIsMarisaTalking(true);
@@ -48,7 +48,7 @@ export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 
 			const talkDurationsMsec = (durationFrames / FPS) * 1000;
 			setTimeout(() => {
-				if (talk.isReimu) {
+				if (talk.speaker === SPEAKER.reimu) {
 					setIsReimuTalking(false);
 				} else {
 					setIsMarisaTalking(false);
