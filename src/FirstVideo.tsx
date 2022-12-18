@@ -4,6 +4,7 @@ import {TalkSequence} from './yukkuri/Talk/TalkSequrnce';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
 import React from 'react';
+import {SUBTITLE_HEIGHT_PX} from './constants';
 
 const INITIAL_DELAY_FRAMES = 30;
 
@@ -47,7 +48,7 @@ export const FirstVideo: React.FC<{
 const jimakuBackground: React.CSSProperties = {
 	position: 'absolute',
 	width: '100%',
-	height: '240px',
+	height: `${SUBTITLE_HEIGHT_PX}px`,
 	bottom: 0,
 	backgroundColor: 'rgba(255, 255, 255, 0.85)',
 	display: 'flex',

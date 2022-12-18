@@ -1,4 +1,5 @@
 import React from 'react';
+import {SUBTITLE_HEIGHT_PX} from '../constants';
 import {Subtitle} from './Subtitle';
 
 export const SubtitleWithBackground = (props: {subtitle: string}) => (
@@ -10,7 +11,7 @@ export const SubtitleWithBackground = (props: {subtitle: string}) => (
 const jimakuBackground: React.CSSProperties = {
 	position: 'absolute',
 	width: '100%',
-	height: '240px',
+	height: `${SUBTITLE_HEIGHT_PX}px`,
 	bottom: 0,
 	display: 'flex',
 	alignItems: 'center',

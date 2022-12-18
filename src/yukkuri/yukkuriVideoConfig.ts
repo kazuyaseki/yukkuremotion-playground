@@ -8,12 +8,19 @@ export const SPEAKER = {
 
 export type SPEAKER_TYPE = keyof typeof SPEAKER;
 
+type Image = {
+	src: string;
+	from?: number;
+	backgroundColor?: string;
+};
+
 export type VoiceConfig = {
 	id?: string;
 	text: string;
 	textForDisplay?: string;
 	speaker: SPEAKER_TYPE;
 	face?: FACE_TYPE;
+	image?: Image;
 };
 
 export type VideoConfig = {
