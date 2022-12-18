@@ -7,7 +7,7 @@ import React from 'react';
 
 const INITIAL_DELAY_FRAMES = 30;
 
-export const HelloWorld: React.FC<{
+export const FirstVideo: React.FC<{
 	titleText: string;
 	titleColor: string;
 }> = ({titleText, titleColor}) => {
