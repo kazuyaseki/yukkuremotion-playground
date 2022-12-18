@@ -1,4 +1,5 @@
 import {Composition} from 'remotion';
+import {FPS} from './constants';
 import {FirstVideo} from './FirstVideo';
 
 export const RemotionRoot: React.FC = () => {
@@ -7,8 +8,8 @@ export const RemotionRoot: React.FC = () => {
 			<Composition
 				id="FirstVideo"
 				component={FirstVideo}
-				durationInFrames={3000}
-				fps={30}
+				durationInFrames={300 * FPS}
+				fps={FPS}
 				width={1920}
 				height={1080}
 				defaultProps={{

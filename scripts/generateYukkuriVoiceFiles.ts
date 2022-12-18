@@ -25,7 +25,7 @@ const ReimuVoice = {
 	volume: 100,
 	accent: 80,
 	fsc: 103,
-	speed: 93,
+	speed: 100,
 	lmd: 110,
 	pitch: 84,
 };
