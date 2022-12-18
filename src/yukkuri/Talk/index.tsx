@@ -14,6 +14,7 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 	const audioData = useAudioData(music);
 
 	const frames =
+		voiceConfig.customDuration ||
 		Math.floor((audioData?.durationInSeconds || 1) * FPS) + TALK_GAP_FRAMES;
 
 	return (

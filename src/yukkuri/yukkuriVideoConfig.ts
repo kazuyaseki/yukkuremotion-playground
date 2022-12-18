@@ -28,6 +28,7 @@ export type VoiceConfig = {
 	face?: FACE_TYPE;
 	image?: Image;
 	backgroundVideo?: BackgroundVideo;
+	// 音声の長さより長くしたい、短くしたい場合にここに直接入力する
 	customDuration?: number;
 };
 
