@@ -1,14 +1,21 @@
+import {
+	getAudioData,
+	getWaveformPortion,
+	useAudioData,
+} from '@remotion/media-utils';
 import {useEffect, useRef, useState} from 'react';
-import {Sequence, useCurrentFrame} from 'remotion';
+import {interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {FPS, TALK_GAP_FRAMES} from '../constants';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
-import {YukkuriFace} from './Face/YukkuriFace';
+import {MOUTH_TYPE, YukkuriFace} from './Face/YukkuriFace';
 import {SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
 
 export type Props = {
 	talks: VoiceConfig[];
 	fromFramesMap: {[key in number]: number};
 };
+
+const kuchipakuMap: {[key in number]: {mouth: string}} = {1: {mouth: 'OPEN'}};
 
 export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 	const [reimuFace, setReimuFace] = useState<FACE_TYPE>('default');
@@ -19,6 +26,67 @@ export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 	const [isMarisaTalking, setIsMarisaTalking] = useState(false);
 
 	const frame = useCurrentFrame();
+
+	const kuchipakuMap = useRef<{[key in number]: {mouth: MOUTH_TYPE}}>({});
+
+	const [mouth, setMouth] = useState<MOUTH_TYPE>('OPEN');
+
+	useEffect(() => {
+		talks.forEach((talk, talkIndex) => {
+			getAudioData(staticFile(`audio/yukkuri/${talk.id}.wav`)).then(
+				(audioData) => {
+					if (audioData) {
+						const numberOfSamples = 2;
+						// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
+						const waveformPortion = getWaveformPortion({
+							audioData,
+							startTimeInSeconds: 0,
+							durationInSeconds: audioData.durationInSeconds,
+							numberOfSamples,
+						});
+
+						const audioFragmentFrame = Math.floor(
+							(audioData.durationInSeconds * FPS) / numberOfSamples
+						);
+
+						waveformPortion.forEach((bar, index) => {
+							// Console.log(
+							// 	bar.amplitude,
+							// 	fromFramesMap[talkIndex] + audioFragmentFrame * index,
+							// 	bar.amplitude < 0.6 ? 'CLOSE' : 'OPEN'
+							// );
+							kuchipakuMap.current[
+								fromFramesMap[talkIndex] + audioFragmentFrame * index
+							] = {
+								mouth: bar.amplitude < 0.8 ? 'CLOSE' : 'OPEN',
+							};
+						});
+					}
+				}
+			);
+		});
+
+		setTimeout(() => {
+			console.log(kuchipakuMap);
+		}, 1100);
+	}, []);
+
+	const koregaMouth = useRef<MOUTH_TYPE>('OPEN');
+
+	useEffect(() => {
+		const _mouth = kuchipakuMap.current[frame];
+		if (_mouth) {
+			console.log(frame, _mouth);
+			setMouth(_mouth.mouth);
+			koregaMouth.current = _mouth.mouth;
+		}
+	}, [frame, mouth]);
+
+	const amplitude = interpolate(
+		frame,
+		[0, 20, 40, 60, 80, 100],
+		[0, 1, 0, 1, 0, 1]
+	);
 
 	// Reset index when rewind during development
 	useEffect(() => {
@@ -59,15 +127,23 @@ export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 		}
 	}, [frame, fromFramesMap, talks]);
 
+	const xMouth = amplitude > 0.5 ? 'OPEN' : 'CLOSE';
+
 	return (
 		<Sequence>
 			<div style={reimuStyle}>
-				<YukkuriFace isReimu face={reimuFace} isTalking={isReimuTalking} />
+				<YukkuriFace
+					isReimu
+					mouth={xMouth}
+					face={reimuFace}
+					isTalking={isReimuTalking}
+				/>
 			</div>
 			<div style={marisaStyle}>
 				<YukkuriFace
 					isReimu={false}
 					face={marisaFace}
+					mouth={xMouth}
 					isTalking={isMarisaTalking}
 				/>
 			</div>

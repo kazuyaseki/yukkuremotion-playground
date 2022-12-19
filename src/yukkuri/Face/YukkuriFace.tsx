@@ -9,6 +9,8 @@ import {
 import {eyeImagePaths} from './ImagePaths/eyeImagePaths';
 import {faceImagePaths, FACE_TYPE} from './ImagePaths/faceImagePaths';
 
+export type MOUTH_TYPE = 'OPEN' | 'CLOSE';
+
 // FIXME: face を string literal type にする
 export type ReimuProps = {
 	face?: string;
@@ -18,6 +20,7 @@ export type ReimuProps = {
 	isKuchipaku?: boolean;
 	isReimu?: boolean;
 	isTalking: boolean;
+	mouth?: MOUTH_TYPE;
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
@@ -31,10 +34,9 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	sizePx,
 	isReimu,
 	isTalking,
+	mouth,
 }) => {
-	const [isMouthOpen, setIsMouthOpen] = useState(false);
 	const [isMabataking, setIsMabataking] = useState(false);
-	const kuchipakuFunc = useRef<NodeJS.Timer | null>(null);
 
 	const frame = useCurrentFrame();
 
@@ -44,21 +46,12 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 		}
 	}, [isMabataking, frame]);
 
-	useEffect(() => {
-		if (isTalking) {
-			kuchipakuFunc.current = setInterval(() => {
-				setIsMouthOpen((current) => !current);
-			}, KUCHIPAKU_INTERVAL_MSEC);
-		} else if (kuchipakuFunc.current) {
-			clearInterval(kuchipakuFunc.current);
-			kuchipakuFunc.current = null;
-		}
-	}, [isTalking]);
-
 	const imageDirectory = useMemo(
 		() => (isReimu ? 'reimu' : 'marisa'),
 		[isReimu]
 	);
+
+	console.log(mouth);
 
 	return (
 		<>
@@ -68,16 +61,13 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 				sizePx={sizePx}
 				imageDirectory={imageDirectory}
 				isReimu={isReimu}
-			/>
-
-			<Img
-				style={{
-					...faceStyle,
-					width: `${sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX}px`,
-				}}
-				src={staticFile(
-					`${imageDirectory}/mouth/${isMouthOpen ? '00' : '05'}.png`
-				)}
+				mouth={
+					mouth
+						? mouth === 'OPEN'
+							? '05'
+							: '00'
+						: defaultMouth[face || ''] || '05'
+				}
 			/>
 		</>
 	);
@@ -153,6 +143,7 @@ export const Face = (props: {
 		(sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX) * (isReimu ? 1.0 : 1.2);
 
 	if (face && eyeImage[face]) {
+		// Console.log(mouth);
 		return (
 			<div
 				style={{

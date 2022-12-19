@@ -20,7 +20,6 @@ export const FirstVideo: React.FC<{
 
 	useEffect(() => {
 		getVideoMetadata(staticFile(`video/transition.mp4`)).then((result) => {
-			console.log(result);
 			setTranstionVideoDurationFrames(
 				Math.ceil(result.durationInSeconds * FPS)
 			);
@@ -36,11 +35,8 @@ export const FirstVideo: React.FC<{
 
 					let cumulateFrames = 0;
 					for (let i = 0; i < index; i++) {
-						console.log(index, cumulateFrames);
 						cumulateFrames += FirstVideoConfig.sections[i].totalFrames;
 					}
-
-					console.log(cumulateFrames);
 
 					cumulateFrames +=
 						INITIAL_DELAY_FRAMES + transtionVideoDurationFrames * index;
