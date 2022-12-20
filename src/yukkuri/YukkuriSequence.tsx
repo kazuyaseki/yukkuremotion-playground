@@ -1,13 +1,8 @@
-import {
-	getAudioData,
-	getWaveformPortion,
-	useAudioData,
-} from '@remotion/media-utils';
 import {useEffect, useRef, useState} from 'react';
-import {interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {FPS, TALK_GAP_FRAMES} from '../constants';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
-import {MOUTH_TYPE, YukkuriFace} from './Face/YukkuriFace';
+import {YukkuriFace} from './Face/YukkuriFace';
 import {kuchipakuMap, SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
 
 export type Props = {
@@ -29,67 +24,6 @@ export const YukkuriSequence: React.FC<Props> = ({
 	const [isMarisaTalking, setIsMarisaTalking] = useState(false);
 
 	const frame = useCurrentFrame();
-
-	const kuchipakuMap = useRef<{[key in number]: {mouth: MOUTH_TYPE}}>({});
-
-	const [mouth, setMouth] = useState<MOUTH_TYPE>('OPEN');
-
-	useEffect(() => {
-		talks.forEach((talk, talkIndex) => {
-			getAudioData(staticFile(`audio/yukkuri/${talk.id}.wav`)).then(
-				(audioData) => {
-					if (audioData) {
-						const numberOfSamples = 2;
-						// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
-						const waveformPortion = getWaveformPortion({
-							audioData,
-							startTimeInSeconds: 0,
-							durationInSeconds: audioData.durationInSeconds,
-							numberOfSamples,
-						});
-
-						const audioFragmentFrame = Math.floor(
-							(audioData.durationInSeconds * FPS) / numberOfSamples
-						);
-
-						waveformPortion.forEach((bar, index) => {
-							// Console.log(
-							// 	bar.amplitude,
-							// 	fromFramesMap[talkIndex] + audioFragmentFrame * index,
-							// 	bar.amplitude < 0.6 ? 'CLOSE' : 'OPEN'
-							// );
-							kuchipakuMap.current[
-								fromFramesMap[talkIndex] + audioFragmentFrame * index
-							] = {
-								mouth: bar.amplitude < 0.8 ? 'CLOSE' : 'OPEN',
-							};
-						});
-					}
-				}
-			);
-		});
-
-		setTimeout(() => {
-			console.log(kuchipakuMap);
-		}, 1100);
-	}, []);
-
-	const koregaMouth = useRef<MOUTH_TYPE>('OPEN');
-
-	useEffect(() => {
-		const _mouth = kuchipakuMap.current[frame];
-		if (_mouth) {
-			console.log(frame, _mouth);
-			setMouth(_mouth.mouth);
-			koregaMouth.current = _mouth.mouth;
-		}
-	}, [frame, mouth]);
-
-	const amplitude = interpolate(
-		frame,
-		kuchipackuMap.frames,
-		kuchipackuMap.amplitude
-	);
 
 	// Reset index when rewind during development
 	useEffect(() => {
@@ -130,7 +64,15 @@ export const YukkuriSequence: React.FC<Props> = ({
 		}
 	}, [frame, fromFramesMap, talks]);
 
-	const xMouth = amplitude > 0.9 ? 'OPEN' : 'CLOSE';
+	const amplitude = interpolate(
+		frame,
+		kuchipackuMap.frames,
+		kuchipackuMap.amplitude
+	);
+
+	const xMouth = amplitude > 0.6 ? 'OPEN' : 'CLOSE';
+
+	console.log(amplitude);
 
 	return (
 		<Sequence>

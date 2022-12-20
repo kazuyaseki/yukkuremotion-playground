@@ -117,7 +117,7 @@ const originalGetAudioData = async (src: string): Promise<AudioData> => {
 };
 
 setTimeout(() => {
-	FirstVideoConfig.sections.forEach((section, sectionIndex) => {
+	FirstVideoConfig.sections.forEach((section) => {
 		const {talks} = section;
 
 		section.kuchipakuMap = {
@@ -129,7 +129,7 @@ setTimeout(() => {
 			originalGetAudioData(`./public/audio/yukkuri/${talk.id}.wav`).then(
 				(audioData) => {
 					if (audioData) {
-						const numberOfSamples = 8;
+						const numberOfSamples = 24;
 						// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
 						const waveformPortion = getWaveformPortion({
 							audioData,
