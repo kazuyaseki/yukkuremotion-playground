@@ -1,5 +1,8 @@
 import * as fs from 'fs';
 import {v4 as uuidv4} from 'uuid';
+// Import {AudioContext} from 'web-audio-api';
+import wae from 'web-audio-engine';
+const AudioContext = wae.RenderingAudioContext;
 
 import AquesTalk10, {gVoice_F1} from 'node-aquestalk10';
 import AqKanji2Koe from 'node-aqkanji2koe';
@@ -8,6 +11,12 @@ import {FPS, TALK_GAP_FRAMES} from '../src/constants';
 import {getAudioDurationInSeconds} from 'get-audio-duration';
 import {AqKanji2KoeSetDevKey, Aquestalk10DevKey} from './aquest-keys';
 import {SPEAKER} from '../src/yukkuri/yukkuriVideoConfig';
+import {
+	AudioData,
+	getAudioData,
+	getWaveformPortion,
+} from '@remotion/media-utils';
+import {staticFile} from 'remotion';
 
 const aquestalk = new AquesTalk10(
 	'./vendor/AquesTalk.framework/Versions/A/AquesTalk'
@@ -83,13 +92,83 @@ FirstVideoConfig.sections.forEach((section) => {
 	}
 });
 
+const originalGetAudioData = async (src: string): Promise<AudioData> => {
+	const audioContext = new AudioContext();
+
+	const file = fs.readFileSync(src);
+
+	const wave = await audioContext.decodeAudioData(file);
+
+	const channelWaveforms = new Array(wave.numberOfChannels)
+		.fill(true)
+		.map((_, channel) => {
+			return wave.getChannelData(channel);
+		});
+
+	const metadata = {
+		channelWaveforms,
+		sampleRate: audioContext.sampleRate,
+		durationInSeconds: wave.duration,
+		numberOfChannels: wave.numberOfChannels,
+		resultId: uuidv4(),
+		isRemote: false,
+	};
+	return metadata;
+};
+
 setTimeout(() => {
+	FirstVideoConfig.sections.forEach((section, sectionIndex) => {
+		const {talks} = section;
+
+		section.kuchipakuMap = {
+			frames: [],
+			amplitude: [],
+		};
+
+		talks.forEach((talk, talkIndex) => {
+			originalGetAudioData(`./public/audio/yukkuri/${talk.id}.wav`).then(
+				(audioData) => {
+					if (audioData) {
+						const numberOfSamples = 8;
+						// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
+						const waveformPortion = getWaveformPortion({
+							audioData,
+							startTimeInSeconds: 0,
+							durationInSeconds: audioData.durationInSeconds,
+							numberOfSamples,
+						});
+
+						const audioFragmentFrame = Math.floor(
+							(audioData.durationInSeconds * FPS) / numberOfSamples
+						);
+
+						waveformPortion.forEach((bar, index) => {
+							const frame =
+								section.fromFramesMap[talkIndex] + audioFragmentFrame * index;
+							if (!section.kuchipakuMap.frames.find((f) => f === frame)) {
+								section.kuchipakuMap.frames.push(
+									section.fromFramesMap[talkIndex] + audioFragmentFrame * index
+								);
+								// なぜか null が入ることがあるので 0 を入れておく
+								section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
+							}
+						});
+					}
+				}
+			);
+		});
+	});
+}, 2000);
+
+setTimeout(() => {
+	FirstVideoConfig.sections.forEach((s) => {
+		console.log(s.kuchipakuMap.frames.length, s.kuchipakuMap.amplitude.length);
+	});
 	fs.writeFileSync(
 		`./transcripts/firstvideo.ts`,
 		`import {VideoConfig} from '../src/yukkuri/yukkuriVideoConfig';
 
-export const FirstVideoConfig: VideoConfig = ${JSON.stringify(
-			FirstVideoConfig
-		)}`
+export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
+				`
 	);
-}, 3000);
+}, 4000);

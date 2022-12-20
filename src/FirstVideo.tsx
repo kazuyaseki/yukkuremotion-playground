@@ -61,7 +61,11 @@ export const FirstVideo: React.FC<{
 							</Sequence>
 
 							<TalkSequence {...section} fromFramesMap={fromFrameMap} />
-							<YukkuriSequence {...section} fromFramesMap={fromFrameMap} />
+							<YukkuriSequence
+								{...section}
+								fromFramesMap={fromFrameMap}
+								kuchipackuMap={section.kuchipakuMap}
+							/>
 
 							{!isFirst && (
 								<Sequence

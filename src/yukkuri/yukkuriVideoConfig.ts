@@ -32,6 +32,8 @@ export type VoiceConfig = {
 	customDuration?: number;
 };
 
+export type kuchipakuMap = {frames: number[]; amplitude: number[]};
+
 export type VideoConfig = {
 	sections: {
 		title: string;
@@ -40,5 +42,6 @@ export type VideoConfig = {
 		talks: VoiceConfig[];
 		bgmSrc?: string;
 		backgroundVideo?: string;
+		kuchipakuMap: kuchipakuMap;
 	}[];
 };

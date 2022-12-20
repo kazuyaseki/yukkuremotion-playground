@@ -8,16 +8,19 @@ import {interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {FPS, TALK_GAP_FRAMES} from '../constants';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
 import {MOUTH_TYPE, YukkuriFace} from './Face/YukkuriFace';
-import {SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
+import {kuchipakuMap, SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
 
 export type Props = {
+	kuchipackuMap: kuchipakuMap;
 	talks: VoiceConfig[];
 	fromFramesMap: {[key in number]: number};
 };
 
-const kuchipakuMap: {[key in number]: {mouth: string}} = {1: {mouth: 'OPEN'}};
-
-export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
+export const YukkuriSequence: React.FC<Props> = ({
+	kuchipackuMap,
+	talks,
+	fromFramesMap,
+}) => {
 	const [reimuFace, setReimuFace] = useState<FACE_TYPE>('default');
 	const [marisaFace, setMarisaFace] = useState<FACE_TYPE>('default');
 	const talkIndex = useRef(0);
@@ -84,8 +87,8 @@ export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 
 	const amplitude = interpolate(
 		frame,
-		[0, 20, 40, 60, 80, 100],
-		[0, 1, 0, 1, 0, 1]
+		kuchipackuMap.frames,
+		kuchipackuMap.amplitude
 	);
 
 	// Reset index when rewind during development
@@ -127,7 +130,7 @@ export const YukkuriSequence: React.FC<Props> = ({talks, fromFramesMap}) => {
 		}
 	}, [frame, fromFramesMap, talks]);
 
-	const xMouth = amplitude > 0.5 ? 'OPEN' : 'CLOSE';
+	const xMouth = amplitude > 0.9 ? 'OPEN' : 'CLOSE';
 
 	return (
 		<Sequence>
