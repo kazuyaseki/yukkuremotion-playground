@@ -30,6 +30,8 @@ export type VoiceConfig = {
 	backgroundVideo?: BackgroundVideo;
 	// 音声の長さより長くしたい、短くしたい場合にここに直接入力する
 	customDuration?: number;
+	// 特に動画自体には影響のない、動画制作者のためのメモ
+	memoForEditor?: string;
 };
 
 export type kuchipakuMap = {frames: number[]; amplitude: number[]};
