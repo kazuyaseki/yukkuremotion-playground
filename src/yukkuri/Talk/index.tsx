@@ -10,7 +10,10 @@ export type TalkProps = {
 };
 
 export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
-	const music = staticFile(`audio/yukkuri/${voiceConfig.id}.wav`);
+	const hasAudio = !!voiceConfig.id;
+	const music = voiceConfig.id
+		? staticFile(`audio/yukkuri/${voiceConfig.id}.wav`)
+		: staticFile(`audio/saisho.mp3`);
 	const audioData = useAudioData(music);
 
 	const frames =
@@ -23,7 +26,7 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 				<SubtitleWithBackground
 					subtitle={voiceConfig.textForDisplay || voiceConfig.text}
 				/>
-				<Audio src={music} />
+				{hasAudio && <Audio src={music} />}
 			</Sequence>
 
 			{voiceConfig.image && (
@@ -39,6 +42,15 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 					>
 						<Img src={staticFile(voiceConfig.image.src)} style={imageStyle} />
 					</div>
+				</Sequence>
+			)}
+
+			{voiceConfig.audio && (
+				<Sequence
+					durationInFrames={frames}
+					from={(from || 0) + (voiceConfig.audio.from || 0)}
+				>
+					<Audio src={staticFile(voiceConfig.audio.src)} />
 				</Sequence>
 			)}
 		</>

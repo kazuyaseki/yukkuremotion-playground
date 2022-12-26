@@ -155,12 +155,20 @@ setTimeout(() => {
 								const frame =
 									section.fromFramesMap[talkIndex] + audioFragmentFrame * index;
 								if (!section.kuchipakuMap.frames.find((f) => f === frame)) {
-									section.kuchipakuMap.frames.push(
+									const lastFrame =
+										talkIndex > 0 ? section.fromFramesMap[talkIndex - 1] : -1;
+									const currentFrame =
 										section.fromFramesMap[talkIndex] +
-											audioFragmentFrame * index || 0
-									);
-									// なぜか null が入ることがあるので 0 を入れておく
-									section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
+											audioFragmentFrame * index || 0;
+
+									if (currentFrame > lastFrame) {
+										section.kuchipakuMap.frames.push(
+											section.fromFramesMap[talkIndex] +
+												audioFragmentFrame * index || 0
+										);
+										// なぜか null が入ることがあるので 0 を入れておく
+										section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
+									}
 								}
 							});
 						}

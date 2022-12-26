@@ -64,15 +64,13 @@ export const YukkuriSequence: React.FC<Props> = ({
 		}
 	}, [frame, fromFramesMap, talks]);
 
-	const amplitude = interpolate(
-		frame,
-		kuchipackuMap.frames,
-		kuchipackuMap.amplitude
-	);
+	// const amplitude = interpolate(
+	// 	frame,
+	// 	kuchipackuMap.frames,
+	// 	kuchipackuMap.amplitude
+	// );
 
-	const xMouth = amplitude > 0.6 ? 'OPEN' : 'CLOSE';
-
-	console.log(amplitude);
+	const xMouth = 'OPEN';
 
 	return (
 		<Sequence>

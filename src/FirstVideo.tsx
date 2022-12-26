@@ -30,7 +30,7 @@ export const FirstVideo: React.FC<{
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			{initialized &&
-				[FirstVideoConfig.sections[0]].map((section, index) => {
+				FirstVideoConfig.sections.map((section, index) => {
 					const isFirst = index === 0;
 
 					let cumulateFrames = 0;
