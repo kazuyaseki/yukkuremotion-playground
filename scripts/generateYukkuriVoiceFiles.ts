@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import {v4 as uuidv4} from 'uuid';
 // Import {AudioContext} from 'web-audio-api';
 import wae from 'web-audio-engine';
+import fsExtra from 'fs-extra';
 const AudioContext = wae.RenderingAudioContext;
 
 import AquesTalk10, {gVoice_F1} from 'node-aquestalk10';
@@ -42,11 +43,16 @@ const MarisaVoice = {...gVoice_F1, base: 0, speed: 105, lmd: 130, pitch: 84};
 
 const forceGenerate = process.argv[2] === 'force';
 
+if (forceGenerate) {
+	fsExtra.emptyDirSync('./public/audio/yukkuri');
+}
+
 // Write Yukkuri Voice Files if exists
 FirstVideoConfig.sections.forEach((section) => {
 	section.talks.forEach((talk) => {
-		if (forceGenerate || !talk.id) {
+		if ((forceGenerate || !talk.id) && talk.text.length > 0) {
 			const id = uuidv4().replaceAll('-', '');
+			console.log(talk.text);
 			const text = aqkanji2koe.AqKanji2KoeConvertUtf8(talk.text);
 			const result = aquestalk.AquesTalkSyntheUtf16(
 				talk.speaker === SPEAKER.reimu ? ReimuVoice : MarisaVoice,
@@ -71,24 +77,26 @@ FirstVideoConfig.sections.forEach((section) => {
 	for (let i = 1; i < section.talks.length; i++) {
 		// ここでは今の Talk 以前の音声ファイルの秒数を取得するため index - 1 を参照している
 		const previoudTalk = talks[i - 1];
-		getAudioDurationInSeconds(
-			`./public/audio/yukkuri/${previoudTalk.id}.wav`
-		).then((durationSec) => {
-			const audioDurationframes = Math.floor((durationSec || 1) * FPS);
-			const totalFrames =
-				previoudTalk.customDuration || audioDurationframes + TALK_GAP_FRAMES;
-			cumulate += totalFrames;
-			section.fromFramesMap[i] = cumulate;
-			section.totalFrames = cumulate;
+		if (previoudTalk.id) {
+			getAudioDurationInSeconds(
+				`./public/audio/yukkuri/${previoudTalk.id}.wav`
+			).then((durationSec) => {
+				const audioDurationframes = Math.floor((durationSec || 1) * FPS);
+				const totalFrames =
+					previoudTalk.customDuration || audioDurationframes + TALK_GAP_FRAMES;
+				cumulate += totalFrames;
+				section.fromFramesMap[i] = cumulate;
+				section.totalFrames = cumulate;
 
-			if (i === section.talks.length - 1) {
-				getAudioDurationInSeconds(
-					`./public/audio/yukkuri/${talks[i].id}.wav`
-				).then((durationSec) => {
-					section.totalFrames += Math.floor(durationSec) + TALK_GAP_FRAMES;
-				});
-			}
-		});
+				if (i === section.talks.length - 1) {
+					getAudioDurationInSeconds(
+						`./public/audio/yukkuri/${talks[i].id}.wav`
+					).then((durationSec) => {
+						section.totalFrames += Math.floor(durationSec) + TALK_GAP_FRAMES;
+					});
+				}
+			});
+		}
 	}
 });
 
@@ -126,39 +134,42 @@ setTimeout(() => {
 		};
 
 		talks.forEach((talk, talkIndex) => {
-			originalGetAudioData(`./public/audio/yukkuri/${talk.id}.wav`).then(
-				(audioData) => {
-					if (audioData) {
-						const numberOfSamples = 24;
-						// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
-						const waveformPortion = getWaveformPortion({
-							audioData,
-							startTimeInSeconds: 0,
-							durationInSeconds: audioData.durationInSeconds,
-							numberOfSamples,
-						});
+			if (talk.id) {
+				originalGetAudioData(`./public/audio/yukkuri/${talk.id}.wav`).then(
+					(audioData) => {
+						if (audioData) {
+							const numberOfSamples = 24;
+							// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
+							const waveformPortion = getWaveformPortion({
+								audioData,
+								startTimeInSeconds: 0,
+								durationInSeconds: audioData.durationInSeconds,
+								numberOfSamples,
+							});
 
-						const audioFragmentFrame = Math.floor(
-							(audioData.durationInSeconds * FPS) / numberOfSamples
-						);
+							const audioFragmentFrame = Math.floor(
+								(audioData.durationInSeconds * FPS) / numberOfSamples
+							);
 
-						waveformPortion.forEach((bar, index) => {
-							const frame =
-								section.fromFramesMap[talkIndex] + audioFragmentFrame * index;
-							if (!section.kuchipakuMap.frames.find((f) => f === frame)) {
-								section.kuchipakuMap.frames.push(
-									section.fromFramesMap[talkIndex] + audioFragmentFrame * index
-								);
-								// なぜか null が入ることがあるので 0 を入れておく
-								section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
-							}
-						});
+							waveformPortion.forEach((bar, index) => {
+								const frame =
+									section.fromFramesMap[talkIndex] + audioFragmentFrame * index;
+								if (!section.kuchipakuMap.frames.find((f) => f === frame)) {
+									section.kuchipakuMap.frames.push(
+										section.fromFramesMap[talkIndex] +
+											audioFragmentFrame * index || 0
+									);
+									// なぜか null が入ることがあるので 0 を入れておく
+									section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
+								}
+							});
+						}
 					}
-				}
-			);
+				);
+			}
 		});
 	});
-}, 2000);
+}, 3000);
 
 setTimeout(() => {
 	FirstVideoConfig.sections.forEach((s) => {
@@ -171,4 +182,4 @@ setTimeout(() => {
 export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
 				`
 	);
-}, 4000);
+}, 6000);
