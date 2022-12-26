@@ -704,11 +704,13 @@ export const FirstVideoConfig: VideoConfig = {
 					text: 'こんな感じだな',
 					speaker: 'marisa',
 					id: '58708a9b676b4a958fee99aa04a6c6db',
+					image: {src: '/image/jimaku-code.png'},
 				},
 				{
 					text: 'とてもシンプルね。',
 					speaker: 'reimu',
 					id: 'f31211df9bc841de944d7c548c9a37ea',
+					image: {src: '/image/jimaku-code.png'},
 				},
 				{
 					text: 'こういう感じでアニメーションさせることもできるぜ',
