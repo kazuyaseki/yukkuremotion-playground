@@ -14,6 +14,11 @@ type Image = {
 	backgroundColor?: string;
 };
 
+type Audio = {
+	src: string;
+	from?: number;
+};
+
 type BackgroundVideo = {
 	src: string;
 	from?: number;
@@ -28,6 +33,7 @@ export type VoiceConfig = {
 	face?: FACE_TYPE;
 	image?: Image;
 	backgroundVideo?: BackgroundVideo;
+	audio?: Audio;
 	// 音声の長さより長くしたい、短くしたい場合にここに直接入力する
 	customDuration?: number;
 	// 特に動画自体には影響のない、動画制作者のためのメモ
