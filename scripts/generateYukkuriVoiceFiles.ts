@@ -17,7 +17,6 @@ import {
 	getAudioData,
 	getWaveformPortion,
 } from '@remotion/media-utils';
-import {staticFile} from 'remotion';
 
 const aquestalk = new AquesTalk10(
 	'./vendor/AquesTalk.framework/Versions/A/AquesTalk'
@@ -184,7 +183,7 @@ setTimeout(() => {
 		console.log(s.kuchipakuMap.frames.length, s.kuchipakuMap.amplitude.length);
 	});
 	fs.writeFileSync(
-		`./transcripts/firstvideo.ts`,
+		`./transcripts/firstvideo.tsx`,
 		`import {VideoConfig} from '../src/yukkuri/yukkuriVideoConfig';
 
 export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}

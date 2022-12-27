@@ -1,3 +1,5 @@
+import React from 'react';
+import {CustomObjectKeys} from '../../transcripts/CustomObjects';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
 
 export const SPEAKER = {
@@ -30,10 +32,12 @@ export type VoiceConfig = {
 	text: string;
 	textForDisplay?: string;
 	speaker: SPEAKER_TYPE;
+	delayFrames?: number;
 	face?: FACE_TYPE;
 	image?: Image;
 	backgroundVideo?: BackgroundVideo;
 	audio?: Audio;
+	customObjectKey?: CustomObjectKeys;
 	// 音声の長さより長くしたい、短くしたい場合にここに直接入力する
 	customDuration?: number;
 	// 特に動画自体には影響のない、動画制作者のためのメモ

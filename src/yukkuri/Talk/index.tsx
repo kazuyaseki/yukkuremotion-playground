@@ -1,5 +1,6 @@
 import {useAudioData} from '@remotion/media-utils';
 import {Audio, Img, Sequence, staticFile} from 'remotion';
+import {CustomObjects} from '../../../transcripts/CustomObjects';
 import {FPS, SUBTITLE_HEIGHT_PX, TALK_GAP_FRAMES} from '../../constants';
 import {SubtitleWithBackground} from '../../Subtitle/SubtitleBackground';
 import {VoiceConfig} from '../yukkuriVideoConfig';
@@ -19,6 +20,10 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 	const frames =
 		voiceConfig.customDuration ||
 		Math.floor((audioData?.durationInSeconds || 1) * FPS) + TALK_GAP_FRAMES;
+
+	const CustomObject = voiceConfig.customObjectKey
+		? CustomObjects[voiceConfig.customObjectKey]
+		: null;
 
 	return (
 		<>
@@ -51,6 +56,12 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 					from={(from || 0) + (voiceConfig.audio.from || 0)}
 				>
 					<Audio src={staticFile(voiceConfig.audio.src)} />
+				</Sequence>
+			)}
+
+			{CustomObject && (
+				<Sequence durationInFrames={frames} from={from || 0}>
+					<CustomObject />
 				</Sequence>
 			)}
 		</>
