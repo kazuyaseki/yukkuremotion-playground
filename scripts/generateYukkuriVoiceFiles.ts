@@ -10,6 +10,7 @@ import AqKanji2Koe from 'node-aqkanji2koe';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {FPS, TALK_GAP_FRAMES} from '../src/constants';
 import {getAudioDurationInSeconds} from 'get-audio-duration';
+import {getVideoDurationInSeconds} from 'get-video-duration';
 import {AqKanji2KoeSetDevKey, Aquestalk10DevKey} from './aquest-keys';
 import {SPEAKER} from '../src/yukkuri/yukkuriVideoConfig';
 import {
@@ -51,7 +52,6 @@ FirstVideoConfig.sections.forEach((section) => {
 	section.talks.forEach((talk) => {
 		if ((forceGenerate || !talk.id) && talk.text.length > 0) {
 			const id = uuidv4().replaceAll('-', '');
-			console.log(talk.text);
 			const text = aqkanji2koe.AqKanji2KoeConvertUtf8(talk.text);
 			const result = aquestalk.AquesTalkSyntheUtf16(
 				talk.speaker === SPEAKER.reimu ? ReimuVoice : MarisaVoice,
@@ -64,22 +64,31 @@ FirstVideoConfig.sections.forEach((section) => {
 	});
 });
 
-FirstVideoConfig.sections.forEach((section) => {
-	const {talks} = section;
+(async () => {
+	for (const section of FirstVideoConfig.sections) {
+		const {talks} = section;
 
-	section.fromFramesMap = {};
-	let cumulate = 0;
+		section.fromFramesMap = {};
+		let cumulate = 0;
 
-	section.fromFramesMap[0] = cumulate;
+		section.fromFramesMap[0] = cumulate;
 
-	// FIXME: ここ不安定
-	for (let i = 1; i < section.talks.length; i++) {
-		// ここでは今の Talk 以前の音声ファイルの秒数を取得するため index - 1 を参照している
-		const previoudTalk = talks[i - 1];
-		if (previoudTalk.id) {
-			getAudioDurationInSeconds(
-				`./public/audio/yukkuri/${previoudTalk.id}.wav`
-			).then((durationSec) => {
+		section.beforeMovieFrames = 0;
+		if (section.beforeMovie) {
+			section.beforeMovieFrames =
+				(await getVideoDurationInSeconds(`./public${section.beforeMovie}`)) *
+				FPS;
+			section.totalFrames += section.beforeMovieFrames;
+		}
+
+		for (let i = 1; i < section.talks.length; i++) {
+			// ここでは今の Talk 以前の音声ファイルの秒数を取得するため index - 1 を参照している
+			const previoudTalk = talks[i - 1];
+			if (previoudTalk.id) {
+				const durationSec = await getAudioDurationInSeconds(
+					`./public/audio/yukkuri/${previoudTalk.id}.wav`
+				);
+
 				const audioDurationframes = Math.floor((durationSec || 1) * FPS);
 				const totalFrames =
 					previoudTalk.customDuration || audioDurationframes + TALK_GAP_FRAMES;
@@ -88,16 +97,26 @@ FirstVideoConfig.sections.forEach((section) => {
 				section.totalFrames = cumulate;
 
 				if (i === section.talks.length - 1) {
-					getAudioDurationInSeconds(
+					console.log(talks[i]);
+					const lastAudioDurationSec = await getAudioDurationInSeconds(
 						`./public/audio/yukkuri/${talks[i].id}.wav`
-					).then((durationSec) => {
-						section.totalFrames += Math.floor(durationSec) + TALK_GAP_FRAMES;
-					});
+					);
+					console.log(section.totalFrames, lastAudioDurationSec);
+					section.totalFrames +=
+						Math.floor(lastAudioDurationSec) * FPS + TALK_GAP_FRAMES;
 				}
-			});
+			}
+		}
+
+		if (section.afterMovie) {
+			section.afterMovieFrames =
+				(await getVideoDurationInSeconds(`./public${section.afterMovie}`)) *
+				FPS;
+			console.log(section.totalFrames, section.afterMovieFrames);
+			section.totalFrames += Math.floor(section.afterMovieFrames);
 		}
 	}
-});
+})();
 
 const originalGetAudioData = async (src: string): Promise<AudioData> => {
 	const audioContext = new AudioContext();

@@ -13,74 +13,80 @@ export const FirstVideo: React.FC<{
 	titleText: string;
 	titleColor: string;
 }> = () => {
-	const [transtionVideoDurationFrames, setTranstionVideoDurationFrames] =
-		useState(0);
-
-	const [initialized, setInitialized] = useState(false);
-
-	useEffect(() => {
-		getVideoMetadata(staticFile(`video/transition.mp4`)).then((result) => {
-			setTranstionVideoDurationFrames(
-				Math.ceil(result.durationInSeconds * FPS)
-			);
-			setInitialized(true);
-		});
-	}, []);
-
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
-			{initialized &&
-				FirstVideoConfig.sections.map((section, index) => {
-					const isFirst = index === 0;
+			{FirstVideoConfig.sections.map((section, index) => {
+				let cumulateFrames = INITIAL_DELAY_FRAMES;
+				for (let i = 0; i < index; i++) {
+					cumulateFrames += FirstVideoConfig.sections[i].totalFrames;
+				}
 
-					let cumulateFrames = 0;
-					for (let i = 0; i < index; i++) {
-						cumulateFrames += FirstVideoConfig.sections[i].totalFrames;
-					}
+				const fromFrameMap = {...section.fromFramesMap};
+				Object.keys(fromFrameMap).forEach((key) => {
+					fromFrameMap[Number(key)] += cumulateFrames;
+				});
 
-					cumulateFrames +=
-						INITIAL_DELAY_FRAMES + transtionVideoDurationFrames * index;
+				return (
+					<React.Fragment key={index}>
+						<Sequence
+							from={cumulateFrames}
+							durationInFrames={
+								section.totalFrames - (section.afterMovieFrames || 0)
+							}
+						>
+							{section.bgmSrc && (
+								<Audio src={staticFile(section.bgmSrc)} volume={0.2} />
+							)}
+							{section.backgroundVideo && (
+								<>
+									<Video loop src={staticFile(section.backgroundVideo)} muted />
+									{section.showBgVideoOverlay && (
+										<div
+											style={{
+												width: '100%',
+												height: '100%',
+												backgroundColor: 'rgba(0, 0, 0, 0.4)',
+												backdropFilter: 'blur(4px)',
+												zIndex: '1',
+											}}
+										></div>
+									)}
+								</>
+							)}
+						</Sequence>
 
-					const fromFrameMap = {...section.fromFramesMap};
-					Object.keys(fromFrameMap).forEach((key) => {
-						fromFrameMap[Number(key)] += cumulateFrames;
-					});
+						<TalkSequence {...section} fromFramesMap={fromFrameMap} />
+						<YukkuriSequence
+							{...section}
+							fromFramesMap={fromFrameMap}
+							kuchipackuMap={section.kuchipakuMap}
+						/>
 
-					return (
-						<React.Fragment key={index}>
+						{section.beforeMovie && (
 							<Sequence
 								from={cumulateFrames}
-								durationInFrames={section.totalFrames}
+								durationInFrames={fromFrameMap[0]}
 							>
-								{section.bgmSrc && (
-									<Audio src={staticFile(section.bgmSrc)} volume={0.2} />
-								)}
-								{section.backgroundVideo && (
-									<Video loop src={staticFile(section.backgroundVideo)} />
-								)}
+								<Video
+									style={{zIndex: 100}}
+									src={staticFile(section.beforeMovie)}
+								/>
 							</Sequence>
-
-							<TalkSequence {...section} fromFramesMap={fromFrameMap} />
-							<YukkuriSequence
-								{...section}
-								fromFramesMap={fromFrameMap}
-								kuchipackuMap={section.kuchipakuMap}
-							/>
-
-							{!isFirst && (
-								<Sequence
-									from={cumulateFrames - transtionVideoDurationFrames}
-									durationInFrames={transtionVideoDurationFrames}
-								>
-									<Video
-										style={{zIndex: 100}}
-										src={staticFile(`video/transition.mp4`)}
-									/>
-								</Sequence>
-							)}
-						</React.Fragment>
-					);
-				})}
+						)}
+						{section.afterMovie && section.afterMovieFrames && (
+							<Sequence
+								from={section.totalFrames - section.afterMovieFrames}
+								durationInFrames={section.afterMovieFrames}
+							>
+								<Video
+									style={{zIndex: 10000}}
+									src={staticFile(section.afterMovie)}
+								/>
+							</Sequence>
+						)}
+					</React.Fragment>
+				);
+			})}
 
 			<div style={logoStyle}>
 				<Img src={staticFile('image/yukkurilogo.png')} />
@@ -107,4 +113,5 @@ const logoStyle: React.CSSProperties = {
 	top: '40px',
 	left: '40px',
 	opacity: 0.8,
+	zIndex: 1,
 };

@@ -54,6 +54,11 @@ export type VideoConfig = {
 		talks: VoiceConfig[];
 		bgmSrc?: string;
 		backgroundVideo?: string;
+		showBgVideoOverlay?: boolean;
+		beforeMovie?: string;
+		beforeMovieFrames?: number;
+		afterMovie?: string;
+		afterMovieFrames?: number;
 		kuchipakuMap: kuchipakuMap;
 	}[];
 };

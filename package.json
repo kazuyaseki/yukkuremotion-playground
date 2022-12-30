@@ -52,6 +52,7 @@
 		"@remotion/media-utils": "^3.3.5",
 		"@types/meyda": "^4.3.2",
 		"express": "^4.18.2",
+		"get-video-duration": "^4.1.0",
 		"meyda": "^5.5.1",
 		"node-aqkanji2koe": "^1.0.1",
 		"node-aquestalk10": "^1.0.0",
