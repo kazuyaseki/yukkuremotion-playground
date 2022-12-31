@@ -129,6 +129,9 @@ const defaultMouth: {[key in keyof typeof eyeImage]: string} = {
 	daradaraAse: '30',
 };
 
+const MABATAKI_INTERVAL_SECONDS = 7;
+const MABATAKI_ANIMATION_INTERVAL_FRAME = 1;
+
 export const Face = (props: {
 	face?: string;
 	mouth?: string;
@@ -142,47 +145,73 @@ export const Face = (props: {
 	const faceSizePx =
 		(sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX) * (isReimu ? 1.0 : 1.2);
 
-	if (face && eyeImage[face]) {
-		// Console.log(mouth);
-		return (
-			<div
-				style={{
-					...containerStyle,
-					animationDelay: `${isReimu ? 0 : fuyofuyoAnimationDurationSec / 2}s`,
-				}}
-			>
-				<Img
-					style={{width: `${faceSizePx}px`}}
-					src={staticFile(`${imageDirectory}/body/00.png`)}
-				/>
-				<Img
-					style={{
-						...faceStyle,
-						width: `${faceSizePx}px`,
-					}}
-					src={staticFile(`${imageDirectory}/eye/${eyeImage[face]}.png`)}
-				/>
-				<Img
-					style={{
-						...faceStyle,
-						width: `${faceSizePx}px`,
-					}}
-					src={staticFile(
-						`${imageDirectory}/mouth/${mouth || defaultMouth[face] || '05'}.png`
-					)}
-				/>
-			</div>
-		);
-	}
+	const [eyeImagePath, setEyeImagePath] = useState<string | null>(null);
+
+	const frame = useCurrentFrame();
+
+	useEffect(() => {
+		const frameLeft = frame % (MABATAKI_INTERVAL_SECONDS * FPS);
+
+		if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 1) {
+			setEyeImagePath('04');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 2) {
+			setEyeImagePath('03');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 3) {
+			setEyeImagePath('02');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 4) {
+			setEyeImagePath('01');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 5) {
+			setEyeImagePath('00');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 6) {
+			setEyeImagePath('01');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 7) {
+			setEyeImagePath('02');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 8) {
+			setEyeImagePath('03');
+		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 9) {
+			setEyeImagePath('04');
+		} else if (
+			eyeImagePath !== null &&
+			frameLeft > MABATAKI_ANIMATION_INTERVAL_FRAME * 9
+		) {
+			setEyeImagePath(null);
+		}
+	}, [frame, eyeImagePath]);
 
 	return (
-		<Img
+		<div
 			style={{
-				...faceStyle,
-				width: `${props.sizePx ? props.sizePx : DEFAULT_REIMU_SIZE_PX}px`,
+				...containerStyle,
+				animationDelay: `${isReimu ? 0 : fuyofuyoAnimationDurationSec / 2}s`,
 			}}
-			src={staticFile(`${props.imageDirectory}${faceImagePaths[face]}`)}
-		/>
+		>
+			<Img
+				style={{width: `${faceSizePx}px`}}
+				src={staticFile(`${imageDirectory}/body/00.png`)}
+			/>
+			<Img
+				style={{
+					...faceStyle,
+					width: `${faceSizePx}px`,
+				}}
+				src={staticFile(
+					`${imageDirectory}/eye/${
+						eyeImagePath || eyeImage[face || 'default']
+					}.png`
+				)}
+			/>
+			<Img
+				style={{
+					...faceStyle,
+					width: `${faceSizePx}px`,
+				}}
+				src={staticFile(
+					`${imageDirectory}/mouth/${
+						mouth || defaultMouth[face || 'default'] || '05'
+					}.png`
+				)}
+			/>
+		</div>
 	);
 };
 
