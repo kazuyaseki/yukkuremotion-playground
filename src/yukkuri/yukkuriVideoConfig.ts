@@ -29,10 +29,13 @@ type BackgroundVideo = {
 
 export type VoiceConfig = {
 	id?: string;
+	// 霊夢と魔理沙がどっちも喋る時用
+	ids?: string[];
 	text: string;
 	textForDisplay?: string;
 	speaker: SPEAKER_TYPE;
 	delayFrames?: number;
+	audioDurationFrames: number;
 	face?: FACE_TYPE;
 	image?: Image;
 	backgroundVideo?: BackgroundVideo;

@@ -11,32 +11,35 @@ export type TalkProps = {
 };
 
 export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
-	const hasAudio = !!voiceConfig.id;
-	const music = voiceConfig.id
-		? staticFile(`audio/yukkuri/${voiceConfig.id}.wav`)
-		: staticFile(`audio/saisho.mp3`);
-	const audioData = useAudioData(music);
-
-	const frames =
-		voiceConfig.customDuration ||
-		Math.floor((audioData?.durationInSeconds || 1) * FPS) + TALK_GAP_FRAMES;
+	const hasAudio = !!voiceConfig.id || !!voiceConfig.ids;
 
 	const CustomObject = voiceConfig.customObjectKey
 		? CustomObjects[voiceConfig.customObjectKey]
 		: null;
 
+	const durationInFrames =
+		voiceConfig.customDuration ||
+		voiceConfig.audioDurationFrames + TALK_GAP_FRAMES;
+
 	return (
 		<>
-			<Sequence durationInFrames={frames} from={from}>
+			<Sequence durationInFrames={durationInFrames} from={from}>
 				<SubtitleWithBackground
 					subtitle={voiceConfig.textForDisplay || voiceConfig.text}
 				/>
-				{hasAudio && <Audio src={music} />}
+				{hasAudio &&
+					(voiceConfig.ids && voiceConfig.ids.length > 0 ? (
+						voiceConfig.ids.map((id) => {
+							return <Audio src={staticFile(`audio/yukkuri/${id}.wav`)} />;
+						})
+					) : (
+						<Audio src={staticFile(`audio/yukkuri/${voiceConfig.id}.wav`)} />
+					))}
 			</Sequence>
 
 			{voiceConfig.image && (
 				<Sequence
-					durationInFrames={frames}
+					durationInFrames={durationInFrames}
 					from={(from || 0) + (voiceConfig.image.from || 0)}
 				>
 					<div
@@ -52,7 +55,7 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 
 			{voiceConfig.audio && (
 				<Sequence
-					durationInFrames={frames}
+					durationInFrames={durationInFrames}
 					from={(from || 0) + (voiceConfig.audio.from || 0)}
 				>
 					<Audio src={staticFile(voiceConfig.audio.src)} />
@@ -60,7 +63,7 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 			)}
 
 			{CustomObject && (
-				<Sequence durationInFrames={frames} from={from || 0}>
+				<Sequence durationInFrames={durationInFrames} from={from || 0}>
 					<CustomObject />
 				</Sequence>
 			)}

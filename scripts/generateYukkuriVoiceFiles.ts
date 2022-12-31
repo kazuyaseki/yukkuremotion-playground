@@ -12,7 +12,7 @@ import {FPS, TALK_GAP_FRAMES} from '../src/constants';
 import {getAudioDurationInSeconds} from 'get-audio-duration';
 import {getVideoDurationInSeconds} from 'get-video-duration';
 import {AqKanji2KoeSetDevKey, Aquestalk10DevKey} from './aquest-keys';
-import {SPEAKER} from '../src/yukkuri/yukkuriVideoConfig';
+import {SPEAKER, SPEAKER_TYPE} from '../src/yukkuri/yukkuriVideoConfig';
 import {
 	AudioData,
 	getAudioData,
@@ -47,24 +47,54 @@ if (forceGenerate) {
 	fsExtra.emptyDirSync('./public/audio/yukkuri');
 }
 
+function generateYukkuriAudio(text: string, speaker: SPEAKER_TYPE) {
+	const id = uuidv4().replaceAll('-', '');
+	const result = aquestalk.AquesTalkSyntheUtf16(
+		speaker === SPEAKER.reimu ? ReimuVoice : MarisaVoice,
+		text
+	);
+	const filename = `${id}.wav`;
+	fs.writeFileSync(`./public/audio/yukkuri/${filename}`, result);
+
+	return id;
+}
+
 // Write Yukkuri Voice Files if exists
 FirstVideoConfig.sections.forEach((section) => {
 	section.talks.forEach((talk) => {
 		if ((forceGenerate || !talk.id) && talk.text.length > 0) {
-			const id = uuidv4().replaceAll('-', '');
 			const text = aqkanji2koe.AqKanji2KoeConvertUtf8(talk.text);
-			const result = aquestalk.AquesTalkSyntheUtf16(
-				talk.speaker === SPEAKER.reimu ? ReimuVoice : MarisaVoice,
-				text
-			);
-			const filename = `${id}.wav`;
-			fs.writeFileSync(`./public/audio/yukkuri/${filename}`, result);
-			talk.id = id;
+
+			if (talk.speaker === SPEAKER.reimuAndMarisa) {
+				const reimuTalkId = generateYukkuriAudio(text, 'reimu');
+				const marisaTalkId = generateYukkuriAudio(text, 'marisa');
+
+				talk.ids = [reimuTalkId, marisaTalkId];
+			} else {
+				const id = generateYukkuriAudio(text, talk.speaker);
+				talk.id = id;
+			}
 		}
 	});
 });
 
 (async () => {
+	for (const section of FirstVideoConfig.sections) {
+		const {talks} = section;
+
+		for (let i = 0; i < section.talks.length; i++) {
+			const currentTalk = talks[i];
+			if (currentTalk.id || currentTalk.ids) {
+				const id = currentTalk.ids ? currentTalk.ids[0] : currentTalk.id;
+				const durationSec = await getAudioDurationInSeconds(
+					`./public/audio/yukkuri/${id}.wav`
+				);
+
+				currentTalk.audioDurationFrames = Math.floor((durationSec || 1) * FPS);
+			}
+		}
+	}
+
 	for (const section of FirstVideoConfig.sections) {
 		const {talks} = section;
 
@@ -83,25 +113,26 @@ FirstVideoConfig.sections.forEach((section) => {
 
 		for (let i = 1; i < section.talks.length; i++) {
 			// ここでは今の Talk 以前の音声ファイルの秒数を取得するため index - 1 を参照している
-			const previoudTalk = talks[i - 1];
-			if (previoudTalk.id) {
+			const previousTalk = talks[i - 1];
+			if (previousTalk.id || previousTalk.ids) {
+				const id = previousTalk.ids ? previousTalk.ids[0] : previousTalk.id;
 				const durationSec = await getAudioDurationInSeconds(
-					`./public/audio/yukkuri/${previoudTalk.id}.wav`
+					`./public/audio/yukkuri/${id}.wav`
 				);
 
 				const audioDurationframes = Math.floor((durationSec || 1) * FPS);
 				const totalFrames =
-					previoudTalk.customDuration || audioDurationframes + TALK_GAP_FRAMES;
+					previousTalk.customDuration || audioDurationframes + TALK_GAP_FRAMES;
 				cumulate += totalFrames;
 				section.fromFramesMap[i] = cumulate;
 				section.totalFrames = cumulate;
 
 				if (i === section.talks.length - 1) {
-					console.log(talks[i]);
+					const currentTalk = talks[i];
+					const id = currentTalk.ids ? currentTalk.ids[0] : currentTalk.id;
 					const lastAudioDurationSec = await getAudioDurationInSeconds(
-						`./public/audio/yukkuri/${talks[i].id}.wav`
+						`./public/audio/yukkuri/${id}.wav`
 					);
-					console.log(section.totalFrames, lastAudioDurationSec);
 					section.totalFrames +=
 						Math.floor(lastAudioDurationSec) * FPS + TALK_GAP_FRAMES;
 				}
@@ -152,8 +183,9 @@ setTimeout(() => {
 		};
 
 		talks.forEach((talk, talkIndex) => {
-			if (talk.id) {
-				originalGetAudioData(`./public/audio/yukkuri/${talk.id}.wav`).then(
+			if (talk.id || talk.ids) {
+				const id = talk.ids ? talk.ids[0] : talk.id;
+				originalGetAudioData(`./public/audio/yukkuri/${id}.wav`).then(
 					(audioData) => {
 						if (audioData) {
 							const numberOfSamples = 24;
@@ -195,12 +227,9 @@ setTimeout(() => {
 			}
 		});
 	});
-}, 3000);
+}, 6000);
 
 setTimeout(() => {
-	FirstVideoConfig.sections.forEach((s) => {
-		console.log(s.kuchipakuMap.frames.length, s.kuchipakuMap.amplitude.length);
-	});
 	fs.writeFileSync(
 		`./transcripts/firstvideo.tsx`,
 		`import {VideoConfig} from '../src/yukkuri/yukkuriVideoConfig';
@@ -208,4 +237,4 @@ setTimeout(() => {
 export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
 				`
 	);
-}, 6000);
+}, 10000);
