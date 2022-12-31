@@ -59,6 +59,8 @@ export type VideoConfig = {
 		beforeMovieFrames?: number;
 		afterMovie?: string;
 		afterMovieFrames?: number;
+		// Frame を floor している関係上どうしてもズレが起きるので微調整する苦肉の策
+		afteMovieDelay?: number;
 		kuchipakuMap: kuchipakuMap;
 	}[];
 };

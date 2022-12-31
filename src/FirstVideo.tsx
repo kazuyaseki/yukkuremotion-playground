@@ -75,7 +75,11 @@ export const FirstVideo: React.FC<{
 						)}
 						{section.afterMovie && section.afterMovieFrames && (
 							<Sequence
-								from={section.totalFrames - section.afterMovieFrames}
+								from={
+									section.totalFrames -
+									section.afterMovieFrames +
+									(section.afteMovieDelay || 0)
+								}
 								durationInFrames={section.afterMovieFrames}
 							>
 								<Video

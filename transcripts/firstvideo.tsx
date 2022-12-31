@@ -7,6 +7,7 @@ export const FirstVideoConfig: VideoConfig = {
 			bgmSrc: '/audio/bgm/honobono-wartz.wav',
 			backgroundVideo: '/video/cyber-bg.mp4',
 			afterMovie: '/video/yukkuri-opening.mp4',
+			afteMovieDelay: 29,
 			fromFramesMap: {
 				'0': 0,
 				'1': 54,
