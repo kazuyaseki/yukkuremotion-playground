@@ -8,7 +8,11 @@ const AudioContext = wae.RenderingAudioContext;
 import AquesTalk10, {gVoice_F1} from 'node-aquestalk10';
 import AqKanji2Koe from 'node-aqkanji2koe';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
-import {FPS, TALK_GAP_FRAMES} from '../src/constants';
+import {
+	DEFAULT_SECTION_INITIAL_DELAY_FRAMES,
+	FPS,
+	TALK_GAP_FRAMES,
+} from '../src/constants';
 import {getAudioDurationInSeconds} from 'get-audio-duration';
 import {getVideoDurationInSeconds} from 'get-video-duration';
 import {AqKanji2KoeSetDevKey, Aquestalk10DevKey} from './aquest-keys';
@@ -99,7 +103,8 @@ FirstVideoConfig.sections.forEach((section) => {
 		const {talks} = section;
 
 		section.fromFramesMap = {};
-		let cumulate = 0;
+		let cumulate =
+			section.initialDelayFrames || DEFAULT_SECTION_INITIAL_DELAY_FRAMES;
 
 		section.fromFramesMap[0] = cumulate;
 
@@ -143,7 +148,6 @@ FirstVideoConfig.sections.forEach((section) => {
 			section.afterMovieFrames =
 				(await getVideoDurationInSeconds(`./public${section.afterMovie}`)) *
 				FPS;
-			console.log(section.totalFrames, section.afterMovieFrames);
 			section.totalFrames += Math.floor(section.afterMovieFrames);
 		}
 	}
