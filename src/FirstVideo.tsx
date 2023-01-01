@@ -60,6 +60,7 @@ export const FirstVideo: React.FC<{
 							fromFramesMap={fromFrameMap}
 							totalFrames={cumulateFrames + section.totalFrames}
 						/>
+
 						<YukkuriSequence
 							{...section}
 							fromFramesMap={fromFrameMap}

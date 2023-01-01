@@ -151,6 +151,68 @@ FirstVideoConfig.sections.forEach((section) => {
 			section.totalFrames += Math.floor(section.afterMovieFrames);
 		}
 	}
+
+	for (const section of FirstVideoConfig.sections) {
+		const {talks} = section;
+
+		section.kuchipakuMap = {
+			frames: [],
+			amplitude: [],
+		};
+
+		// talks.forEach((talk, talkIndex) => {
+		// 	if (talk.id || talk.ids) {
+		// 		const id = talk.ids ? talk.ids[0] : talk.id;
+		// 		originalGetAudioData(`./public/audio/yukkuri/${id}.wav`).then(
+		// 			(audioData) => {
+		// 				if (audioData) {
+		// 					const numberOfSamples = 24;
+		// 					// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
+		// 					const waveformPortion = getWaveformPortion({
+		// 						audioData,
+		// 						startTimeInSeconds: 0,
+		// 						durationInSeconds: audioData.durationInSeconds,
+		// 						numberOfSamples,
+		// 					});
+
+		// 					const audioFragmentFrame = Math.floor(
+		// 						(audioData.durationInSeconds * FPS) / numberOfSamples
+		// 					);
+
+		// 					waveformPortion.forEach((bar, index) => {
+		// 						const frame =
+		// 							section.fromFramesMap[talkIndex] + audioFragmentFrame * index;
+		// 						if (!section.kuchipakuMap.frames.find((f) => f === frame)) {
+		// 							const lastFrame =
+		// 								talkIndex > 0 ? section.fromFramesMap[talkIndex - 1] : -1;
+		// 							const currentFrame =
+		// 								section.fromFramesMap[talkIndex] +
+		// 									audioFragmentFrame * index || 0;
+
+		// 							if (currentFrame > lastFrame) {
+		// 								section.kuchipakuMap.frames.push(
+		// 									section.fromFramesMap[talkIndex] +
+		// 										audioFragmentFrame * index || 0
+		// 								);
+		// 								// なぜか null が入ることがあるので 0 を入れておく
+		// 								section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
+		// 							}
+		// 						}
+		// 					});
+		// 				}
+		// 			}
+		// 		);
+		// 	}
+		// });
+	}
+
+	fs.writeFileSync(
+		`./transcripts/firstvideo.tsx`,
+		`import {VideoConfig} from '../src/yukkuri/yukkuriVideoConfig';
+
+export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
+				`
+	);
 })();
 
 const originalGetAudioData = async (src: string): Promise<AudioData> => {
@@ -176,69 +238,3 @@ const originalGetAudioData = async (src: string): Promise<AudioData> => {
 	};
 	return metadata;
 };
-
-setTimeout(() => {
-	FirstVideoConfig.sections.forEach((section) => {
-		const {talks} = section;
-
-		section.kuchipakuMap = {
-			frames: [],
-			amplitude: [],
-		};
-
-		talks.forEach((talk, talkIndex) => {
-			if (talk.id || talk.ids) {
-				const id = talk.ids ? talk.ids[0] : talk.id;
-				originalGetAudioData(`./public/audio/yukkuri/${id}.wav`).then(
-					(audioData) => {
-						if (audioData) {
-							const numberOfSamples = 24;
-							// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
-							const waveformPortion = getWaveformPortion({
-								audioData,
-								startTimeInSeconds: 0,
-								durationInSeconds: audioData.durationInSeconds,
-								numberOfSamples,
-							});
-
-							const audioFragmentFrame = Math.floor(
-								(audioData.durationInSeconds * FPS) / numberOfSamples
-							);
-
-							waveformPortion.forEach((bar, index) => {
-								const frame =
-									section.fromFramesMap[talkIndex] + audioFragmentFrame * index;
-								if (!section.kuchipakuMap.frames.find((f) => f === frame)) {
-									const lastFrame =
-										talkIndex > 0 ? section.fromFramesMap[talkIndex - 1] : -1;
-									const currentFrame =
-										section.fromFramesMap[talkIndex] +
-											audioFragmentFrame * index || 0;
-
-									if (currentFrame > lastFrame) {
-										section.kuchipakuMap.frames.push(
-											section.fromFramesMap[talkIndex] +
-												audioFragmentFrame * index || 0
-										);
-										// なぜか null が入ることがあるので 0 を入れておく
-										section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
-									}
-								}
-							});
-						}
-					}
-				);
-			}
-		});
-	});
-}, 6000);
-
-setTimeout(() => {
-	fs.writeFileSync(
-		`./transcripts/firstvideo.tsx`,
-		`import {VideoConfig} from '../src/yukkuri/yukkuriVideoConfig';
-
-export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
-				`
-	);
-}, 10000);
