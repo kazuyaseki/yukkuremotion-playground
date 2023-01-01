@@ -36,22 +36,18 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	isTalking,
 	mouth,
 }) => {
-	const [isMabataking, setIsMabataking] = useState(false);
-
-	const frame = useCurrentFrame();
-
-	useEffect(() => {
-		if (frame % MATABATAKI_INTERVAL_FRAMES === 0) {
-			setIsMabataking(true);
-		}
-	}, [isMabataking, frame]);
-
 	const imageDirectory = useMemo(
 		() => (isReimu ? 'reimu' : 'marisa'),
 		[isReimu]
 	);
 
-	console.log(mouth);
+	useEffect(() => {
+		if (isReimu) {
+			console.log('霊夢が話してる', isTalking);
+		} else {
+			console.log('魔理沙が話してる', isTalking);
+		}
+	}, [isTalking]);
 
 	return (
 		<>
@@ -61,13 +57,8 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 				sizePx={sizePx}
 				imageDirectory={imageDirectory}
 				isReimu={isReimu}
-				mouth={
-					mouth
-						? mouth === 'OPEN'
-							? '05'
-							: '00'
-						: defaultMouth[face || ''] || '05'
-				}
+				isTalking={isTalking}
+				mouth={mouth}
 			/>
 		</>
 	);
@@ -132,20 +123,24 @@ const defaultMouth: {[key in keyof typeof eyeImage]: string} = {
 const MABATAKI_INTERVAL_SECONDS = 7;
 const MABATAKI_ANIMATION_INTERVAL_FRAME = 1;
 
+const KUCHIPAKU_ANIMATION_INTERVAL_FRAME = 1;
+
 export const Face = (props: {
 	face?: string;
 	mouth?: string;
 	sizePx?: number;
 	isReimu?: boolean;
 	imageDirectory: string;
+	isTalking: boolean;
 }) => {
-	const {face, mouth, sizePx, isReimu, imageDirectory} = props;
+	const {face, mouth, sizePx, isReimu, imageDirectory, isTalking} = props;
 
 	// Multiply by 1.2 because Marisa is bit smaller compared to Reimu
 	const faceSizePx =
 		(sizePx ? sizePx : DEFAULT_REIMU_SIZE_PX) * (isReimu ? 1.0 : 1.2);
 
 	const [eyeImagePath, setEyeImagePath] = useState<string | null>(null);
+	const [mouthImagePath, setMouthImagePath] = useState<string | null>(null);
 
 	const frame = useCurrentFrame();
 
@@ -178,6 +173,47 @@ export const Face = (props: {
 		}
 	}, [frame, eyeImagePath]);
 
+	useEffect(() => {
+		if (!isTalking) {
+			setMouthImagePath(null);
+		} else {
+			const frameLeft = frame % (13 * KUCHIPAKU_ANIMATION_INTERVAL_FRAME);
+			// console.log(frameLeft);
+
+			if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 0) {
+				setMouthImagePath('06');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 1) {
+				setMouthImagePath('05');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 2) {
+				setMouthImagePath('04');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 3) {
+				setMouthImagePath('03');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 4) {
+				setMouthImagePath('02');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 5) {
+				setMouthImagePath('01');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 6) {
+				setMouthImagePath('00');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 7) {
+				setMouthImagePath('01');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 8) {
+				setMouthImagePath('02');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 9) {
+				setMouthImagePath('03');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 10) {
+				setMouthImagePath('04');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 11) {
+				setMouthImagePath('05');
+			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 12) {
+				setMouthImagePath('06');
+			}
+		}
+	}, [frame, isTalking]);
+
+	useEffect(() => {
+		console.log(frame, mouthImagePath);
+	}, [mouthImagePath]);
+
 	return (
 		<div
 			style={{
@@ -206,9 +242,7 @@ export const Face = (props: {
 					width: `${faceSizePx}px`,
 				}}
 				src={staticFile(
-					`${imageDirectory}/mouth/${
-						mouth || defaultMouth[face || 'default'] || '05'
-					}.png`
+					`${imageDirectory}/mouth/${mouthImagePath || '05'}.png`
 				)}
 			/>
 		</div>

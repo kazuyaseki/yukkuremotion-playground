@@ -45,14 +45,14 @@ export const YukkuriSequence: React.FC<Props> = ({
 
 			if (talk.speaker === SPEAKER.reimu) {
 				setIsReimuTalking(true);
-			} else {
+			} else if (talk.speaker === SPEAKER.marisa) {
 				setIsMarisaTalking(true);
 			}
-			const nextFromFrame = fromFramesMap[talkIndex.current + 1];
-			const durationFrames = nextFromFrame - fromFrame - TALK_GAP_FRAMES;
 
-			const talkDurationsMsec = (durationFrames / FPS) * 1000;
+			const talkDurationsMsec = (talk.audioDurationFrames / FPS) * 1000;
+			console.log(talkDurationsMsec);
 			setTimeout(() => {
+				console.log('setTimeout の中身が実行', talk.text);
 				if (talk.speaker === SPEAKER.reimu) {
 					setIsReimuTalking(false);
 				} else {
@@ -70,23 +70,15 @@ export const YukkuriSequence: React.FC<Props> = ({
 	// 	kuchipackuMap.amplitude
 	// );
 
-	const xMouth = 'OPEN';
-
 	return (
 		<Sequence>
 			<div style={reimuStyle}>
-				<YukkuriFace
-					isReimu
-					mouth={xMouth}
-					face={reimuFace}
-					isTalking={isReimuTalking}
-				/>
+				<YukkuriFace isReimu face={reimuFace} isTalking={isReimuTalking} />
 			</div>
 			<div style={marisaStyle}>
 				<YukkuriFace
 					isReimu={false}
 					face={marisaFace}
-					mouth={xMouth}
 					isTalking={isMarisaTalking}
 				/>
 			</div>
