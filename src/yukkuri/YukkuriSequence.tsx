@@ -88,12 +88,12 @@ export const YukkuriSequence: React.FC<Props> = ({
 
 const reimuStyle: React.CSSProperties = {
 	position: 'absolute',
-	right: '30px',
-	bottom: '120px',
+	right: '20px',
+	bottom: '135px',
 };
 
 const marisaStyle: React.CSSProperties = {
 	position: 'absolute',
-	left: '30px',
-	bottom: '120px',
+	left: '20px',
+	bottom: '135px',
 };
