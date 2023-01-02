@@ -180,6 +180,59 @@ const MABATAKI_ANIMATION_INTERVAL_FRAME = 1;
 
 const KUCHIPAKU_ANIMATION_INTERVAL_FRAME = 1;
 
+function getCurrentMouth(frame: number, isTalking: boolean) {
+	// if (!isTalking) {
+	// 	return '05';
+	// } else {
+	const frameLeft = frame % (5 * KUCHIPAKU_ANIMATION_INTERVAL_FRAME);
+
+	// if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 0) {
+	// 	return '06';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 1) {
+	// 	return '05';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 2) {
+	// 	return '04';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 3) {
+	// 	return '03';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 4) {
+	// 	return '02';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 5) {
+	// 	return '01';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 6) {
+	// 	return '00';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 7) {
+	// 	return '01';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 8) {
+	// 	return '02';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 9) {
+	// 	return '03';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 10) {
+	// 	return '04';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 11) {
+	// 	return '05';
+	// } else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 12) {
+	// 	return '06';
+	// }
+
+	if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 0) {
+		return '06';
+	} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 1) {
+		return '04';
+	} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 2) {
+		return '02';
+	} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 3) {
+		return '00';
+	} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 4) {
+		return '02';
+	} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 5) {
+		return '04';
+	} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 6) {
+		return '06';
+	}
+
+	// }
+}
+
 export const Face = (props: {
 	face?: string;
 	mouth?: string;
@@ -229,43 +282,6 @@ export const Face = (props: {
 	}, [frame, eyeImagePath]);
 
 	useEffect(() => {
-		if (!isTalking) {
-			setMouthImagePath(null);
-		} else {
-			const frameLeft = frame % (13 * KUCHIPAKU_ANIMATION_INTERVAL_FRAME);
-			// console.log(frameLeft);
-
-			if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 0) {
-				setMouthImagePath('06');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 1) {
-				setMouthImagePath('05');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 2) {
-				setMouthImagePath('04');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 3) {
-				setMouthImagePath('03');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 4) {
-				setMouthImagePath('02');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 5) {
-				setMouthImagePath('01');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 6) {
-				setMouthImagePath('00');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 7) {
-				setMouthImagePath('01');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 8) {
-				setMouthImagePath('02');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 9) {
-				setMouthImagePath('03');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 10) {
-				setMouthImagePath('04');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 11) {
-				setMouthImagePath('05');
-			} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 12) {
-				setMouthImagePath('06');
-			}
-		}
-	}, [frame, isTalking]);
-
-	useEffect(() => {
 		console.log(frame, mouthImagePath);
 	}, [mouthImagePath]);
 
@@ -297,7 +313,7 @@ export const Face = (props: {
 					width: `${faceSizePx}px`,
 				}}
 				src={staticFile(
-					`${imageDirectory}/mouth/${mouthImagePath || '05'}.png`
+					`${imageDirectory}/mouth/${getCurrentMouth(frame, isTalking)}.png`
 				)}
 			/>
 		</div>
