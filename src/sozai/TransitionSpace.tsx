@@ -14,8 +14,8 @@ import {Face} from '../yukkuri/Face/YukkuriFace';
 export const TransitionSpace: React.FC<{}> = ({}) => {
 	const frame = useCurrentFrame();
 
-	const translateY = interpolate(frame, [0, 180], [0, -480]);
-	const translateX = interpolate(frame, [0, 180], [0, 1620]);
+	const translateY = interpolate(frame, [0, 180], [0, -550]);
+	const translateX = interpolate(frame, [0, 180], [0, 1120]);
 	const rotate = interpolate(frame, [0, 180], [-120, 60]);
 
 	return (
@@ -42,8 +42,8 @@ export const TransitionSpace: React.FC<{}> = ({}) => {
 
 const yukkuri: React.CSSProperties = {
 	position: 'absolute',
-	bottom: '200px',
-	left: '-40px',
+	bottom: '150px',
+	left: '-240px',
 	opacity: 0.95,
 	zIndex: 1,
 };
