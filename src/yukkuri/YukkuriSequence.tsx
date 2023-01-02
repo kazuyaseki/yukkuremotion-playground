@@ -90,10 +90,12 @@ const reimuStyle: React.CSSProperties = {
 	position: 'absolute',
 	right: '20px',
 	bottom: '135px',
+	zIndex: 10,
 };
 
 const marisaStyle: React.CSSProperties = {
 	position: 'absolute',
 	left: '20px',
 	bottom: '135px',
+	zIndex: 10,
 };
