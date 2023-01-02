@@ -14,10 +14,21 @@ import {
 	fuyofuyoAnimationDurationSec,
 	FuyoFuyoAnimationStyle,
 } from '../fuyofuyoAnimation';
+import {kuchipakuMap} from '../yukkuriVideoConfig';
 import {eyeImagePaths} from './ImagePaths/eyeImagePaths';
 import {faceImagePaths, FACE_TYPE} from './ImagePaths/faceImagePaths';
 
 export type MOUTH_TYPE = 'OPEN' | 'CLOSE';
+
+export type TalkInterval = {
+	start: number;
+	end: number;
+};
+
+export type KuchipakuMap = {
+	frames: number[];
+	imageIndexes: number[];
+};
 
 // FIXME: face を string literal type にする
 export type ReimuProps = {
@@ -29,6 +40,7 @@ export type ReimuProps = {
 	isReimu?: boolean;
 	isTalking: boolean;
 	mouth?: MOUTH_TYPE;
+	kuchipakuMap: kuchipakuMap;
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
@@ -79,6 +91,7 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	isReimu,
 	isTalking,
 	mouth,
+	kuchipakuMap,
 }) => {
 	const imageDirectory = useMemo(
 		() => (isReimu ? 'reimu' : 'marisa'),
@@ -106,6 +119,7 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 				isReimu={isReimu}
 				isTalking={isTalking}
 				mouth={mouth}
+				kuchipakuMap={kuchipakuMap}
 			/>
 		</div>
 	);
@@ -172,10 +186,14 @@ const MABATAKI_ANIMATION_INTERVAL_FRAME = 1;
 
 const KUCHIPAKU_ANIMATION_INTERVAL_FRAME = 1;
 
-function getCurrentMouth(frame: number, isTalking: boolean) {
+function getCurrentMouth(frame: number, talkIntervals: TalkInterval[]) {
+	const isTalking = !!talkIntervals.find(
+		(interval) => frame >= interval.start && frame <= interval.end
+	);
+
 	if (isTalking) {
 		const frameLeft = frame % (5 * KUCHIPAKU_ANIMATION_INTERVAL_FRAME);
-		console.log(frameLeft);
+		console.log(frame);
 
 		if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 0) {
 			return '06';
@@ -204,8 +222,17 @@ export const Face = (props: {
 	isReimu?: boolean;
 	imageDirectory: string;
 	isTalking: boolean;
+	kuchipakuMap: kuchipakuMap;
 }) => {
-	const {face, mouth, sizePx, isReimu, imageDirectory, isTalking} = props;
+	const {
+		face,
+		mouth,
+		sizePx,
+		isReimu,
+		imageDirectory,
+		isTalking,
+		kuchipakuMap,
+	} = props;
 
 	// Multiply by 1.2 because Marisa is bit smaller compared to Reimu
 	const faceSizePx =
@@ -258,14 +285,11 @@ export const Face = (props: {
 		}
 	}, [frame, eyeImagePath]);
 
-	const mouthImage = useMemo(
-		() => getCurrentMouth(frame, isTalking),
-		[frame, isTalking]
+	const mouthImageNum = interpolate(
+		frame,
+		kuchipakuMap.frames,
+		kuchipakuMap.amplitude
 	);
-
-	useEffect(() => {
-		console.log(mouthImage);
-	}, [mouthImage]);
 
 	return (
 		<div
@@ -294,7 +318,11 @@ export const Face = (props: {
 					...faceStyle,
 					width: `${faceSizePx}px`,
 				}}
-				src={staticFile(`${imageDirectory}/mouth/${mouthImage}.png`)}
+				src={staticFile(
+					`${imageDirectory}/mouth/${Math.abs(Math.floor(mouthImageNum))
+						.toString()
+						.padStart(2, '0')}.png`
+				)}
 			/>
 		</div>
 	);

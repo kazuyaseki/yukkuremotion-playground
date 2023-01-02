@@ -65,6 +65,8 @@ export type VideoConfig = {
 		// Frame を floor している関係上どうしてもズレが起きるので微調整する苦肉の策
 		afteMovieDelay?: number;
 		kuchipakuMap: kuchipakuMap;
+		reimuKuchipakuMap: kuchipakuMap;
+		marisaKuchipakuMap: kuchipakuMap;
 		initialDelayFrames?: number; // default: 60s
 	}[];
 };

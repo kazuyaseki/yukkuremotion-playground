@@ -153,12 +153,36 @@ FirstVideoConfig.sections.forEach((section) => {
 	}
 
 	for (const section of FirstVideoConfig.sections) {
-		const {talks} = section;
+		const {talks, fromFramesMap} = section;
 
-		section.kuchipakuMap = {
-			frames: [],
-			amplitude: [],
+		section.reimuKuchipakuMap = {
+			frames: [0],
+			amplitude: [6],
 		};
+
+		section.marisaKuchipakuMap = {
+			frames: [0],
+			amplitude: [5],
+		};
+
+		talks.forEach((talk, index) => {
+			const start = fromFramesMap[index];
+
+			if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'reimu') {
+				for (let i = 0; i <= talk.audioDurationFrames; i++) {
+					section.reimuKuchipakuMap.frames.push(i + start);
+					const index = Math.abs(6 - (i % 12));
+					section.reimuKuchipakuMap.amplitude.push(index);
+				}
+			}
+			if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'marisa') {
+				for (let i = 0; i <= talk.audioDurationFrames; i++) {
+					section.marisaKuchipakuMap.frames.push(i + start);
+					const index = Math.abs(5 - (i % 10));
+					section.marisaKuchipakuMap.amplitude.push(index);
+				}
+			}
+		});
 
 		// talks.forEach((talk, talkIndex) => {
 		// 	if (talk.id || talk.ids) {

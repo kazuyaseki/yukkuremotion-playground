@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {FPS, TALK_GAP_FRAMES} from '../constants';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
@@ -7,12 +7,60 @@ import {kuchipakuMap, SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
 
 export type Props = {
 	kuchipackuMap: kuchipakuMap;
+	reimuKuchipakuMap: kuchipakuMap;
+	marisaKuchipakuMap: kuchipakuMap;
 	talks: VoiceConfig[];
 	fromFramesMap: {[key in number]: number};
 };
 
+function getTalkIntervals(
+	talks: VoiceConfig[],
+	fromFramesMap: {[key in number]: number}
+) {
+	const reimuFrames = {
+		frames: [0],
+		imageIndexes: [6],
+	};
+
+	const marisaFrames = {
+		frames: [0],
+		imageIndexes: [5],
+	};
+
+	talks.forEach((talk, index) => {
+		const start = fromFramesMap[index];
+		const end = start + talk.audioDurationFrames;
+
+		if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'reimu') {
+			for (let i = 0; i <= talk.audioDurationFrames; i++) {
+				reimuFrames.frames.push(i + start);
+				const index = Math.abs(6 - (i % 12));
+				reimuFrames.imageIndexes.push(index);
+			}
+		}
+		if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'marisa') {
+			for (let i = 0; i <= talk.audioDurationFrames; i++) {
+				marisaFrames.frames.push(i + start);
+				const index = Math.abs(5 - (i % 10));
+				marisaFrames.imageIndexes.push(index);
+			}
+		}
+	});
+
+	console.log({
+		reimuFrames,
+		marisaFrames,
+	});
+
+	return {
+		reimuFrames,
+		marisaFrames,
+	};
+}
+
 export const YukkuriSequence: React.FC<Props> = ({
-	kuchipackuMap,
+	reimuKuchipakuMap,
+	marisaKuchipakuMap,
 	talks,
 	fromFramesMap,
 }) => {
@@ -64,22 +112,27 @@ export const YukkuriSequence: React.FC<Props> = ({
 		}
 	}, [frame, fromFramesMap, talks]);
 
-	// const amplitude = interpolate(
-	// 	frame,
-	// 	kuchipackuMap.frames,
-	// 	kuchipackuMap.amplitude
-	// );
+	const intervals = useMemo(
+		() => getTalkIntervals(talks, fromFramesMap),
+		[talks, fromFramesMap]
+	);
 
 	return (
 		<Sequence>
 			<div style={reimuStyle}>
-				<YukkuriFace isReimu face={reimuFace} isTalking={isReimuTalking} />
+				<YukkuriFace
+					isReimu
+					face={reimuFace}
+					isTalking={isReimuTalking}
+					kuchipakuMap={reimuKuchipakuMap}
+				/>
 			</div>
 			<div style={marisaStyle}>
 				<YukkuriFace
 					isReimu={false}
 					face={marisaFace}
 					isTalking={isMarisaTalking}
+					kuchipakuMap={marisaKuchipakuMap}
 				/>
 			</div>
 		</Sequence>
