@@ -1,5 +1,13 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {Img, staticFile, useCurrentFrame} from 'remotion';
+import {
+	Easing,
+	Img,
+	interpolate,
+	spring,
+	staticFile,
+	useCurrentFrame,
+	useVideoConfig,
+} from 'remotion';
 import {FPS} from '../../constants';
 import {
 	fuyofuyoAnimationCss,
@@ -29,6 +37,42 @@ const KUCHIPAKU_INTERVAL_MSEC = 150;
 
 const MATABATAKI_INTERVAL_FRAMES = FPS * 5;
 
+const FuyoFuyoInterval = 40;
+const FuyoFuyoRange = 2;
+
+function addFuyoFuyoRange(intervals: number[]) {
+	if (intervals.length === 0) {
+		intervals.push(FuyoFuyoRange);
+		return;
+	}
+
+	if (intervals[intervals.length - 1] === FuyoFuyoRange) {
+		intervals.push(-FuyoFuyoRange);
+	} else {
+		intervals.push(FuyoFuyoRange);
+	}
+}
+
+function getFuyoFuyoFrames(videoFrames: number, isReimu?: boolean) {
+	const frames: number[] = [isReimu ? 0 : FuyoFuyoInterval / 2];
+	const intervals: number[] = [FuyoFuyoRange];
+
+	let left = videoFrames;
+	while (left > FuyoFuyoInterval) {
+		frames.push(frames[frames.length - 1] + FuyoFuyoInterval);
+		left -= FuyoFuyoInterval;
+
+		addFuyoFuyoRange(intervals);
+	}
+
+	if (left > 0) {
+		frames.push(frames[frames.length - 1] + left);
+		addFuyoFuyoRange(intervals);
+	}
+
+	return [frames, intervals];
+}
+
 export const YukkuriFace: React.FC<ReimuProps> = ({
 	face,
 	sizePx,
@@ -49,9 +93,20 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 		}
 	}, [isTalking]);
 
+	const frame = useCurrentFrame();
+	const video = useVideoConfig();
+
+	const [frames, intervals] = useMemo(
+		() => getFuyoFuyoFrames(video.durationInFrames, isReimu),
+		[video]
+	);
+
+	const translateY = interpolate(frame, frames, intervals, {
+		easing: Easing.bezier(0.51, 0, 0.49, 1),
+	});
+
 	return (
-		<>
-			<FuyoFuyoAnimationStyle />
+		<div style={{transform: `translateY(${translateY}%)`}}>
 			<Face
 				face={face}
 				sizePx={sizePx}
@@ -60,7 +115,7 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 				isTalking={isTalking}
 				mouth={mouth}
 			/>
-		</>
+		</div>
 	);
 };
 
@@ -252,10 +307,10 @@ export const Face = (props: {
 const containerStyle: React.CSSProperties = {
 	position: 'relative',
 	zIndex: 10,
-	...fuyofuyoAnimationCss,
 };
 
 const faceStyle: React.CSSProperties = {
 	position: 'absolute',
 	left: '0',
+	zIndex: 10,
 };
