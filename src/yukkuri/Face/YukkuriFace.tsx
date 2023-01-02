@@ -30,7 +30,6 @@ export type ReimuProps = {
 	sizePx?: number;
 	isKuchipaku?: boolean;
 	isReimu?: boolean;
-	isTalking: boolean;
 	mouth?: MOUTH_TYPE;
 	kuchipakuMap: kuchipakuMap;
 };
@@ -77,7 +76,6 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	face,
 	sizePx,
 	isReimu,
-	isTalking,
 	mouth,
 	kuchipakuMap,
 }) => {
@@ -105,7 +103,6 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 				sizePx={sizePx}
 				imageDirectory={imageDirectory}
 				isReimu={isReimu}
-				isTalking={isTalking}
 				mouth={mouth}
 				kuchipakuMap={kuchipakuMap}
 			/>
@@ -178,18 +175,9 @@ export const Face = (props: {
 	sizePx?: number;
 	isReimu?: boolean;
 	imageDirectory: string;
-	isTalking: boolean;
 	kuchipakuMap: kuchipakuMap;
 }) => {
-	const {
-		face,
-		mouth,
-		sizePx,
-		isReimu,
-		imageDirectory,
-		isTalking,
-		kuchipakuMap,
-	} = props;
+	const {face, mouth, sizePx, isReimu, imageDirectory, kuchipakuMap} = props;
 
 	// Multiply by 1.2 because Marisa is bit smaller compared to Reimu
 	const faceSizePx =
@@ -198,20 +186,6 @@ export const Face = (props: {
 	const [eyeImagePath, setEyeImagePath] = useState<string | null>(null);
 
 	const frame = useCurrentFrame();
-
-	useEffect(() => {
-		if (isReimu) {
-			console.log(
-				isTalking ? '霊夢が話してる' : '霊夢が話し終わった',
-				`at frame: ${frame}`
-			);
-		} else {
-			console.log(
-				isTalking ? '魔理沙が話してる' : '魔理沙が話し終わった',
-				`at frame: ${frame}`
-			);
-		}
-	}, [isTalking]);
 
 	useEffect(() => {
 		const frameLeft = frame % (MABATAKI_INTERVAL_SECONDS * FPS);
@@ -275,9 +249,11 @@ export const Face = (props: {
 					width: `${faceSizePx}px`,
 				}}
 				src={staticFile(
-					`${imageDirectory}/mouth/${Math.abs(Math.floor(mouthImageNum))
-						.toString()
-						.padStart(2, '0')}.png`
+					`${imageDirectory}/mouth/${
+						mouthImageNum < 7
+							? Math.floor(mouthImageNum).toString().padStart(2, '0')
+							: '05'
+					}.png`
 				)}
 			/>
 		</div>

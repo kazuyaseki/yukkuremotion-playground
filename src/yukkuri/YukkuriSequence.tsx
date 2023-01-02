@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
 import {Sequence, useCurrentFrame} from 'remotion';
-import {FPS} from '../constants';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
 import {YukkuriFace} from './Face/YukkuriFace';
 import {kuchipakuMap, SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
@@ -23,9 +22,6 @@ export const YukkuriSequence: React.FC<Props> = ({
 	const [marisaFace, setMarisaFace] = useState<FACE_TYPE>('default');
 	const talkIndex = useRef(0);
 
-	const [isReimuTalking, setIsReimuTalking] = useState(false);
-	const [isMarisaTalking, setIsMarisaTalking] = useState(false);
-
 	const frame = useCurrentFrame();
 
 	// Reset index when rewind during development
@@ -46,23 +42,6 @@ export const YukkuriSequence: React.FC<Props> = ({
 				setMarisaFace(talk.face || 'default');
 			}
 
-			if (talk.speaker === SPEAKER.reimu) {
-				setIsReimuTalking(true);
-			} else if (talk.speaker === SPEAKER.marisa) {
-				setIsMarisaTalking(true);
-			}
-
-			const talkDurationsMsec = (talk.audioDurationFrames / FPS) * 1000;
-			console.log(talkDurationsMsec);
-			setTimeout(() => {
-				console.log('setTimeout の中身が実行', talk.text);
-				if (talk.speaker === SPEAKER.reimu) {
-					setIsReimuTalking(false);
-				} else {
-					setIsMarisaTalking(false);
-				}
-			}, talkDurationsMsec);
-
 			talkIndex.current++;
 		}
 	}, [frame, fromFramesMap, talks]);
@@ -73,7 +52,6 @@ export const YukkuriSequence: React.FC<Props> = ({
 				<YukkuriFace
 					isReimu
 					face={reimuFace}
-					isTalking={isReimuTalking}
 					kuchipakuMap={reimuKuchipakuMap}
 				/>
 			</div>
@@ -81,7 +59,6 @@ export const YukkuriSequence: React.FC<Props> = ({
 				<YukkuriFace
 					isReimu={false}
 					face={marisaFace}
-					isTalking={isMarisaTalking}
 					kuchipakuMap={marisaKuchipakuMap}
 				/>
 			</div>
