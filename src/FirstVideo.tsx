@@ -6,16 +6,16 @@ import {YukkuriSequence} from './yukkuri/YukkuriSequence';
 import React, {useEffect, useRef, useState} from 'react';
 import {FPS, SUBTITLE_HEIGHT_PX} from './constants';
 import {getVideoMetadata} from '@remotion/media-utils';
+import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 
 const INITIAL_DELAY_FRAMES = 30;
 
 export const FirstVideo: React.FC<{
-	titleText: string;
-	titleColor: string;
-}> = () => {
+	videoConfig: VideoConfig;
+}> = ({videoConfig}) => {
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
-			{FirstVideoConfig.sections.map((section, index) => {
+			{videoConfig.sections.map((section, index) => {
 				let cumulateFrames = INITIAL_DELAY_FRAMES;
 				for (let i = 0; i < index; i++) {
 					cumulateFrames += FirstVideoConfig.sections[i].totalFrames;
