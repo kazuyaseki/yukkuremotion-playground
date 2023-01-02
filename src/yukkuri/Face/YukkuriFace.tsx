@@ -1,22 +1,14 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {
 	Easing,
 	Img,
 	interpolate,
-	spring,
 	staticFile,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
 import {FPS} from '../../constants';
-import {
-	fuyofuyoAnimationCss,
-	fuyofuyoAnimationDurationSec,
-	FuyoFuyoAnimationStyle,
-} from '../fuyofuyoAnimation';
 import {kuchipakuMap} from '../yukkuriVideoConfig';
-import {eyeImagePaths} from './ImagePaths/eyeImagePaths';
-import {faceImagePaths, FACE_TYPE} from './ImagePaths/faceImagePaths';
 
 export type MOUTH_TYPE = 'OPEN' | 'CLOSE';
 
@@ -44,10 +36,6 @@ export type ReimuProps = {
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
-
-const KUCHIPAKU_INTERVAL_MSEC = 150;
-
-const MATABATAKI_INTERVAL_FRAMES = FPS * 5;
 
 const FuyoFuyoInterval = 40;
 const FuyoFuyoRange = 2;
@@ -184,37 +172,6 @@ const defaultMouth: {[key in keyof typeof eyeImage]: string} = {
 const MABATAKI_INTERVAL_SECONDS = 7;
 const MABATAKI_ANIMATION_INTERVAL_FRAME = 1;
 
-const KUCHIPAKU_ANIMATION_INTERVAL_FRAME = 1;
-
-function getCurrentMouth(frame: number, talkIntervals: TalkInterval[]) {
-	const isTalking = !!talkIntervals.find(
-		(interval) => frame >= interval.start && frame <= interval.end
-	);
-
-	if (isTalking) {
-		const frameLeft = frame % (5 * KUCHIPAKU_ANIMATION_INTERVAL_FRAME);
-		console.log(frame);
-
-		if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 0) {
-			return '06';
-		} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 1) {
-			return '04';
-		} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 2) {
-			return '02';
-		} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 3) {
-			return '00';
-		} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 4) {
-			return '02';
-		} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 5) {
-			return '04';
-		} else if (frameLeft === KUCHIPAKU_ANIMATION_INTERVAL_FRAME * 6) {
-			return '06';
-		}
-	}
-
-	return '05';
-}
-
 export const Face = (props: {
 	face?: string;
 	mouth?: string;
@@ -295,7 +252,6 @@ export const Face = (props: {
 		<div
 			style={{
 				...containerStyle,
-				animationDelay: `${isReimu ? 0 : fuyofuyoAnimationDurationSec / 2}s`,
 			}}
 		>
 			<Img

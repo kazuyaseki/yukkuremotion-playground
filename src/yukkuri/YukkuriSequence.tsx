@@ -1,6 +1,6 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {interpolate, Sequence, useCurrentFrame} from 'remotion';
-import {FPS, TALK_GAP_FRAMES} from '../constants';
+import {useEffect, useRef, useState} from 'react';
+import {Sequence, useCurrentFrame} from 'remotion';
+import {FPS} from '../constants';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
 import {YukkuriFace} from './Face/YukkuriFace';
 import {kuchipakuMap, SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
@@ -12,51 +12,6 @@ export type Props = {
 	talks: VoiceConfig[];
 	fromFramesMap: {[key in number]: number};
 };
-
-function getTalkIntervals(
-	talks: VoiceConfig[],
-	fromFramesMap: {[key in number]: number}
-) {
-	const reimuFrames = {
-		frames: [0],
-		imageIndexes: [6],
-	};
-
-	const marisaFrames = {
-		frames: [0],
-		imageIndexes: [5],
-	};
-
-	talks.forEach((talk, index) => {
-		const start = fromFramesMap[index];
-		const end = start + talk.audioDurationFrames;
-
-		if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'reimu') {
-			for (let i = 0; i <= talk.audioDurationFrames; i++) {
-				reimuFrames.frames.push(i + start);
-				const index = Math.abs(6 - (i % 12));
-				reimuFrames.imageIndexes.push(index);
-			}
-		}
-		if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'marisa') {
-			for (let i = 0; i <= talk.audioDurationFrames; i++) {
-				marisaFrames.frames.push(i + start);
-				const index = Math.abs(5 - (i % 10));
-				marisaFrames.imageIndexes.push(index);
-			}
-		}
-	});
-
-	console.log({
-		reimuFrames,
-		marisaFrames,
-	});
-
-	return {
-		reimuFrames,
-		marisaFrames,
-	};
-}
 
 export const YukkuriSequence: React.FC<Props> = ({
 	reimuKuchipakuMap,
@@ -111,11 +66,6 @@ export const YukkuriSequence: React.FC<Props> = ({
 			talkIndex.current++;
 		}
 	}, [frame, fromFramesMap, talks]);
-
-	const intervals = useMemo(
-		() => getTalkIntervals(talks, fromFramesMap),
-		[talks, fromFramesMap]
-	);
 
 	return (
 		<Sequence>
