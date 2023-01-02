@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "remotion preview",
 		"build": "remotion render FirstVideo out/video.mp4",
-		"buildForTestEncoding": "remotion render TestEncoding out/testEncoding.mp4 -- --concurrency=2",
+		"buildForTestEncoding": "remotion render TestEncoding out/testEncoding.mp4 -- --concurrency=4",
 		"upgrade": "remotion upgrade",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc",
 		"yukkuri": "ts-node test-yukkuri.ts",
