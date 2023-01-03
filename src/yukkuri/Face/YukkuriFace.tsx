@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState, memo} from 'react';
 import {
 	Easing,
 	Img,
@@ -234,6 +234,24 @@ export const Face = (props: {
 	);
 
 	return (
+		<MemoizedFace
+			faceSizePx={faceSizePx}
+			imageDirectory={imageDirectory}
+			eyeImage={eyeImageStr === 'default' ? eyeImagePath || '05' : eyeImageStr}
+			mouthImage={mouthImageStr}
+		/>
+	);
+};
+
+const PureFace = (props: {
+	faceSizePx: number;
+	imageDirectory: string;
+	eyeImage: string;
+	mouthImage: string;
+}) => {
+	const {faceSizePx, imageDirectory, eyeImage, mouthImage} = props;
+
+	return (
 		<div
 			style={{
 				...containerStyle,
@@ -248,22 +266,25 @@ export const Face = (props: {
 					...faceStyle,
 					width: `${faceSizePx}px`,
 				}}
-				src={staticFile(
-					`${imageDirectory}/eye/${
-						eyeImageStr === 'default' ? eyeImagePath || '05' : eyeImageStr
-					}.png`
-				)}
+				src={staticFile(`${imageDirectory}/eye/${eyeImage}.png`)}
 			/>
 			<Img
 				style={{
 					...faceStyle,
 					width: `${faceSizePx}px`,
 				}}
-				src={staticFile(`${imageDirectory}/mouth/${mouthImageStr}.png`)}
+				src={staticFile(`${imageDirectory}/mouth/${mouthImage}.png`)}
 			/>
 		</div>
 	);
 };
+
+const MemoizedFace = memo(PureFace, (prevProps, nextProps) => {
+	return (
+		prevProps.eyeImage === nextProps.eyeImage &&
+		prevProps.mouthImage === nextProps.mouthImage
+	);
+});
 
 const containerStyle: React.CSSProperties = {
 	position: 'relative',
