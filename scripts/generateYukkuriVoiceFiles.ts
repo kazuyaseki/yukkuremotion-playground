@@ -196,8 +196,23 @@ FirstVideoConfig.sections.forEach((section) => {
 			if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'marisa') {
 				for (let i = 0; i <= talk.audioDurationFrames; i++) {
 					section.marisaKuchipakuMap.frames.push(i + start);
-					const index = Math.abs(5 - (i % 10));
-					section.marisaKuchipakuMap.amplitude.push(index);
+					const index = Math.abs(3 - (i % 6));
+					let imageIndex = 5;
+					switch (index) {
+						case 0:
+							imageIndex = 0;
+							break;
+						case 1:
+							imageIndex = 2;
+							break;
+						case 2:
+							imageIndex = 3;
+							break;
+						case 2:
+							imageIndex = 5;
+							break;
+					}
+					section.marisaKuchipakuMap.amplitude.push(imageIndex);
 				}
 			}
 		});
