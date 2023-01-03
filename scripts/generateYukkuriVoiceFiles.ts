@@ -9,6 +9,7 @@ import AquesTalk10, {gVoice_F1} from 'node-aquestalk10';
 import AqKanji2Koe from 'node-aqkanji2koe';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {
+	DEFAULT_SECTION_END_FRAMES,
 	DEFAULT_SECTION_INITIAL_DELAY_FRAMES,
 	FPS,
 	TALK_GAP_FRAMES,
@@ -144,11 +145,13 @@ FirstVideoConfig.sections.forEach((section) => {
 			}
 		}
 
+		section.totalFrames += DEFAULT_SECTION_END_FRAMES;
+
 		if (section.afterMovie) {
-			section.afterMovieFrames =
-				(await getVideoDurationInSeconds(`./public${section.afterMovie}`)) *
-				FPS;
-			section.totalFrames += Math.floor(section.afterMovieFrames);
+			section.afterMovieFrames = Math.ceil(
+				(await getVideoDurationInSeconds(`./public${section.afterMovie}`)) * FPS
+			);
+			section.totalFrames += section.afterMovieFrames;
 		}
 	}
 

@@ -79,6 +79,7 @@ export const FirstVideo: React.FC<{
 						{section.afterMovie && section.afterMovieFrames && (
 							<Sequence
 								from={
+									cumulateFrames +
 									section.totalFrames -
 									section.afterMovieFrames +
 									(section.afteMovieDelay || 0)
