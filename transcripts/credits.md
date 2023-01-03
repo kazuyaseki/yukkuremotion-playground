@@ -6,6 +6,11 @@ https://dova-s.jp/bgm/play7369.html
 Flutter
 https://dova-s.jp/bgm/play1552.html
 
+Something Special Secret
+https://dova-s.jp/bgm/play3573.html
+
+https://dova-s.jp/bgm/play1444.html
+
 ## 動画
 
 トランジション

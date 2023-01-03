@@ -29,7 +29,7 @@ export const FirstVideo: React.FC<{
 							}
 						>
 							{section.bgmSrc && (
-								<Audio src={staticFile(section.bgmSrc)} volume={0.2} />
+								<Audio src={staticFile(section.bgmSrc)} volume={0.18} loop />
 							)}
 							{section.backgroundVideo && (
 								<>
@@ -41,7 +41,7 @@ export const FirstVideo: React.FC<{
 												height: '100%',
 												backgroundColor: 'rgba(0, 0, 0, 0.4)',
 												backdropFilter: 'blur(4px)',
-												zIndex: '1',
+												zIndex: '0',
 											}}
 										></div>
 									)}

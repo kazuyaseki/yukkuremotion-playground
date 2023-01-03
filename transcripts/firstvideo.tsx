@@ -408,7 +408,7 @@ export const FirstVideoConfig: VideoConfig = {
 		},
 		{
 			title: 'Remotion でゆっくり',
-			bgmSrc: '/audio/bgm/honobono-wartz.wav',
+			bgmSrc: '/audio/bgm/8bit_Game_Menu.mp3',
 			backgroundVideo: '/video/editing-code.mp4',
 			showBgVideoOverlay: true,
 			fromFramesMap: {
@@ -594,7 +594,7 @@ export const FirstVideoConfig: VideoConfig = {
 				{
 					text: '作者？',
 					speaker: 'reimu',
-					face: 'komariKatame',
+					face: 'komari',
 					id: '9774b72aa7de474395784536e1e8fabd',
 					audioDurationFrames: 17,
 				},
@@ -630,6 +630,7 @@ export const FirstVideoConfig: VideoConfig = {
 				{
 					text: 'あらかわいい',
 					speaker: 'reimu',
+					face: 'hokkori',
 					id: '7b195b84688e484a834fb1054c7abdf1',
 					audioDurationFrames: 22,
 				},
@@ -642,6 +643,7 @@ export const FirstVideoConfig: VideoConfig = {
 				{
 					text: '作者...一体誰なの...',
 					speaker: 'reimu',
+					face: 'hokkori',
 					id: '1111e55d27af4335aefbb60add966a7b',
 					audioDurationFrames: 62,
 				},
@@ -654,7 +656,7 @@ export const FirstVideoConfig: VideoConfig = {
 		},
 		{
 			title: 'プログラミングで動画が作れると何が嬉しいか',
-			bgmSrc: '/audio/bgm/honobono-wartz.wav',
+			bgmSrc: '/audio/bgm/Something_Special_Secret.mp3',
 			backgroundVideo: '/video/office.mp4',
 			fromFramesMap: {
 				'0': 30,
@@ -967,7 +969,7 @@ export const FirstVideoConfig: VideoConfig = {
 		},
 		{
 			title: 'Remotion でゆっくり',
-			bgmSrc: '/audio/bgm/honobono-wartz.wav',
+			bgmSrc: '/audio/bgm/Flutter.mp3',
 			backgroundVideo: '/video/codebg.mp4',
 			fromFramesMap: {
 				'0': 30,
