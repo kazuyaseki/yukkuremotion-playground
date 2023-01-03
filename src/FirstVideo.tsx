@@ -7,6 +7,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {FPS, SUBTITLE_HEIGHT_PX} from './constants';
 import {getVideoMetadata} from '@remotion/media-utils';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
+import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
 
 export const FirstVideo: React.FC<{
 	videoConfig: VideoConfig;
@@ -14,10 +15,7 @@ export const FirstVideo: React.FC<{
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			{videoConfig.sections.map((section, index) => {
-				let cumulateFrames = 0;
-				for (let i = 0; i < index; i++) {
-					cumulateFrames += FirstVideoConfig.sections[i].totalFrames;
-				}
+				let cumulateFrames = getTotalFramesBeforeSection(videoConfig, index);
 
 				const fromFrameMap = {...section.fromFramesMap};
 				Object.keys(fromFrameMap).forEach((key) => {
