@@ -4,8 +4,8 @@
 	"description": "My Remotion video",
 	"scripts": {
 		"start": "remotion preview",
-		"build": "remotion render FirstVideo out/video.mp4",
-		"buildForTestEncoding": "remotion render TestEncoding out/testEncoding.mp4 -- --concurrency=4",
+		"build": "remotion render FirstVideo out/video.mp4 -- --concurrency=2",
+		"buildForTestEncoding": "remotion render TestEncoding out/testEncoding.mp4 -- --concurrency=2",
 		"buildTransitionSpace": "remotion render TransitionSpace public/video/transition-space-yukkuri.mp4",
 		"upgrade": "remotion upgrade",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc",

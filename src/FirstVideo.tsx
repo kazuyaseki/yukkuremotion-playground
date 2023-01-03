@@ -1,9 +1,8 @@
 import {Audio, Img, Sequence, staticFile, Video} from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import {TalkSequence} from './yukkuri/Talk/TalkSequence';
-import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {FPS, SUBTITLE_HEIGHT_PX} from './constants';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
