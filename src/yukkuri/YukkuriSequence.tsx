@@ -5,7 +5,6 @@ import {YukkuriFace} from './Face/YukkuriFace';
 import {kuchipakuMap, SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
 
 export type Props = {
-	kuchipackuMap: kuchipakuMap;
 	reimuKuchipakuMap: kuchipakuMap;
 	marisaKuchipakuMap: kuchipakuMap;
 	talks: VoiceConfig[];

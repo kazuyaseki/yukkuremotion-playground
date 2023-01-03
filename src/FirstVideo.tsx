@@ -24,6 +24,18 @@ export const FirstVideo: React.FC<{
 					fromFrameMap[Number(key)] += cumulateFrames;
 				});
 
+				const reimuKuchipakuMap = {...section.reimuKuchipakuMap};
+				reimuKuchipakuMap.frames = reimuKuchipakuMap.frames.map(
+					(frame) => frame + cumulateFrames
+				);
+
+				const marisaKuchipakuMap = {...section.marisaKuchipakuMap};
+				marisaKuchipakuMap.frames = marisaKuchipakuMap.frames.map(
+					(frame) => frame + cumulateFrames
+				);
+
+				console.log(reimuKuchipakuMap, marisaKuchipakuMap);
+
 				return (
 					<React.Fragment key={index}>
 						<Sequence
@@ -62,7 +74,8 @@ export const FirstVideo: React.FC<{
 						<YukkuriSequence
 							{...section}
 							fromFramesMap={fromFrameMap}
-							kuchipackuMap={section.kuchipakuMap}
+							reimuKuchipakuMap={section.reimuKuchipakuMap}
+							marisaKuchipakuMap={section.marisaKuchipakuMap}
 						/>
 
 						{section.beforeMovie && (

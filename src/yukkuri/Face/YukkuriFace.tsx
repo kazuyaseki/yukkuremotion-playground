@@ -239,7 +239,9 @@ export const Face = (props: {
 				}}
 				src={staticFile(
 					`${imageDirectory}/eye/${
-						eyeImagePath || eyeImage[face || 'default']
+						eyeImage[face || 'default'] ||
+						eyeImagePath ||
+						eyeImage[face || 'default']
 					}.png`
 				)}
 			/>
@@ -250,7 +252,7 @@ export const Face = (props: {
 				}}
 				src={staticFile(
 					`${imageDirectory}/mouth/${
-						mouthImageNum < 7
+						mouthImageNum > -1 && mouthImageNum < 7
 							? Math.floor(mouthImageNum).toString().padStart(2, '0')
 							: '05'
 					}.png`
