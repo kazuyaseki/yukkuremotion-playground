@@ -8,15 +8,13 @@ import {FPS, SUBTITLE_HEIGHT_PX} from './constants';
 import {getVideoMetadata} from '@remotion/media-utils';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 
-const INITIAL_DELAY_FRAMES = 30;
-
 export const FirstVideo: React.FC<{
 	videoConfig: VideoConfig;
 }> = ({videoConfig}) => {
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			{videoConfig.sections.map((section, index) => {
-				let cumulateFrames = INITIAL_DELAY_FRAMES;
+				let cumulateFrames = 0;
 				for (let i = 0; i < index; i++) {
 					cumulateFrames += FirstVideoConfig.sections[i].totalFrames;
 				}
