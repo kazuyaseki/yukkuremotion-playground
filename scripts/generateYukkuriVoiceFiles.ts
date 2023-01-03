@@ -23,6 +23,8 @@ import {
 	getAudioData,
 	getWaveformPortion,
 } from '@remotion/media-utils';
+import {getTotalVideoFrames} from '../src/utils/getTotalVideoFrames';
+import {getTotalFramesBeforeSection} from '../src/utils/getTotalFramesBeforeSection';
 
 const aquestalk = new AquesTalk10(
 	'./vendor/AquesTalk.framework/Versions/A/AquesTalk'
@@ -268,6 +270,31 @@ FirstVideoConfig.sections.forEach((section) => {
 		`import {VideoConfig} from '../src/yukkuri/yukkuriVideoConfig';
 
 export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
+				`
+	);
+
+	const totalFrames = getTotalVideoFrames(FirstVideoConfig);
+	const FaceByFrame = new Array(totalFrames).fill('default');
+
+	FirstVideoConfig.sections.forEach((section, sectionIndex) => {
+		const beforeFrames = getTotalFramesBeforeSection(
+			FirstVideoConfig,
+			sectionIndex
+		);
+		section.talks.forEach((talk, index) => {
+			const startFrame = beforeFrames + section.fromFramesMap[index];
+			for (let i = startFrame; i < startFrame + talk.audioDurationFrames; i++) {
+				FaceByFrame[i] = talk.face || 'default';
+				if (talk.face) {
+					console.log(i, FaceByFrame[i]);
+				}
+			}
+		});
+	});
+
+	fs.writeFileSync(
+		`./transcripts/FaceByFrame.ts`,
+		`export const FaceByFrame = ${JSON.stringify(FaceByFrame)}
 				`
 	);
 })();
