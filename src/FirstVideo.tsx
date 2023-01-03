@@ -32,8 +32,6 @@ export const FirstVideo: React.FC<{
 					(frame) => frame + cumulateFrames
 				);
 
-				console.log(reimuKuchipakuMap, marisaKuchipakuMap);
-
 				return (
 					<React.Fragment key={index}>
 						<Sequence

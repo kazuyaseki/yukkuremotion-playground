@@ -3,6 +3,7 @@ import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {FPS} from './constants';
 import {FirstVideo} from './FirstVideo';
 import {TransitionSpace} from './sozai/TransitionSpace';
+import {getTotalVideoFrames} from './utils/getTotalVideoFrames';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -10,14 +11,7 @@ export const RemotionRoot: React.FC = () => {
 			<Composition
 				id="FirstVideo"
 				component={FirstVideo}
-				durationInFrames={FirstVideoConfig.sections.reduce((prev, current) => {
-					return (
-						prev +
-						(current.afterMovieFrames || 0) +
-						current.totalFrames +
-						(current.beforeMovieFrames || 0)
-					);
-				}, 0)}
+				durationInFrames={getTotalVideoFrames(FirstVideoConfig)}
 				fps={FPS}
 				width={1920}
 				height={1080}

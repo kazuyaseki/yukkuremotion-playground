@@ -36,7 +36,7 @@ export type VoiceConfig = {
 	speaker: SPEAKER_TYPE;
 	delayFrames?: number;
 	audioDurationFrames: number;
-	face?: FACE_TYPE;
+	face?: string;
 	image?: Image;
 	backgroundVideo?: BackgroundVideo;
 	audio?: Audio;

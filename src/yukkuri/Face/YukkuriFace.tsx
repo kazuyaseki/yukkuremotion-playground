@@ -7,6 +7,7 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
+import {FaceByFrame} from '../../../transcripts/FaceByFrame';
 import {FPS} from '../../constants';
 import {kuchipakuMap} from '../yukkuriVideoConfig';
 
@@ -238,11 +239,7 @@ export const Face = (props: {
 					width: `${faceSizePx}px`,
 				}}
 				src={staticFile(
-					`${imageDirectory}/eye/${
-						eyeImage[face || 'default'] ||
-						eyeImagePath ||
-						eyeImage[face || 'default']
-					}.png`
+					`${imageDirectory}/eye/${eyeImage[FaceByFrame[frame]]}.png`
 				)}
 			/>
 			<Img

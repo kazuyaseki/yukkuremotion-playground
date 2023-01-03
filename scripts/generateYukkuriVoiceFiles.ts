@@ -285,9 +285,6 @@ export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
 			const startFrame = beforeFrames + section.fromFramesMap[index];
 			for (let i = startFrame; i < startFrame + talk.audioDurationFrames; i++) {
 				FaceByFrame[i] = talk.face || 'default';
-				if (talk.face) {
-					console.log(i, FaceByFrame[i]);
-				}
 			}
 		});
 	});
