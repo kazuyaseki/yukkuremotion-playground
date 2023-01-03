@@ -30,7 +30,9 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 				{hasAudio &&
 					(voiceConfig.ids && voiceConfig.ids.length > 0 ? (
 						voiceConfig.ids.map((id) => {
-							return <Audio src={staticFile(`audio/yukkuri/${id}.wav`)} />;
+							return (
+								<Audio key={id} src={staticFile(`audio/yukkuri/${id}.wav`)} />
+							);
 						})
 					) : (
 						<Audio src={staticFile(`audio/yukkuri/${voiceConfig.id}.wav`)} />

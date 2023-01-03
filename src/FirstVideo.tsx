@@ -5,7 +5,6 @@ import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
 import React, {useEffect, useRef, useState} from 'react';
 import {FPS, SUBTITLE_HEIGHT_PX} from './constants';
-import {getVideoMetadata} from '@remotion/media-utils';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
 
@@ -21,16 +20,6 @@ export const FirstVideo: React.FC<{
 				Object.keys(fromFrameMap).forEach((key) => {
 					fromFrameMap[Number(key)] += cumulateFrames;
 				});
-
-				const reimuKuchipakuMap = {...section.reimuKuchipakuMap};
-				reimuKuchipakuMap.frames = reimuKuchipakuMap.frames.map(
-					(frame) => frame + cumulateFrames
-				);
-
-				const marisaKuchipakuMap = {...section.marisaKuchipakuMap};
-				marisaKuchipakuMap.frames = marisaKuchipakuMap.frames.map(
-					(frame) => frame + cumulateFrames
-				);
 
 				return (
 					<React.Fragment key={index}>
@@ -67,12 +56,7 @@ export const FirstVideo: React.FC<{
 							totalFrames={cumulateFrames + section.totalFrames}
 						/>
 
-						<YukkuriSequence
-							{...section}
-							fromFramesMap={fromFrameMap}
-							reimuKuchipakuMap={section.reimuKuchipakuMap}
-							marisaKuchipakuMap={section.marisaKuchipakuMap}
-						/>
+						<YukkuriSequence {...section} fromFramesMap={fromFrameMap} />
 
 						{section.beforeMovie && (
 							<Sequence

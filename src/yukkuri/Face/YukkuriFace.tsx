@@ -7,7 +7,14 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import {FaceByFrame} from '../../../transcripts/FaceByFrame';
+import {
+	MarisaFaceByFrame,
+	ReimuFaceByFrame,
+} from '../../../transcripts/FaceByFrame';
+import {
+	MarisaMouthByFrame,
+	ReimuMouthByFrame,
+} from '../../../transcripts/MouthByFrame';
 import {FPS} from '../../constants';
 import {kuchipakuMap} from '../yukkuriVideoConfig';
 
@@ -32,7 +39,6 @@ export type ReimuProps = {
 	isKuchipaku?: boolean;
 	isReimu?: boolean;
 	mouth?: MOUTH_TYPE;
-	kuchipakuMap: kuchipakuMap;
 };
 
 const DEFAULT_REIMU_SIZE_PX = 320;
@@ -78,7 +84,6 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 	sizePx,
 	isReimu,
 	mouth,
-	kuchipakuMap,
 }) => {
 	const imageDirectory = useMemo(
 		() => (isReimu ? 'reimu' : 'marisa'),
@@ -105,7 +110,6 @@ export const YukkuriFace: React.FC<ReimuProps> = ({
 				imageDirectory={imageDirectory}
 				isReimu={isReimu}
 				mouth={mouth}
-				kuchipakuMap={kuchipakuMap}
 			/>
 		</div>
 	);
@@ -176,9 +180,8 @@ export const Face = (props: {
 	sizePx?: number;
 	isReimu?: boolean;
 	imageDirectory: string;
-	kuchipakuMap: kuchipakuMap;
 }) => {
-	const {face, mouth, sizePx, isReimu, imageDirectory, kuchipakuMap} = props;
+	const {face, mouth, sizePx, isReimu, imageDirectory} = props;
 
 	// Multiply by 1.2 because Marisa is bit smaller compared to Reimu
 	const faceSizePx =
@@ -217,10 +220,17 @@ export const Face = (props: {
 		}
 	}, [frame, eyeImagePath]);
 
-	const mouthImageNum = interpolate(
-		frame,
-		kuchipakuMap.frames,
-		kuchipakuMap.amplitude
+	const eyeImageStr = useMemo(
+		() =>
+			isReimu
+				? eyeImage[ReimuFaceByFrame[frame]]
+				: eyeImage[MarisaFaceByFrame[frame]],
+		[frame]
+	);
+
+	const mouthImageStr = useMemo(
+		() => (isReimu ? ReimuMouthByFrame[frame] : MarisaMouthByFrame[frame]),
+		[frame]
 	);
 
 	return (
@@ -239,7 +249,9 @@ export const Face = (props: {
 					width: `${faceSizePx}px`,
 				}}
 				src={staticFile(
-					`${imageDirectory}/eye/${eyeImage[FaceByFrame[frame]]}.png`
+					`${imageDirectory}/eye/${
+						eyeImageStr === 'default' ? eyeImagePath || '05' : eyeImageStr
+					}.png`
 				)}
 			/>
 			<Img
@@ -247,13 +259,7 @@ export const Face = (props: {
 					...faceStyle,
 					width: `${faceSizePx}px`,
 				}}
-				src={staticFile(
-					`${imageDirectory}/mouth/${
-						mouthImageNum > -1 && mouthImageNum < 7
-							? Math.floor(mouthImageNum).toString().padStart(2, '0')
-							: '05'
-					}.png`
-				)}
+				src={staticFile(`${imageDirectory}/mouth/${mouthImageStr}.png`)}
 			/>
 		</div>
 	);

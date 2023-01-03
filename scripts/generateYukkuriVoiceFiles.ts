@@ -158,8 +158,6 @@ FirstVideoConfig.sections.forEach((section) => {
 	}
 
 	for (const section of FirstVideoConfig.sections) {
-		const {talks, fromFramesMap} = section;
-
 		section.reimuKuchipakuMap = {
 			frames: [0],
 			amplitude: [6],
@@ -169,100 +167,6 @@ FirstVideoConfig.sections.forEach((section) => {
 			frames: [0],
 			amplitude: [5],
 		};
-
-		talks.forEach((talk, index) => {
-			const start = fromFramesMap[index];
-
-			if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'reimu') {
-				for (let i = 0; i <= talk.audioDurationFrames; i++) {
-					section.reimuKuchipakuMap.frames.push(i + start);
-					const index = Math.abs(3 - (i % 6));
-					let imageIndex = 6;
-					switch (index) {
-						case 0:
-							imageIndex = 0;
-							break;
-						case 1:
-							imageIndex = 2;
-							break;
-						case 2:
-							imageIndex = 4;
-							break;
-						case 3:
-							imageIndex = 6;
-							break;
-					}
-					section.reimuKuchipakuMap.amplitude.push(imageIndex);
-				}
-			}
-			if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'marisa') {
-				for (let i = 0; i <= talk.audioDurationFrames; i++) {
-					section.marisaKuchipakuMap.frames.push(i + start);
-					const index = Math.abs(3 - (i % 6));
-					let imageIndex = 5;
-					switch (index) {
-						case 0:
-							imageIndex = 0;
-							break;
-						case 1:
-							imageIndex = 2;
-							break;
-						case 2:
-							imageIndex = 3;
-							break;
-						case 2:
-							imageIndex = 5;
-							break;
-					}
-					section.marisaKuchipakuMap.amplitude.push(imageIndex);
-				}
-			}
-		});
-
-		// talks.forEach((talk, talkIndex) => {
-		// 	if (talk.id || talk.ids) {
-		// 		const id = talk.ids ? talk.ids[0] : talk.id;
-		// 		originalGetAudioData(`./public/audio/yukkuri/${id}.wav`).then(
-		// 			(audioData) => {
-		// 				if (audioData) {
-		// 					const numberOfSamples = 24;
-		// 					// 音声の波形データから「どのフレームで」「どの口になるかを指定するマップを作成」
-		// 					const waveformPortion = getWaveformPortion({
-		// 						audioData,
-		// 						startTimeInSeconds: 0,
-		// 						durationInSeconds: audioData.durationInSeconds,
-		// 						numberOfSamples,
-		// 					});
-
-		// 					const audioFragmentFrame = Math.floor(
-		// 						(audioData.durationInSeconds * FPS) / numberOfSamples
-		// 					);
-
-		// 					waveformPortion.forEach((bar, index) => {
-		// 						const frame =
-		// 							section.fromFramesMap[talkIndex] + audioFragmentFrame * index;
-		// 						if (!section.kuchipakuMap.frames.find((f) => f === frame)) {
-		// 							const lastFrame =
-		// 								talkIndex > 0 ? section.fromFramesMap[talkIndex - 1] : -1;
-		// 							const currentFrame =
-		// 								section.fromFramesMap[talkIndex] +
-		// 									audioFragmentFrame * index || 0;
-
-		// 							if (currentFrame > lastFrame) {
-		// 								section.kuchipakuMap.frames.push(
-		// 									section.fromFramesMap[talkIndex] +
-		// 										audioFragmentFrame * index || 0
-		// 								);
-		// 								// なぜか null が入ることがあるので 0 を入れておく
-		// 								section.kuchipakuMap.amplitude.push(bar.amplitude || 0);
-		// 							}
-		// 						}
-		// 					});
-		// 				}
-		// 			}
-		// 		);
-		// 	}
-		// });
 	}
 
 	fs.writeFileSync(
@@ -274,7 +178,39 @@ export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
 	);
 
 	const totalFrames = getTotalVideoFrames(FirstVideoConfig);
-	const FaceByFrame = new Array(totalFrames).fill('default');
+	const ReimuFaceByFrame = new Array(totalFrames).fill('default');
+	const MarisaFaceByFrame = new Array(totalFrames).fill('default');
+
+	FirstVideoConfig.sections.forEach((section, sectionIndex) => {
+		const beforeFrames = getTotalFramesBeforeSection(
+			FirstVideoConfig,
+			sectionIndex
+		);
+		section.talks.forEach((talk, index) => {
+			const startFrame = beforeFrames + section.fromFramesMap[index];
+			for (
+				let i = startFrame;
+				i < startFrame + talk.audioDurationFrames + TALK_GAP_FRAMES;
+				i++
+			) {
+				if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'reimu') {
+					ReimuFaceByFrame[i] = talk.face || 'default';
+				}
+				if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'marisa') {
+					MarisaFaceByFrame[i] = talk.face || 'default';
+				}
+			}
+		});
+	});
+
+	fs.writeFileSync(
+		`./transcripts/FaceByFrame.ts`,
+		`export const ReimuFaceByFrame = ${JSON.stringify(ReimuFaceByFrame)};
+export const MarisaFaceByFrame = ${JSON.stringify(MarisaFaceByFrame)};				`
+	);
+
+	const ReimuMouthByFrame = new Array(totalFrames).fill('05');
+	const MarisaMouthByFrame = new Array(totalFrames).fill('05');
 
 	FirstVideoConfig.sections.forEach((section, sectionIndex) => {
 		const beforeFrames = getTotalFramesBeforeSection(
@@ -284,15 +220,64 @@ export const FirstVideoConfig: VideoConfig = ${JSON.stringify(FirstVideoConfig)}
 		section.talks.forEach((talk, index) => {
 			const startFrame = beforeFrames + section.fromFramesMap[index];
 			for (let i = startFrame; i < startFrame + talk.audioDurationFrames; i++) {
-				FaceByFrame[i] = talk.face || 'default';
+				if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'reimu') {
+					for (
+						let i = startFrame;
+						i <= startFrame + talk.audioDurationFrames;
+						i++
+					) {
+						const index = Math.abs(3 - ((i - startFrame) % 6));
+						let imageIndex = 6;
+						switch (index) {
+							case 0:
+								imageIndex = 0;
+								break;
+							case 1:
+								imageIndex = 2;
+								break;
+							case 2:
+								imageIndex = 4;
+								break;
+							case 3:
+								imageIndex = 6;
+								break;
+						}
+						ReimuMouthByFrame[i] = imageIndex.toString().padStart(2, '0');
+					}
+				}
+				if (talk.speaker === 'reimuAndMarisa' || talk.speaker === 'marisa') {
+					for (
+						let i = startFrame;
+						i <= startFrame + talk.audioDurationFrames;
+						i++
+					) {
+						const index = Math.abs(3 - ((i - startFrame) % 6));
+						let imageIndex = 5;
+						switch (index) {
+							case 0:
+								imageIndex = 0;
+								break;
+							case 1:
+								imageIndex = 2;
+								break;
+							case 2:
+								imageIndex = 3;
+								break;
+							case 2:
+								imageIndex = 5;
+								break;
+						}
+						MarisaMouthByFrame[i] = imageIndex.toString().padStart(2, '0');
+					}
+				}
 			}
 		});
 	});
 
 	fs.writeFileSync(
-		`./transcripts/FaceByFrame.ts`,
-		`export const FaceByFrame = ${JSON.stringify(FaceByFrame)}
-				`
+		`./transcripts/MouthByFrame.ts`,
+		`export const ReimuMouthByFrame = ${JSON.stringify(ReimuMouthByFrame)};
+export const MarisaMouthByFrame = ${JSON.stringify(MarisaMouthByFrame)};				`
 	);
 })();
 

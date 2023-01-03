@@ -1,27 +1,21 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Sequence, useCurrentFrame} from 'remotion';
-import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
 import {YukkuriFace} from './Face/YukkuriFace';
-import {kuchipakuMap, SPEAKER, VoiceConfig} from './yukkuriVideoConfig';
+import {VoiceConfig} from './yukkuriVideoConfig';
 
 export type Props = {
-	reimuKuchipakuMap: kuchipakuMap;
-	marisaKuchipakuMap: kuchipakuMap;
 	talks: VoiceConfig[];
 	fromFramesMap: {[key in number]: number};
 };
 
-export const YukkuriSequence: React.FC<Props> = ({
-	reimuKuchipakuMap,
-	marisaKuchipakuMap,
-}) => {
+export const YukkuriSequence: React.FC<Props> = ({}) => {
 	return (
 		<Sequence>
 			<div style={reimuStyle}>
-				<YukkuriFace isReimu kuchipakuMap={reimuKuchipakuMap} />
+				<YukkuriFace isReimu />
 			</div>
 			<div style={marisaStyle}>
-				<YukkuriFace isReimu={false} kuchipakuMap={marisaKuchipakuMap} />
+				<YukkuriFace isReimu={false} />
 			</div>
 		</Sequence>
 	);
