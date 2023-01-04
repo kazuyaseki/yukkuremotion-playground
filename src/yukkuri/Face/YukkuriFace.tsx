@@ -194,7 +194,7 @@ export const Face = (props: {
 	useEffect(() => {
 		const frameLeft = frame % (MABATAKI_INTERVAL_SECONDS * FPS);
 
-		if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 1) {
+		if (frameLeft === Number(MABATAKI_ANIMATION_INTERVAL_FRAME)) {
 			setEyeImagePath('04');
 		} else if (frameLeft === MABATAKI_ANIMATION_INTERVAL_FRAME * 2) {
 			setEyeImagePath('03');
@@ -243,7 +243,7 @@ export const Face = (props: {
 	);
 };
 
-const PureFace = (props: {
+export const PureFace = (props: {
 	faceSizePx: number;
 	imageDirectory: string;
 	eyeImage: string;

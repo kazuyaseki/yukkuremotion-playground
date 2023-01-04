@@ -2,6 +2,7 @@ import {
 	Audio,
 	Img,
 	interpolate,
+	OffthreadVideo,
 	Sequence,
 	staticFile,
 	useCurrentFrame,
@@ -9,9 +10,9 @@ import {
 } from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import React, {useEffect, useRef, useState} from 'react';
-import {Face} from '../yukkuri/Face/YukkuriFace';
+import {Face, PureFace} from '../yukkuri/Face/YukkuriFace';
 
-export const TransitionSpace: React.FC<{}> = ({}) => {
+export const TransitionSpace = () => {
 	const frame = useCurrentFrame();
 
 	const translateY = interpolate(frame, [0, 180], [0, -550]);
@@ -20,7 +21,7 @@ export const TransitionSpace: React.FC<{}> = ({}) => {
 
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
-			<Video src={staticFile('video/transition-space.mp4')} />
+			<OffthreadVideo src={staticFile('video/transition-space.mp4')} />
 
 			<div
 				style={{
@@ -28,12 +29,11 @@ export const TransitionSpace: React.FC<{}> = ({}) => {
 					transform: `translateY(${translateY}px) translateX(${translateX}px) rotate(${rotate}deg)`,
 				}}
 			>
-				<Face
-					face={'default'}
-					sizePx={200}
-					imageDirectory={'reimu'}
-					isReimu={true}
-					kuchipakuMap={{frames: [0, 1], amplitude: [6, 6]}}
+				<PureFace
+					eyeImage="05"
+					mouthImage="05"
+					faceSizePx={200}
+					imageDirectory="reimu"
 				/>
 			</div>
 		</AbsoluteFill>

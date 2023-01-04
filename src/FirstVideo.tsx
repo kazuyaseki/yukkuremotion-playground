@@ -1,4 +1,11 @@
-import {Audio, Img, Sequence, staticFile, Video} from 'remotion';
+import {
+	Audio,
+	Img,
+	OffthreadVideo,
+	Sequence,
+	staticFile,
+	Video,
+} from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import {TalkSequence} from './yukkuri/Talk/TalkSequence';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
@@ -13,7 +20,7 @@ export const FirstVideo: React.FC<{
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			{videoConfig.sections.map((section, index) => {
-				let cumulateFrames = getTotalFramesBeforeSection(videoConfig, index);
+				const cumulateFrames = getTotalFramesBeforeSection(videoConfig, index);
 
 				const fromFrameMap = {...section.fromFramesMap};
 				Object.keys(fromFrameMap).forEach((key) => {
@@ -29,11 +36,14 @@ export const FirstVideo: React.FC<{
 							}
 						>
 							{section.bgmSrc && (
-								<Audio src={staticFile(section.bgmSrc)} volume={0.18} loop />
+								<Audio loop src={staticFile(section.bgmSrc)} volume={0.18} />
 							)}
 							{section.backgroundVideo && (
 								<>
-									<Video loop src={staticFile(section.backgroundVideo)} muted />
+									<OffthreadVideo
+										muted
+										src={staticFile(section.backgroundVideo)}
+									/>
 									{section.showBgVideoOverlay && (
 										<div
 											style={{
@@ -43,7 +53,7 @@ export const FirstVideo: React.FC<{
 												backdropFilter: 'blur(4px)',
 												zIndex: '0',
 											}}
-										></div>
+										/>
 									)}
 								</>
 							)}
@@ -62,7 +72,7 @@ export const FirstVideo: React.FC<{
 								from={cumulateFrames}
 								durationInFrames={fromFrameMap[0]}
 							>
-								<Video
+								<OffthreadVideo
 									style={{zIndex: 100}}
 									src={staticFile(section.beforeMovie)}
 								/>
@@ -78,7 +88,7 @@ export const FirstVideo: React.FC<{
 								}
 								durationInFrames={section.afterMovieFrames}
 							>
-								<Video
+								<OffthreadVideo
 									style={{zIndex: 10000}}
 									src={staticFile(section.afterMovie)}
 								/>
