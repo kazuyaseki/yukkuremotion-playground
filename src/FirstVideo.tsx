@@ -29,7 +29,12 @@ export const FirstVideo: React.FC<{
 							}
 						>
 							{section.bgmSrc && (
-								<Audio loop src={staticFile(section.bgmSrc)} volume={0.4} />
+								<Audio
+									loop
+									src={staticFile(section.bgmSrc)}
+									// eslint-disable-next-line
+									volume={section.bgmVolume || 0.4}
+								/>
 							)}
 							{section.backgroundVideo && (
 								<>

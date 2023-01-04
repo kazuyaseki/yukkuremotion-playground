@@ -58,6 +58,7 @@ export type VideoConfig = {
 		totalFrames: number;
 		talks: VoiceConfig[];
 		bgmSrc?: string;
+		bgmVolume?: number;
 		backgroundVideo?: string;
 		showBgVideoOverlay?: boolean;
 		beforeMovie?: string;
