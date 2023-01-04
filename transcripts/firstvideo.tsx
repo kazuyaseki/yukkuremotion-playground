@@ -307,7 +307,7 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '9de2c2be5a73475587bc5fef7e0a2ccb',
 					audioDurationFrames: 123,
-					memoForEditor: 'Remotionの動画',
+					image: {src: '/image/remotion-logo.png', backgroundColor: '#fff'},
 				},
 				{
 					text: 'え、リアクトはウェブサイトを作れるものじゃなかったの？',
@@ -315,7 +315,7 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'reimu',
 					id: '00b7885b8ea84e50b484a0bebc7ea02c',
 					audioDurationFrames: 106,
-					memoForEditor: 'Remotionの動画',
+					image: {src: '/image/remotion-logo.png', backgroundColor: '#fff'},
 				},
 				{
 					text: 'ああ、だからこれが最初に出てきた時はエンジニアたちも驚いてたぜ',
@@ -324,7 +324,7 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '5b0f0b87471f40c59d7115010f285ed5',
 					audioDurationFrames: 141,
-					memoForEditor: 'Remotionの動画',
+					image: {src: '/image/remotion-logo.png', backgroundColor: '#fff'},
 				},
 				{
 					text: 'とりあえず例を見せるとこんな感じのコードを書くと',
@@ -332,14 +332,20 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '1166f334c6e04428b7a9cbbfbb1c4252',
 					audioDurationFrames: 99,
-					memoForEditor: 'Remotionのサンプルコードの画像',
+					image: {
+						src: '/image/remotion-hello-world.png',
+						backgroundColor: '#fff',
+					},
 				},
 				{
 					text: 'こういう動画が作れるんだ',
 					speaker: 'marisa',
 					id: '1b69c1132a5741debad13fae99c27492',
 					audioDurationFrames: 50,
-					memoForEditor: 'Remotionその動画、次のフレームまで再生したいかも',
+					backgroundVideo: {
+						src: '/video/remotion-hello-world.mp4',
+						extendTalksCount: 1,
+					},
 				},
 				{
 					text: 'えーすごい！',
@@ -355,13 +361,20 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'reimu',
 					id: '6d15a67c85d8403095217957a5570c97',
 					audioDurationFrames: 118,
-					memoForEditor: 'Remotionのサンプルコードの画像',
+					image: {
+						src: '/image/remotion-hello-world.png',
+						backgroundColor: '#fff',
+					},
 				},
 				{
 					text: 'だろ',
 					speaker: 'marisa',
 					id: '9fbc7353aa234b768a157fdb2c1077a0',
 					audioDurationFrames: 11,
+					image: {
+						src: '/image/remotion-hello-world.png',
+						backgroundColor: '#fff',
+					},
 				},
 				{
 					text: '...',
@@ -715,6 +728,10 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'reimu',
 					id: 'c3d9729caa6c456381cdc967af7f8d2c',
 					audioDurationFrames: 147,
+					backgroundVideo: {
+						src: '/video/movie-makers.mp4',
+						extendTalksCount: 1,
+					},
 				},
 				{
 					text: 'いい質問だな',
@@ -735,7 +752,10 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '501fa453341148949cef5874a51cdba0',
 					audioDurationFrames: 186,
-					memoForEditor: 'なんかいい感じの画像作る',
+					backgroundVideo: {
+						src: '/video/generate-video.mp4',
+						extendTalksCount: 1,
+					},
 				},
 				{
 					text: 'そんなことあるかしら？',
@@ -751,6 +771,10 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '6b440443efab4cb28850fdbbbbdfc5a8',
 					audioDurationFrames: 96,
+					backgroundVideo: {
+						src: '/video/GitHubUnwrapped.mp4',
+						extendTalksCount: 3,
+					},
 				},
 				{
 					text: 'これはギットハブという設計図共有サイトで一年のまとめを動画にしたものだな',
@@ -759,14 +783,12 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '07fd6d0596914b6eb1f59ad1c0c44ca0',
 					audioDurationFrames: 178,
-					memoForEditor: 'GitHubUnrapped のスクショ',
 				},
 				{
 					text: 'ユーザのデータ毎に違う動画が動的に作れるんだ',
 					speaker: 'marisa',
 					id: 'f10b9053f3e24bea835bf2702a82edee',
 					audioDurationFrames: 107,
-					memoForEditor: 'GitHubUnrapped のスクショ',
 				},
 				{
 					text: 'ユーザ毎に違う動画...!それは確かにプログラミングじゃないと難しそうね',
@@ -776,7 +798,6 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'reimu',
 					id: 'aa0ffa063de64f0485eb4569bf815b13',
 					audioDurationFrames: 171,
-					memoForEditor: 'GitHubUnrapped のスクショ',
 				},
 				{
 					text: 'あとは複数の言語に対応する時だな',
@@ -784,13 +805,18 @@ export const FirstVideoConfig: VideoConfig = {
 					id: '341c37714785452c956a4aca4903c926',
 					audioDurationFrames: 87,
 					memoForEditor: 'i18nっぽい画像作る',
+					image: {
+						src: '/image/i18n.png',
+					},
 				},
 				{
 					text: 'なるほど！それはビジネスとかに便利そうね！',
 					speaker: 'reimu',
 					id: '1e9b0e32c9534b7783747e325a005bb1',
 					audioDurationFrames: 90,
-					memoForEditor: 'i18nっぽい画像作る',
+					image: {
+						src: '/image/i18n.png',
+					},
 				},
 				{
 					text: 'この動画も設定ファイルの日本語を英語に翻訳するだけで英語版動画が完成するぜ',
@@ -799,7 +825,9 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '18b370be313b4422bc43cebb566663a6',
 					audioDurationFrames: 186,
-					memoForEditor: 'i18nっぽい画像作る',
+					image: {
+						src: '/image/i18n.png',
+					},
 				},
 				{
 					text: 'まあ私たちは英語が喋れないから他の人工音声ツールを使った方がいいけどな',
@@ -808,14 +836,18 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '663afe41d422453f864796e543d60f29',
 					audioDurationFrames: 175,
-					memoForEditor: 'i18nっぽい画像作る',
+					image: {
+						src: '/image/i18n.png',
+					},
 				},
 				{
 					text: 'Our English is super horrible',
 					speaker: 'reimu',
 					id: '7fa654e351014144867f2a9c74377ec7',
 					audioDurationFrames: 122,
-					memoForEditor: 'i18nっぽい画像作る',
+					image: {
+						src: '/image/i18n.png',
+					},
 				},
 				{
 					text: 'その他にもプログラミングで作れると色々自由度高く繋げられるのが便利だな',
@@ -824,7 +856,7 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: 'b0f4584e754f4dac867e04475641b30f',
 					audioDurationFrames: 165,
-					memoForEditor: 'プログラミングっぽい画像',
+					backgroundVideo: {src: '/video/programming.mp4', extendTalksCount: 3},
 				},
 				{
 					text: '例えば今回の動画もこういう文字列から音声も生成しつつ動画も生成している訳だが',
@@ -858,6 +890,7 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: 'cfe54ae7c57c4603a9119f71066836eb',
 					audioDurationFrames: 88,
+					backgroundVideo: {src: '/video/programmer.mp4', extendTalksCount: 2},
 				},
 				{
 					text: '動画制作ツールを一から学ぶよりはこのプログラミングで作れる方が遥かに簡単だったぜ',
@@ -866,14 +899,12 @@ export const FirstVideoConfig: VideoConfig = {
 					speaker: 'marisa',
 					id: '8cbcec312e114a2eb7741f6931d13984',
 					audioDurationFrames: 202,
-					memoForEditor: '各種動画を色々並べた画像',
 				},
 				{
 					text: 'だからエンジニアには自信を持ってオススメできるな',
 					speaker: 'marisa',
 					id: 'b593d6b308bc43c4a123b16ea112cd59',
 					audioDurationFrames: 99,
-					memoForEditor: '各種動画を色々並べた画像',
 				},
 				{
 					text: 'へー',
@@ -884,20 +915,18 @@ export const FirstVideoConfig: VideoConfig = {
 				{
 					text: 'こう聞くといいことばかりな気がするけど逆に欠点はないの',
 					textForDisplay:
-						'こう聞くといいことばかりな\n気がするけど逆に欠点はないの',
+						'こう聞くといいことばかりな\n気がするけど逆に欠点はないの?',
 					speaker: 'reimu',
 					id: '3af54e151d0346f5ba573da446a22e7f',
 					audioDurationFrames: 128,
 				},
 				{
-					text: 'さっき言ったことの裏返しになるが、プログラミング未経験者にはオススメしづらいな',
+					text: 'そうだな、さっき言ったことの裏返しになるが、プログラミング未経験者にはオススメしづらいな',
 					textForDisplay:
-						'さっき言ったことの裏返しになるが\nプログラミング未経験者にはオススメしづらいな',
+						'そうだな、さっき言ったことの裏返しになるが\nプログラミング未経験者にはオススメしづらいな',
 					speaker: 'marisa',
 					id: '1247d64d49df4c39b7236835d9be7d7e',
 					audioDurationFrames: 170,
-					memoForEditor:
-						'各種動画を色々並べた画像。エフェクトの動画とか作ってもいいかも',
 				},
 				{
 					text: 'おそらく動画制作ツールの使い方を学ぶより、プログラミングを一から学ぶ方がきっとハードル高いだろうからな',

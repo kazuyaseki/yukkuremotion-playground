@@ -25,6 +25,8 @@ type BackgroundVideo = {
 	src: string;
 	from?: number;
 	backgroundColor?: string;
+	// 動画を複数の Talk にまたがって表示させたい時に使う
+	extendTalksCount?: number;
 };
 
 export type VoiceConfig = {
@@ -67,6 +69,6 @@ export type VideoConfig = {
 		kuchipakuMap: kuchipakuMap;
 		reimuKuchipakuMap: kuchipakuMap;
 		marisaKuchipakuMap: kuchipakuMap;
-		initialDelayFrames?: number; // default: 60s
+		initialDelayFrames?: number; // Default: 60s
 	}[];
 };

@@ -1,25 +1,51 @@
-import {useAudioData} from '@remotion/media-utils';
-import {Audio, Img, Sequence, staticFile} from 'remotion';
+import {Audio, Img, OffthreadVideo, Sequence, staticFile} from 'remotion';
 import {CustomObjects} from '../../../transcripts/CustomObjects';
-import {FPS, SUBTITLE_HEIGHT_PX, TALK_GAP_FRAMES} from '../../constants';
+import {SUBTITLE_HEIGHT_PX, TALK_GAP_FRAMES} from '../../constants';
 import {SubtitleWithBackground} from '../../Subtitle/SubtitleBackground';
 import {VoiceConfig} from '../yukkuriVideoConfig';
 
 export type TalkProps = {
 	voiceConfig: VoiceConfig;
 	from?: number;
+	meta: {
+		talks: VoiceConfig[];
+		index: number;
+	};
 };
 
-export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
-	const hasAudio = !!voiceConfig.id || !!voiceConfig.ids;
+const getDurationInFrames = (voiceConfig: VoiceConfig) =>
+	voiceConfig.customDuration ||
+	voiceConfig.audioDurationFrames + TALK_GAP_FRAMES;
+
+const getBackgroundVideoDuration = (
+	currentTalk: VoiceConfig,
+	talks: VoiceConfig[],
+	index: number
+) => {
+	const video = currentTalk.backgroundVideo;
+
+	if (!video) {
+		return 0;
+	}
+
+	let duration = getDurationInFrames(currentTalk);
+
+	if (video.extendTalksCount) {
+		for (let i = 1; i <= video.extendTalksCount; i++) {
+			duration += getDurationInFrames(talks[index + i]);
+		}
+	}
+	return duration;
+};
+
+export const Talk: React.FC<TalkProps> = ({voiceConfig, from, meta}) => {
+	const hasAudio = Boolean(voiceConfig.id) || Boolean(voiceConfig.ids);
 
 	const CustomObject = voiceConfig.customObjectKey
 		? CustomObjects[voiceConfig.customObjectKey]
 		: null;
 
-	const durationInFrames =
-		voiceConfig.customDuration ||
-		voiceConfig.audioDurationFrames + TALK_GAP_FRAMES;
+	const durationInFrames = getDurationInFrames(voiceConfig);
 
 	return (
 		<>
@@ -61,6 +87,30 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from}) => {
 					from={(from || 0) + (voiceConfig.audio.from || 0)}
 				>
 					<Audio src={staticFile(voiceConfig.audio.src)} />
+				</Sequence>
+			)}
+
+			{voiceConfig.backgroundVideo && (
+				<Sequence
+					durationInFrames={getBackgroundVideoDuration(
+						voiceConfig,
+						meta.talks,
+						meta.index
+					)}
+					from={(from || 0) + (voiceConfig.backgroundVideo.from || 0)}
+				>
+					<div
+						style={{
+							...imagePosition,
+							backgroundColor: voiceConfig.backgroundVideo.backgroundColor,
+						}}
+					>
+						<OffthreadVideo
+							muted
+							src={staticFile(voiceConfig.backgroundVideo.src)}
+							style={{maxHeight: '100%'}}
+						/>
+					</div>
 				</Sequence>
 			)}
 

@@ -1,16 +1,9 @@
-import {
-	Audio,
-	Img,
-	OffthreadVideo,
-	Sequence,
-	staticFile,
-	Video,
-} from 'remotion';
+import {Audio, Img, OffthreadVideo, Sequence, staticFile} from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import {TalkSequence} from './yukkuri/Talk/TalkSequence';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
 import React from 'react';
-import {FPS, SUBTITLE_HEIGHT_PX} from './constants';
+import {SUBTITLE_HEIGHT_PX} from './constants';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
 
@@ -36,7 +29,7 @@ export const FirstVideo: React.FC<{
 							}
 						>
 							{section.bgmSrc && (
-								<Audio loop src={staticFile(section.bgmSrc)} volume={0.18} />
+								<Audio loop src={staticFile(section.bgmSrc)} volume={0.4} />
 							)}
 							{section.backgroundVideo && (
 								<>
