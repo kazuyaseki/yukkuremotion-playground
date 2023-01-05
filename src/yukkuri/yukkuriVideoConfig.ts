@@ -1,6 +1,7 @@
 import React from 'react';
 import {CustomObjectKeys} from '../../transcripts/CustomObjects';
 import {FACE_TYPE} from './Face/ImagePaths/faceImagePaths';
+import {MouthType} from './Face/ImagePaths/mouthImagePaths';
 
 export const SPEAKER = {
 	reimu: 'reimu',
@@ -19,6 +20,7 @@ type Image = {
 type Audio = {
 	src: string;
 	from?: number;
+	volume?: number;
 };
 
 type BackgroundVideo = {
@@ -39,6 +41,7 @@ export type VoiceConfig = {
 	delayFrames?: number;
 	audioDurationFrames: number;
 	face?: string;
+	mouth?: MouthType;
 	image?: Image;
 	backgroundVideo?: BackgroundVideo;
 	audio?: Audio;
