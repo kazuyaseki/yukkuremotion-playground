@@ -147,7 +147,7 @@ export const FirstVideoConfig: VideoConfig = {
 		{
 			title: 'Remotion の説明',
 			bgmSrc: '/audio/bgm/Stay_On_Your_Mind.mp3',
-			backgroundVideo: '/video/codebg.mp4',
+			backgroundVideo: '/video/codelike-bg.mp4',
 			afterMovie: '/video/transition-space-yukkuri.mp4',
 			initialDelayFrames: 60,
 			fromFramesMap: {
@@ -392,7 +392,8 @@ export const FirstVideoConfig: VideoConfig = {
 					audioDurationFrames: 117,
 				},
 				{
-					text: 'それはどんな風に作られているのかしら？',
+					text: 'それはどんなふうに作られているのかしら？',
+					textForDisplay: 'それはどんな風に作られているのかしら？',
 					face: 'komari',
 					speaker: 'reimu',
 					id: 'eeb62375d6864ef6bd7f6559a3d279e7',
@@ -425,7 +426,7 @@ export const FirstVideoConfig: VideoConfig = {
 			bgmVolume: 0.1,
 			backgroundVideo: '/video/editing-code.mp4',
 			showBgVideoOverlay: true,
-			afterMovie: '/video/transition-cool.mp4',
+			afterMovie: '/video/isometric-yukkuri.mp4',
 			fromFramesMap: {
 				'0': 30,
 				'1': 177,
@@ -674,6 +675,7 @@ export const FirstVideoConfig: VideoConfig = {
 			title: 'プログラミングで動画が作れると何が嬉しいか',
 			bgmSrc: '/audio/bgm/Something_Special_Secret.mp3',
 			backgroundVideo: '/video/office.mp4',
+			afterMovie: '/video/final-cutin.mp4',
 			fromFramesMap: {
 				'0': 30,
 				'1': 92,
@@ -991,7 +993,7 @@ export const FirstVideoConfig: VideoConfig = {
 		},
 		{
 			title: 'Remotion でゆっくり',
-			bgmSrc: '/audio/bgm/10.mp3',
+			bgmSrc: '/audio/bgm/Flutter.mp3',
 			backgroundVideo: '/video/codebg.mp4',
 			fromFramesMap: {
 				'0': 30,
@@ -1033,13 +1035,13 @@ export const FirstVideoConfig: VideoConfig = {
 				{
 					text: 'それにしても私たちがコードでできてるなんてね、びっくりしたわ',
 					textForDisplay:
-						'それにしても私たちがコードでできてるなんてね\nびっくりしたわ',
+						'それにしても私たちがコードで\nできてるなんてねびっくりしたわ',
 					speaker: 'reimu',
 					id: '5c9d8a24a9614bf38a7eaf1721bc8c49',
 					audioDurationFrames: 135,
 				},
 				{
-					text: 'いきなりアイデンティティが崩壊しちゃった',
+					text: 'いきなりアイデンティティーが崩壊しちゃった',
 					speaker: 'reimu',
 					face: 'komariKatame',
 					id: '4482afdde8b045fcba05fa81b3483ea4',
