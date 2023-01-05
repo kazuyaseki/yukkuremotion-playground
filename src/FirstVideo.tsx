@@ -6,6 +6,7 @@ import React from 'react';
 import {SUBTITLE_HEIGHT_PX} from './constants';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
+import {LoopedOffthreadVideo} from './components/LoopedOffthreadVideo';
 
 export const FirstVideo: React.FC<{
 	videoConfig: VideoConfig;
@@ -38,8 +39,8 @@ export const FirstVideo: React.FC<{
 							)}
 							{section.backgroundVideo && (
 								<>
-									<OffthreadVideo
-										muted
+									<LoopedOffthreadVideo
+										isMuted
 										src={staticFile(section.backgroundVideo)}
 									/>
 									{section.showBgVideoOverlay && (
