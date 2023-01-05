@@ -1,5 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {Sequence, useCurrentFrame} from 'remotion';
+import {Sequence} from 'remotion';
 import {YukkuriFace} from './Face/YukkuriFace';
 import {VoiceConfig} from './yukkuriVideoConfig';
 
@@ -8,7 +7,7 @@ export type Props = {
 	fromFramesMap: {[key in number]: number};
 };
 
-export const YukkuriSequence: React.FC<Props> = ({}) => {
+export const YukkuriSequence: React.FC<Props> = () => {
 	return (
 		<Sequence>
 			<div style={reimuStyle}>

@@ -86,7 +86,11 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from, meta}) => {
 					durationInFrames={durationInFrames}
 					from={(from || 0) + (voiceConfig.audio.from || 0)}
 				>
-					<Audio src={staticFile(voiceConfig.audio.src)} />
+					<Audio
+						src={staticFile(voiceConfig.audio.src)}
+						// eslint-disable-next-line
+						volume={voiceConfig.audio.volume || 1}
+					/>
 				</Sequence>
 			)}
 
@@ -123,8 +127,8 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from, meta}) => {
 	);
 };
 
-const VERTICAL_PADDING_PX = 60;
-const HORIZONTAL_PADDING_PX = 400;
+const VERTICAL_PADDING_PX = 40;
+const HORIZONTAL_PADDING_PX = 240;
 
 const imagePosition: React.CSSProperties = {
 	position: 'absolute',
