@@ -23,13 +23,13 @@ export const YukkuriSequence: React.FC<Props> = () => {
 const reimuStyle: React.CSSProperties = {
 	position: 'absolute',
 	right: '10px',
-	bottom: '145px',
+	bottom: '180px',
 	zIndex: 10,
 };
 
 const marisaStyle: React.CSSProperties = {
 	position: 'absolute',
 	left: '-5px',
-	bottom: '145px',
+	bottom: '180px',
 	zIndex: 10,
 };

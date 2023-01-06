@@ -2,10 +2,14 @@ import {Composition} from 'remotion';
 import {FirstVideoConfig} from '../transcripts/firstvideo';
 import {FPS} from './constants';
 import {FirstVideo} from './FirstVideo';
+import {loadFont} from './load-fonts';
 import {TransitionSpace} from './sozai/TransitionSpace';
 import {getTotalVideoFrames} from './utils/getTotalVideoFrames';
 
+// LoadFont();
+
 export const RemotionRoot: React.FC = () => {
+	loadFont();
 	return (
 		<>
 			<Composition

@@ -128,7 +128,7 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from, meta}) => {
 };
 
 const VERTICAL_PADDING_PX = 40;
-const HORIZONTAL_PADDING_PX = 240;
+const HORIZONTAL_PADDING_PX = 320;
 
 const imagePosition: React.CSSProperties = {
 	position: 'absolute',
