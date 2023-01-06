@@ -52,6 +52,7 @@ export const Talk: React.FC<TalkProps> = ({voiceConfig, from, meta}) => {
 			<Sequence durationInFrames={durationInFrames} from={from}>
 				<SubtitleWithBackground
 					subtitle={voiceConfig.textForDisplay || voiceConfig.text}
+					speaker={voiceConfig.speaker}
 				/>
 				{hasAudio &&
 					(voiceConfig.ids && voiceConfig.ids.length > 0 ? (
