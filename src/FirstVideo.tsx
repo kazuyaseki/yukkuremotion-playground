@@ -113,8 +113,6 @@ const jimakuBackground: React.CSSProperties = {
 	bottom: 0,
 	backgroundImage: `url(${staticFile('image/telop/Cyber_telop2_black.png')})`,
 	backgroundPosition: 'center',
-
-	// BackgroundColor: 'rgba(255, 255, 255, 0.65)',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',

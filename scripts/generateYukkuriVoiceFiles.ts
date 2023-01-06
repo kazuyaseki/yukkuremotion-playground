@@ -37,18 +37,18 @@ const aqkanji2koe = new AqKanji2Koe(
 );
 aqkanji2koe.AqKanji2KoeSetDevKey(AqKanji2KoeSetDevKey);
 
-const SPEED = 120;
+const SPEED = 115;
 
 const ReimuVoice = {
-	base: 0,
-	volume: 100,
-	accent: 80,
-	fsc: 103,
+	base: 0, // 声種
+	volume: 100, // 音量
+	pitch: 95, // 高さ
+	accent: 80, // アクセント
+	lmd: 110, // 声質
+	fsc: 103, // 音程
 	speed: SPEED,
-	lmd: 110,
-	pitch: 84,
 };
-const MarisaVoice = {...gVoice_F1, base: 0, speed: SPEED, lmd: 130, pitch: 84};
+const MarisaVoice = {...gVoice_F1, base: 0, speed: SPEED, lmd: 130, pitch: 75};
 
 const forceGenerate = process.argv[2] === 'force';
 
