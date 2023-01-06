@@ -1,16 +1,28 @@
-import {Audio, Img, OffthreadVideo, Sequence, staticFile} from 'remotion';
+import {
+	Audio,
+	Img,
+	OffthreadVideo,
+	Sequence,
+	staticFile,
+	useCurrentFrame,
+} from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import {TalkSequence} from './yukkuri/Talk/TalkSequence';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
-import React from 'react';
+import React, {useMemo, useRef} from 'react';
 import {SUBTITLE_HEIGHT_PX} from './constants';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
 import {LoopedOffthreadVideo} from './components/LoopedOffthreadVideo';
+import {getTotalVideoFrames} from './utils/getTotalVideoFrames';
 
 export const FirstVideo: React.FC<{
 	videoConfig: VideoConfig;
 }> = ({videoConfig}) => {
+	const frame = useCurrentFrame();
+
+	const totalVideoFrame = useRef(getTotalVideoFrames(videoConfig));
+
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			{videoConfig.sections.map((section, index) => {
@@ -90,6 +102,7 @@ export const FirstVideo: React.FC<{
 								<OffthreadVideo
 									style={{zIndex: 10000}}
 									src={staticFile(section.afterMovie)}
+									volume={section.afterMovieVolume}
 								/>
 							</Sequence>
 						)}
