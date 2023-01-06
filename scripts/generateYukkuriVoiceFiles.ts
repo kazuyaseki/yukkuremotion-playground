@@ -37,16 +37,18 @@ const aqkanji2koe = new AqKanji2Koe(
 );
 aqkanji2koe.AqKanji2KoeSetDevKey(AqKanji2KoeSetDevKey);
 
+const SPEED = 120;
+
 const ReimuVoice = {
 	base: 0,
 	volume: 100,
 	accent: 80,
 	fsc: 103,
-	speed: 100,
+	speed: SPEED,
 	lmd: 110,
 	pitch: 84,
 };
-const MarisaVoice = {...gVoice_F1, base: 0, speed: 105, lmd: 130, pitch: 84};
+const MarisaVoice = {...gVoice_F1, base: 0, speed: SPEED, lmd: 130, pitch: 84};
 
 const forceGenerate = process.argv[2] === 'force';
 
