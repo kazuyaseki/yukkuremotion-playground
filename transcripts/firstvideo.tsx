@@ -419,7 +419,7 @@ export const FirstVideoConfig: VideoConfig = {
 		{
 			title: 'Remotion でゆっくり',
 			bgmSrc: '/audio/bgm/8bit_Game_Menu.mp3',
-			bgmVolume: 0.1,
+			bgmVolume: 0.08,
 			backgroundVideo: '/video/editing-code.mp4',
 			showBgVideoOverlay: true,
 			afterMovie: '/video/isometric-yukkuri.mp4',
