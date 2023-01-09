@@ -8,7 +8,7 @@ import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
 import {LoopedOffthreadVideo} from './components/LoopedOffthreadVideo';
 
-export const FirstVideo: React.FC<{
+export const YukkuriVideo: React.FC<{
   videoConfig: VideoConfig;
 }> = ({videoConfig}) => {
   return (
