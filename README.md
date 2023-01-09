@@ -1,12 +1,5 @@
 Remotion で作るゆっくり実況
 
-## 残タスク
-
-- fuyofuyo アニメーションが荒ぶるの解決
-- 口パクが動かないのを解決
-- エンコードを lambda で試す
-- Section が始まる時にちょっと delay を入れる
-
 ## Commands
 
 **Install Dependencies**
