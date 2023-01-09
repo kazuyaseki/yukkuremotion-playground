@@ -1,4 +1,5 @@
 import React from 'react';
+import {zIndex} from '../constants';
 import {SPEAKER, SPEAKER_TYPE} from '../yukkuri/yukkuriVideoConfig';
 
 const subtitle: React.CSSProperties = {
@@ -9,7 +10,7 @@ const subtitle: React.CSSProperties = {
   color: '#fff',
   WebkitTextStroke: '4px #C90003',
   textAlign: 'center',
-  zIndex: 1,
+  zIndex: zIndex.anyValue,
 };
 
 type Props = {

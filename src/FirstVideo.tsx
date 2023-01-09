@@ -1,28 +1,16 @@
-import {
-  Audio,
-  Img,
-  OffthreadVideo,
-  Sequence,
-  staticFile,
-  useCurrentFrame,
-} from 'remotion';
+import {Audio, Img, OffthreadVideo, Sequence, staticFile} from 'remotion';
 import {AbsoluteFill} from 'remotion';
 import {TalkSequence} from './yukkuri/Talk/TalkSequence';
 import {YukkuriSequence} from './yukkuri/YukkuriSequence';
-import React, {useMemo, useRef} from 'react';
-import {SUBTITLE_HEIGHT_PX} from './constants';
+import React from 'react';
+import {SUBTITLE_HEIGHT_PX, zIndex} from './constants';
 import {VideoConfig} from './yukkuri/yukkuriVideoConfig';
 import {getTotalFramesBeforeSection} from './utils/getTotalFramesBeforeSection';
 import {LoopedOffthreadVideo} from './components/LoopedOffthreadVideo';
-import {getTotalVideoFrames} from './utils/getTotalVideoFrames';
 
 export const FirstVideo: React.FC<{
   videoConfig: VideoConfig;
 }> = ({videoConfig}) => {
-  const frame = useCurrentFrame();
-
-  const totalVideoFrame = useRef(getTotalVideoFrames(videoConfig));
-
   return (
     <AbsoluteFill style={{backgroundColor: '#000'}}>
       {videoConfig.sections.map((section, index) => {
@@ -84,7 +72,7 @@ export const FirstVideo: React.FC<{
                 durationInFrames={fromFrameMap[0]}
               >
                 <OffthreadVideo
-                  style={{zIndex: 100}}
+                  style={{zIndex: zIndex.transitionMovie}}
                   src={staticFile(section.beforeMovie)}
                 />
               </Sequence>
@@ -100,7 +88,7 @@ export const FirstVideo: React.FC<{
                 durationInFrames={section.afterMovieFrames}
               >
                 <OffthreadVideo
-                  style={{zIndex: 10000}}
+                  style={{zIndex: zIndex.transitionMovie}}
                   src={staticFile(section.afterMovie)}
                   volume={section.afterMovieVolume}
                 />
@@ -129,12 +117,13 @@ const jimakuBackground: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  zIndex: 1,
+  zIndex: zIndex.anyValue,
 };
+
 const logoStyle: React.CSSProperties = {
   position: 'absolute',
   top: '40px',
   left: '40px',
   opacity: 0.8,
-  zIndex: 1,
+  zIndex: zIndex.anyValue,
 };

@@ -15,7 +15,7 @@ import {
   MarisaMouthByFrame,
   ReimuMouthByFrame,
 } from '../../../transcripts/MouthByFrame';
-import {FPS} from '../../constants';
+import {FPS, zIndex} from '../../constants';
 import {kuchipakuMap} from '../yukkuriVideoConfig';
 
 export type MOUTH_TYPE = 'OPEN' | 'CLOSE';
@@ -288,11 +288,11 @@ const MemoizedFace = memo(PureFace, (prevProps, nextProps) => {
 
 const containerStyle: React.CSSProperties = {
   position: 'relative',
-  zIndex: 10,
+  zIndex: zIndex.yukkuri,
 };
 
 const faceStyle: React.CSSProperties = {
   position: 'absolute',
   left: '0',
-  zIndex: 10,
+  zIndex: zIndex.yukkuri,
 };

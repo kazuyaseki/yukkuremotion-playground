@@ -1,4 +1,5 @@
 import {Sequence} from 'remotion';
+import {zIndex} from '../constants';
 import {YukkuriFace} from './Face/YukkuriFace';
 import {VoiceConfig} from './yukkuriVideoConfig';
 
@@ -24,12 +25,12 @@ const reimuStyle: React.CSSProperties = {
   position: 'absolute',
   right: '10px',
   bottom: '180px',
-  zIndex: 10,
+  zIndex: zIndex.yukkuri,
 };
 
 const marisaStyle: React.CSSProperties = {
   position: 'absolute',
   left: '-5px',
   bottom: '180px',
-  zIndex: 10,
+  zIndex: zIndex.yukkuri,
 };

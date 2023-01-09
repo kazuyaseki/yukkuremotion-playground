@@ -1,5 +1,5 @@
 import React from 'react';
-import {SUBTITLE_HEIGHT_PX} from '../constants';
+import {SUBTITLE_HEIGHT_PX, zIndex} from '../constants';
 import {SPEAKER_TYPE} from '../yukkuri/yukkuriVideoConfig';
 import {Subtitle} from './Subtitle';
 
@@ -22,5 +22,5 @@ const jimakuBackground: React.CSSProperties = {
   justifyContent: 'center',
   textAlign: 'center',
   whiteSpace: 'pre-wrap',
-  zIndex: 10,
+  zIndex: zIndex.subtitle,
 };
